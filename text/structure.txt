@@ -6,7 +6,9 @@ engine   -- cálculos
 - fft.py     -- análise de sinais
 - graph.py   -- plotagem de gráficos
 - signal.py  -- filtragem de sinais
+- synth.py   -- síntese de circuitos
+- tools.py   -- ferramentas diversas
 
 gui       -- interface gráfica
 
-tests     -- testes (um por arquivo)
+tests     -- testes (um por arquivo dos cálculos)
