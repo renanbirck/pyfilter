@@ -11,34 +11,45 @@ from engine import analog
 class TestAnalog(unittest.TestCase):
     """ The testbench for the AnalogFilter class. """
 
-    def setUp(self):
-        filter_under_test = analog.AnalogFilter()
+    filter_under_test = None
 
-    def test_get_topologies(self):
-        """ This test, gets all the known topologies
-            for the analog filter. """
-        pass
+    def setUp(self):
+        self.filter_under_test = analog.AnalogFilter()
+
+    def test_get_types(self):
+        """ This test, gets all the known types
+            of analog filter. """
+
+        self.assertEqual(self.filter_under_test.types,
+                         ['allpass', 'bandpass',
+                          'bandstop', 'highpass',
+                          'lowpass'])
+
+    def test_get_classes(self):
+        self.assertEqual(self.filter_under_test.classes,
+                         ['butterworth', 'chebyshev',
+                          'elliptical', 'bessel'])
 
     def test_configure_filter(self):
         """ This test tries to load some invalid parameters
             into the filter object, to check whether the
             handling works. """
-        pass
+        raise NotImplementedError
 
     def test_get_transfer_function(self):
         """ This test validates the transfer function and the
             pretty-printing routines. """
-        pass
+        raise NotImplementedError
 
     def test_synth_filter(self):
         """ This test tries to synthesize a filter.
             New tests could be added for different topologies. """
-        pass
+        raise NotImplementedError
 
     def test_fail_to_synth_filter(self):
         """ This test tries to synthesize a filter with
             invalid/meaningless settings."""
-        pass
+        raise NotImplementedError
 
 if __name__ == '__main__':
     unittest.main()

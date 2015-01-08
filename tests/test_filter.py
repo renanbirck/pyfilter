@@ -37,9 +37,7 @@ class TestFilterClass(unittest.TestCase):
     def test_get_transfer_function(self):
         """ This tries to get a transfer function that doesn't
             exist. """
-        with self.assertRaises(NotImplementedError):
-            self.test_filter.get_transfer_function()
-
+        self.assertEqual(self.test_filter.transfer_function, None)
     def test_invalid_order(self):
         """ Tries to set the filter to an invalid order. """
         with self.assertRaises(ValueError):

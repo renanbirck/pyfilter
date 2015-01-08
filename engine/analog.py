@@ -4,4 +4,11 @@
 from filter import Filter
 
 class AnalogFilter(Filter):
-    pass
+
+    filter_type = None
+    filter_class = None
+    filter_parameters = None
+
+    def __init__(self):
+        pass
+
