@@ -33,3 +33,7 @@ class Filter:
             and other classes override this method. """
         raise NotImplementedError("Please override this with your \
                                    own implementation of synthesize")
+
+    def compute_order(self):
+        raise NotImplementedError("Please override this with your \
+                                   own implementation of compute_order.")

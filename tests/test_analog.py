@@ -1,12 +1,14 @@
 #!/usr/bin/python3
 # coding: utf-8
 
-import unittest, sys
+import unittest
+import sys
 
 sys.path.append('../engine')
 sys.path.append('..')
 
 from engine import analog
+
 
 class TestAnalog(unittest.TestCase):
     """ The testbench for the AnalogFilter class. """
@@ -31,10 +33,56 @@ class TestAnalog(unittest.TestCase):
                           'elliptical', 'bessel'])
 
     def test_configure_filter(self):
-        """ This test tries to load some invalid parameters
-            into the filter object, to check whether the
-            handling works. """
-        raise NotImplementedError
+        """ This test tries configuring the filter with some
+            example values, to check if the type of filter is determined
+            correctly.
+            The parameters are in Hertz, NOT in rad/s! """
+
+        parameters = {'passband_frequency': 1,
+                      'stopband_frequency': 10,
+                      'passband_attenuation': 0,
+                      'stopband_attenuation': 80}
+
+        # Wp < Ws, low-pass filter
+        self.filter_under_test.configure_filter(parameters)
+        self.assertEqual(self.filter_under_test.filter_type, 'lowpass')
+
+        # Wp > Ws, high-pass filter
+        parameters['passband_frequency'] = 20
+        self.filter_under_test.configure_filter(parameters)
+        self.assertEqual(self.filter_under_test.filter_type, 'highpass')
+
+        # Wp and Ws are lists where Wp[0]>Ws[0] and Wp[1]<Ws[1],
+        # band-pass filter
+        parameters['passband_frequency'] = [2, 5]
+        parameters['stopband_frequency'] = [1, 6]
+        self.filter_under_test.configure_filter(parameters)
+        self.assertEqual(self.filter_under_test.filter_type, 'bandpass')
+
+        # Wp and Ws are lists where Wp[0]<Ws[0] and Wp[1]>Ws[1],
+        # band-stop filter
+        parameters['passband_frequency'] = [1, 6]
+        parameters['stopband_frequency'] = [2, 5]
+        self.filter_under_test.configure_filter(parameters)
+        self.assertEqual(self.filter_under_test.filter_type, 'bandstop')
+
+        # Other combinations don't make sense.
+        parameters['passband_frequency'] = [6, 1]
+        parameters['stopband_frequency'] = [6, 6]
+        with self.assertRaises(ValueError):
+            self.filter_under_test.configure_filter(parameters)
+
+        # Wp = Ws, all-pass filter
+        parameters['passband_frequency'] = 1
+        parameters['stopband_frequency'] = 1
+        self.filter_under_test.configure_filter(parameters)
+        self.assertEqual(self.filter_under_test.filter_type, 'allpass')
+
+        # Invalid parameters
+        with self.assertRaises(ValueError):
+            for invalid in [-1, "invalid", '1']:
+                parameters['passband_frequency'] = invalid
+                self.filter_under_test.configure_filter(parameters)
 
     def test_get_transfer_function(self):
         """ This test validates the transfer function and the
@@ -49,6 +97,11 @@ class TestAnalog(unittest.TestCase):
     def test_fail_to_synth_filter(self):
         """ This test tries to synthesize a filter with
             invalid/meaningless settings."""
+        raise NotImplementedError
+
+    def test_compute_order(self):
+        """ This test tries to find the order of specific filters.
+        """
         raise NotImplementedError
 
 if __name__ == '__main__':

@@ -51,5 +51,9 @@ class TestFilterClass(unittest.TestCase):
             self.test_filter.order = random_order
             self.assertEqual(self.test_filter.order, random_order)
 
+    def test_compute_order(self):
+        with self.assertRaises(NotImplementedError):
+            self.test_filter.compute_order()
+
 if __name__ == '__main__':
     unittest.main()
