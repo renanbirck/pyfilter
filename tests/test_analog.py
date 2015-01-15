@@ -49,6 +49,7 @@ class TestAnalog(unittest.TestCase):
 
         # Wp > Ws, high-pass filter
         parameters['passband_frequency'] = 20
+        parameters['stopband_frequency'] = 10
         self.filter_under_test.configure_filter(parameters)
         self.assertEqual(self.filter_under_test.filter_type, 'highpass')
 
