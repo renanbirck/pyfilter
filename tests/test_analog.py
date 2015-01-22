@@ -86,8 +86,7 @@ class TestAnalog(unittest.TestCase):
                 self.filter_under_test.configure_filter(parameters)
 
     def test_get_transfer_function(self):
-        """ This test validates the transfer function and the
-            pretty-printing routines. """
+        """ This test validates the transfer function calculation. """
         raise NotImplementedError
 
     def test_synth_filter(self):
@@ -101,8 +100,29 @@ class TestAnalog(unittest.TestCase):
         raise NotImplementedError
 
     def test_compute_order(self):
-        """ This test tries to find the order of specific filters.
-        """
+        """ This test tries to find the order of specific filters. """
+
+        # Configure the filter
+
+        parameters = {'passband_frequency': 10,
+                      'stopband_frequency': 100,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+
+        self.filter_under_test.filter_class = 'butterworth'
+
+        # the MATLAB command line for this would be
+        # [N, Wn] = buttord(Wp, Ws, Rp, Rs, 's')
+
+        self.filter_under_test.configure_filter(parameters)
+        self.filter_under_test.compute_order(target='stopband')
+        self.assertEqual(self.filter_under_test.N, 5)
+        self.assertEqual(self.filter_under_test.Wn, 99.5818)
+
+        self.filter_under_test.compute_order(target='passband')
+        self.assertEqual(self.filter_under_test.N, 5)
+        self.assertEqual(self.filter_under_test.Wn, 99.5818)
+
         raise NotImplementedError
 
 if __name__ == '__main__':
