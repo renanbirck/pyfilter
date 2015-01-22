@@ -115,15 +115,13 @@ class TestAnalog(unittest.TestCase):
         # [N, Wn] = buttord(Wp, Ws, Rp, Rs, 's')
 
         self.filter_under_test.configure_filter(parameters)
-        self.filter_under_test.compute_order(target='stopband')
-        self.assertEqual(self.filter_under_test.N, 5)
-        self.assertEqual(self.filter_under_test.Wn, 99.5818)
-
         self.filter_under_test.compute_order(target='passband')
         self.assertEqual(self.filter_under_test.N, 5)
-        self.assertEqual(self.filter_under_test.Wn, 99.5818)
+        self.assertEqual(self.filter_under_test.Wn, 71.92210683023319)
 
-        raise NotImplementedError
+        self.filter_under_test.compute_order(target='stopband')
+        self.assertEqual(self.filter_under_test.N, 5)
+        self.assertAlmostEqual(self.filter_under_test.Wn, 99.5817763027)
 
 if __name__ == '__main__':
     unittest.main()

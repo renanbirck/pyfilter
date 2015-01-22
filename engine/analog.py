@@ -121,8 +121,8 @@ class AnalogFilter(Filter):
                                                  self.passband_attenuation,
                                                  self.stopband_attenuation,
                                                  analog=True)
-            else:
-                self.N, self.Wn = custom.buttord(self. Wp, self.Ws,
+            elif target == 'stopband':
+                self.N, self.Wn = custom.custom_buttord(self.Wp, self.Ws,
                                               self.passband_attenuation,
                                               self.stopband_attenuation,
                                               analog=True)
