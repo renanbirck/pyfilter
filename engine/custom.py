@@ -19,6 +19,7 @@ from numpy import mintypecode
 import numpy as np
 from scipy import special, optimize
 from scipy.special import comb
+from scipy.signal import band_stop_obj
 
 def custom_buttord(wp, ws, gpass, gstop, analog=False):
     """Butterworth filter order selection.

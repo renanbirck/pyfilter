@@ -94,9 +94,9 @@ class TestAnalog(unittest.TestCase):
             invalid/meaningless settings."""
         raise NotImplementedError
 
-    def test_synth_filter(self):
-        """ This test tries to synthesize a filter with the given parameters.
-            Because (I assume) SciPy and MATLAB already have
+    def test_compute_parameters(self):
+        """ This test tries to compute the parameters (Wn and order, e.g.)
+            of a filter. Because (I assume) SciPy and MATLAB already have
             those methods tested, this is more of a sanity check. """
 
         # Configure the filter
@@ -144,11 +144,37 @@ class TestAnalog(unittest.TestCase):
                       'passband_attenuation': 1,
                       'stopband_attenuation': 80}
         self.filter_under_test.configure_filter(parameters)
+
         self.filter_under_test.compute_parameters(target='passband')
         self.assertEqual(self.filter_under_test.filter_type, 'bandpass')
         self.assertEqual(self.filter_under_test.N, 7)
         self.assertAlmostEqual(self.filter_under_test.Wn[0], 6.07569169)
         self.assertAlmostEqual(self.filter_under_test.Wn[1], 12.99553026)
+
+        self.filter_under_test.compute_parameters(target='stopband')
+        self.assertEqual(self.filter_under_test.filter_type, 'bandpass')
+        self.assertEqual(self.filter_under_test.N, 7)
+        self.assertAlmostEqual(self.filter_under_test.Wn[0], 5.81782828643783)
+        self.assertAlmostEqual(self.filter_under_test.Wn[1], 13.5715307020618)
+
+        # Compute a band-stop filter
+
+        parameters = {'passband_frequency': [1, 7],
+                      'stopband_frequency': [2, 6],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        self.filter_under_test.configure_filter(parameters)
+        self.filter_under_test.compute_parameters(target='passband')
+        self.assertEqual(self.filter_under_test.filter_type, 'bandstop')
+        self.assertEqual(self.filter_under_test.N, 36)
+        self.assertAlmostEqual(self.filter_under_test.Wn[0], 10.89374879)
+        self.assertAlmostEqual(self.filter_under_test.Wn[1], 43.48740788)
+
+        self.filter_under_test.compute_parameters(target='stopband')
+        self.assertEqual(self.filter_under_test.N, 36)
+        self.assertAlmostEqual(self.filter_under_test.Wn[0], 10.920538677969954)
+        self.assertAlmostEqual(self.filter_under_test.Wn[1], 43.380726095525773)
+
 
 if __name__ == '__main__':
     unittest.main()

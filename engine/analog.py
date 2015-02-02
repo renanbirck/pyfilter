@@ -30,7 +30,8 @@ class AnalogFilter(Filter):
     Wn = None  # The filter's critical frequencies.
 
     # Internal only: passband and stopband frequency(ies) converted
-    # to rad/s.
+    # to rad/s. This is because the synthesis functions
+    # want them that way, but in practice we use Hz.
 
     Wp = None
     Ws = None
@@ -111,7 +112,7 @@ class AnalogFilter(Filter):
         if target not in ['passband', 'stopband']:
             raise ValueError("Target must be one of passband or stopband.")
 
-        if False:
+        if True: # Change here to be more verbose.
             print("Ws = ", self.Ws)
             print("Wp = ", self.Wp)
             print("Rp = ", self.passband_attenuation)
