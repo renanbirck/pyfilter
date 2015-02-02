@@ -96,9 +96,9 @@ class AnalogFilter(Filter):
             elif self.Wp == self.Ws:
                 self.filter_type = 'allpass'
 
-    def compute_order(self, target='stopband'):
-        """ This function computes the order of the filter
-            for the specific parameters.
+    def compute_parameters(self, target='stopband'):
+        """ This function computes the order and the -3 dB-frequency
+            of the filter for the specific parameters.
 
             Arguments:
 
@@ -111,10 +111,12 @@ class AnalogFilter(Filter):
         if target not in ['passband', 'stopband']:
             raise ValueError("Target must be one of passband or stopband.")
 
-        print("Wp = {}, Ws = {}, Rp = {}, Rs = {}".format(self.Wp,
-                                                          self.Ws,
-                                                          self.passband_attenuation,
-                                                          self.stopband_attenuation))
+        if False:
+            print("Ws = ", self.Ws)
+            print("Wp = ", self.Wp)
+            print("Rp = ", self.passband_attenuation)
+            print("Rs = ", self.stopband_attenuation)
+
         if self.filter_class == 'butterworth':
             if target == 'passband':
                 self.N, self.Wn = signal.buttord(self.Wp, self.Ws,
@@ -128,6 +130,6 @@ class AnalogFilter(Filter):
                                               analog=True)
         else:
             raise NotImplementedError(
-                "Filter family {} not implemented".format(self.filter_class))
+                "Filter family {} not yet implemented".format(self.filter_class))
         pass
 

@@ -89,18 +89,15 @@ class TestAnalog(unittest.TestCase):
         """ This test validates the transfer function calculation. """
         raise NotImplementedError
 
-    def test_synth_filter(self):
-        """ This test tries to synthesize a filter.
-            New tests could be added for different topologies. """
-        raise NotImplementedError
-
     def test_fail_to_synth_filter(self):
         """ This test tries to synthesize a filter with
             invalid/meaningless settings."""
         raise NotImplementedError
 
-    def test_compute_order(self):
-        """ This test tries to find the order of specific filters. """
+    def test_synth_filter(self):
+        """ This test tries to synthesize a filter with the given parameters.
+            Because (I assume) SciPy and MATLAB already have
+            those methods tested, this is more of a sanity check. """
 
         # Configure the filter
 
@@ -114,14 +111,44 @@ class TestAnalog(unittest.TestCase):
         # the MATLAB command line for this would be
         # [N, Wn] = buttord(Wp, Ws, Rp, Rs, 's')
 
+        # Compute a low-pass filter
         self.filter_under_test.configure_filter(parameters)
-        self.filter_under_test.compute_order(target='passband')
+        self.filter_under_test.compute_parameters(target='passband')
         self.assertEqual(self.filter_under_test.N, 5)
         self.assertEqual(self.filter_under_test.Wn, 71.92210683023319)
 
-        self.filter_under_test.compute_order(target='stopband')
+        self.filter_under_test.compute_parameters(target='stopband')
         self.assertEqual(self.filter_under_test.N, 5)
         self.assertAlmostEqual(self.filter_under_test.Wn, 99.5817763027)
+
+        # Compute a high-pass filter
+
+        parameters = {'passband_frequency': 100,
+                      'stopband_frequency': 10,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+
+        self.filter_under_test.configure_filter(parameters)
+
+        self.filter_under_test.compute_parameters(target='passband')
+        self.assertEqual(self.filter_under_test.N, 5)
+        self.assertAlmostEqual(self.filter_under_test.Wn, 548.90518846372663)
+
+        self.filter_under_test.compute_parameters(target='stopband')
+        self.assertEqual(self.filter_under_test.N, 5)
+        self.assertAlmostEqual(self.filter_under_test.Wn, 396.442191233058)
+
+        # Compute a bandpass filter
+        parameters = {'passband_frequency': [1, 2],
+                      'stopband_frequency': [0.1, 5],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        self.filter_under_test.configure_filter(parameters)
+        self.filter_under_test.compute_parameters(target='passband')
+        self.assertEqual(self.filter_under_test.filter_type, 'bandpass')
+        self.assertEqual(self.filter_under_test.N, 7)
+        self.assertAlmostEqual(self.filter_under_test.Wn[0], 6.07569169)
+        self.assertAlmostEqual(self.filter_under_test.Wn[1], 12.99553026)
 
 if __name__ == '__main__':
     unittest.main()
