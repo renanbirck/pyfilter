@@ -28,6 +28,7 @@ class TestAnalog(unittest.TestCase):
                           'lowpass'])
 
     def test_get_classes(self):
+        """ Finds the classes of supported filters. """
         self.assertEqual(self.filter_under_test.classes,
                          ['butterworth', 'chebyshev',
                           'elliptical', 'bessel'])
@@ -172,8 +173,10 @@ class TestAnalog(unittest.TestCase):
 
         self.filter_under_test.compute_parameters(target='stopband')
         self.assertEqual(self.filter_under_test.N, 36)
-        self.assertAlmostEqual(self.filter_under_test.Wn[0], 10.920538677969954)
-        self.assertAlmostEqual(self.filter_under_test.Wn[1], 43.380726095525773)
+        self.assertAlmostEqual(self.filter_under_test.Wn[0],
+                               10.920538677969954)
+        self.assertAlmostEqual(self.filter_under_test.Wn[1],
+                               43.380726095525773)
 
 
 if __name__ == '__main__':
