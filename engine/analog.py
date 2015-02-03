@@ -25,9 +25,13 @@ class AnalogFilter(Filter):
     passband_attenuation = None
     stopband_frequency = None
     stopband_attenuation = None
+    filter_target = None
 
     N = None  # The filter's order
     Wn = None  # The filter's critical frequencies.
+
+    B = None # The filter's numerator
+    A = None # The filter's denominator
 
     # Internal only: passband and stopband frequency(ies) converted
     # to rad/s. This is because the synthesis functions
@@ -36,13 +40,18 @@ class AnalogFilter(Filter):
     Wp = None
     Ws = None
 
-    def __init__(self, **kwargs):
+    def __init__(self, parameters=None, filter_class=None):
 
-        # Build the dispatcher table for computation of
-        # filter parameters.
+        if parameters is not None:
+            self.configure_filter(parameters)
+        if filter_class is not None:
+            if filter_class not in self.classes:
+                raise ValueError("Invalid filter class.")
+            else:
+                self.filter_class = filter_class
 
-        # Load the initial conditions given in the kwargs.
-        pass
+        if parameters is not None and filter_class is not None:
+            self.compute_parameters()
 
     def configure_filter(self, settings):
         """ This configures the filter and
@@ -111,6 +120,8 @@ class AnalogFilter(Filter):
 
         if target not in ['passband', 'stopband']:
             raise ValueError("Target must be one of passband or stopband.")
+        else:
+            self.filter_target = target
 
         if True: # Change here to be more verbose.
             print("Ws = ", self.Ws)
@@ -134,3 +145,11 @@ class AnalogFilter(Filter):
                 "Filter family {} not yet implemented".format(self.filter_class))
         pass
 
+    def design(self):
+        if self.filter_class == 'butterworth':
+            self.B, self.A = signal.butter(self.N, self.Wn,
+                                           self.filter_type, analog=True,
+                                           output='ba')
+        else:
+            raise NotImplementedError("Computation of {} \
+                                      not implemented yet.".format(self.filter_class))
