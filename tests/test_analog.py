@@ -167,9 +167,27 @@ class TestAnalog(unittest.TestCase):
         self.assertEqual(self.filter_under_test.N, 5)
         self.assertAlmostEqual(self.filter_under_test.Wn, 548.90518846372663)
 
+        self.filter_under_test.design()
+        self.assertAlmostEqual(self.filter_under_test.B[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 1776.29450307095)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 1577611.08082004)
+        self.assertAlmostEqual(self.filter_under_test.A[3], 865958907.63998842)
+        self.assertAlmostEqual(self.filter_under_test.A[4], 293769686363.14844)
+        self.assertAlmostEqual(self.filter_under_test.A[5], 49829517234887.664)
+
         self.filter_under_test.compute_parameters(target='stopband')
         self.assertEqual(self.filter_under_test.N, 5)
         self.assertAlmostEqual(self.filter_under_test.Wn, 396.442191233058)
+
+        self.filter_under_test.design()
+        self.assertAlmostEqual(self.filter_under_test.B[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 1282.91387997915)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 822934.011721574)
+        self.assertAlmostEqual(self.filter_under_test.A[3], 326245762.84711146)
+        self.assertAlmostEqual(self.filter_under_test.A[4], 79935023616.862701)
+        self.assertAlmostEqual(self.filter_under_test.A[5], 9792629864165.8633)
 
         # Compute a bandpass filter
         parameters = {'passband_frequency': [1, 2],
