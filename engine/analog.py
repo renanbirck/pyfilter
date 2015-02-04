@@ -156,11 +156,16 @@ class AnalogFilter(Filter):
                 "Filter family {} not yet implemented".format(self.filter_class))
         pass
 
-    def design(self):
+    def design(self, ripple=None):
         if self.filter_class == 'butterworth':
             self.B, self.A = signal.butter(self.N, self.Wn,
                                            self.filter_type, analog=True,
                                            output='ba')
+        elif self.filter_class == 'chebyshev_1':
+            if ripple is None or ripple <= 0:
+                raise ValueError("Must give a ripple that is > 0")
+            self.B, self.A = signal.cheby1(self.N, ripple, self.Wn,
+                                           self.filter_type, analog=True,
+                                           output='ba')
         else:
-            raise NotImplementedError("Computation of {} \
-                                      not implemented yet.".format(self.filter_class))
+            raise NotImplementedError("Computation of {} not implemented yet.".format(self.filter_class))

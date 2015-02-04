@@ -3,6 +3,7 @@
 # pyfilter: a Python program for filter synthesis and analysis.
 # (c) 2015 Renan Birck <renan.ee.ufsm@gmail.com>
 
+""" This module is a testbench for the AnalogFilter class. """
 import unittest
 import sys
 
@@ -126,6 +127,14 @@ class TestAnalog(unittest.TestCase):
         self.assertEqual(self.filter_under_test.N, 4)
         self.assertAlmostEqual(self.filter_under_test.Wn, 62.8318530717959)
 
+        self.filter_under_test.design(ripple=1)
+        self.assertAlmostEqual(self.filter_under_test.B[0], 3828618.98570601)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 59.8669045905151)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 5739.86489306066)
+        self.assertAlmostEqual(self.filter_under_test.A[3], 184206.894005592)
+        self.assertAlmostEqual(self.filter_under_test.A[4], 4295781.15645301)
+
     def test_compute_cheb1_hp_filter(self):
         """ This test tries to compute the parameters of a Chebyshev type1
             high-pass filter. """
@@ -143,6 +152,14 @@ class TestAnalog(unittest.TestCase):
         self.assertEqual(self.filter_under_test.N, 4)
         self.assertAlmostEqual(self.filter_under_test.Wn, 628.318530717959)
 
+        self.filter_under_test.design(ripple=1)
+        self.assertAlmostEqual(self.filter_under_test.B[0], 0.891250938133746)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 1692.86945081694)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 2082471.15587304)
+        self.assertAlmostEqual(self.filter_under_test.A[3], 857479735.09746361)
+        self.assertAlmostEqual(self.filter_under_test.A[4], 565453371958.94922)
+
     def test_compute_cheb1_bp_filter(self):
         """ This test tries to compute the parameters of a Chebyshev type1
             band-pass filter. """
@@ -159,6 +176,20 @@ class TestAnalog(unittest.TestCase):
         self.assertEqual(self.filter_under_test.N, 5)
         self.assertAlmostEqual(self.filter_under_test.Wn[0], 6.28318530717959)
         self.assertAlmostEqual(self.filter_under_test.Wn[1], 12.5663706143592)
+
+        self.filter_under_test.design(ripple=1)
+        self.assertAlmostEqual(self.filter_under_test.B[0], 1202.79612788877)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 5.88621448427819)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 461.455958526484)
+        self.assertAlmostEqual(self.filter_under_test.A[3], 2100.72662205608)
+        self.assertAlmostEqual(self.filter_under_test.A[4], 79039.1859533964)
+        self.assertAlmostEqual(self.filter_under_test.A[5], 259544.784834649)
+        self.assertAlmostEqual(self.filter_under_test.A[6], 6240683.98035329)
+        self.assertAlmostEqual(self.filter_under_test.A[7], 13096311.7289864)
+        self.assertAlmostEqual(self.filter_under_test.A[8], 227143051.1812073)
+        self.assertAlmostEqual(self.filter_under_test.A[9], 228767861.56059638)
+        self.assertAlmostEqual(self.filter_under_test.A[10], 3068659219.6962843)
 
     def test_compute_cheb1_bs_filter(self):
         """ This test tries to compute the parameters of a Chebyshev type1
@@ -179,6 +210,8 @@ class TestAnalog(unittest.TestCase):
                                43.982292294453401)
 
     def test_compute_cheb2_lp_filter(self):
+        """ This test tries to compute the parameters of a Chebyshev type2
+            low-pass filter. """
         parameters = {'passband_frequency': 10,
                       'stopband_frequency': 100,
                       'passband_attenuation': 1,
@@ -233,8 +266,10 @@ class TestAnalog(unittest.TestCase):
         self.filter_under_test.configure_filter(parameters)
         self.filter_under_test.compute_parameters(target='passband')
         self.assertEqual(self.filter_under_test.N, 14)
-        self.assertAlmostEqual(self.filter_under_test.Wn[0], 12.460281968697171)
-        self.assertAlmostEqual(self.filter_under_test.Wn[1], 38.020080344889088)
+        self.assertAlmostEqual(self.filter_under_test.Wn[0],
+                               12.460281968697171)
+        self.assertAlmostEqual(self.filter_under_test.Wn[1],
+                               38.020080344889088)
 
     def test_compute_butter_lp_filter(self):
         """ This test tries to compute the parameters of a Butterworth
@@ -341,6 +376,7 @@ class TestAnalog(unittest.TestCase):
         self.assertEqual(self.filter_under_test.N, 7)
         self.assertAlmostEqual(self.filter_under_test.Wn[0], 5.81782828643783)
         self.assertAlmostEqual(self.filter_under_test.Wn[1], 13.5715307020618)
+        raise NotImplementedError("Bandpass test not implemented")
 
     def test_compute_butter_bs_filter(self):
         """ This test tries to compute the parameters of a Butterworth
@@ -365,6 +401,7 @@ class TestAnalog(unittest.TestCase):
                                10.920538677969954)
         self.assertAlmostEqual(self.filter_under_test.Wn[1],
                                43.380726095525773)
+        raise NotImplementedError("Bandstop test not implemented")
 
 if __name__ == '__main__':
     unittest.main()
