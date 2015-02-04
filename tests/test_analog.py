@@ -39,6 +39,7 @@ class TestAnalog(unittest.TestCase):
                           'elliptical', 'bessel'])
 
     def test_pass_initial_arguments(self):
+        """ Tests passing parameters as arguments. """
         parameters = {'passband_frequency': 10,
                       'stopband_frequency': 100,
                       'passband_attenuation': 1,
@@ -235,7 +236,7 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.Wn[0], 12.460281968697171)
         self.assertAlmostEqual(self.filter_under_test.Wn[1], 38.020080344889088)
 
-    def test_compute_butterworth_lp_filter(self):
+    def test_compute_butter_lp_filter(self):
         """ This test tries to compute the parameters of a Butterworth
             low-pass filter. """
 
@@ -275,7 +276,7 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.A[4], 318227063.34817797)
         self.assertAlmostEqual(self.filter_under_test.A[5], 9792629962.0921497)
 
-    def test_compute_butterworth_hp_filter(self):
+    def test_compute_butter_hp_filter(self):
         """ This test tries to compute the parameters of a Butterworth
             high-pass filter. """
 
@@ -315,10 +316,9 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.A[4], 79935023616.862701)
         self.assertAlmostEqual(self.filter_under_test.A[5], 9792629864165.8633)
 
-    def test_compute_butterworth_bp_filter(self):
+    def test_compute_butter_bp_filter(self):
         """ This test tries to compute the parameters of a Butterworth
             band-pass filter. """
-
 
         # Compute a bandpass filter
         parameters = {'passband_frequency': [1, 2],
@@ -342,7 +342,7 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.Wn[0], 5.81782828643783)
         self.assertAlmostEqual(self.filter_under_test.Wn[1], 13.5715307020618)
 
-    def test_compute_butterworth_bs_filter(self):
+    def test_compute_butter_bs_filter(self):
         """ This test tries to compute the parameters of a Butterworth
             band-stop filter. """
 
