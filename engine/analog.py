@@ -146,6 +146,11 @@ class AnalogFilter(Filter):
                                               self.passband_attenuation,
                                               self.stopband_attenuation,
                                               analog=True)
+        elif self.filter_class == 'chebyshev_2':
+            self.N, self.Wn = signal.cheb2ord(self.Wp, self.Ws,
+                                              self.passband_attenuation,
+                                              self.stopband_attenuation,
+                                              analog=True)
         else:
             raise NotImplementedError(
                 "Filter family {} not yet implemented".format(self.filter_class))

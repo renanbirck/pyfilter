@@ -177,6 +177,64 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.Wn[1],
                                43.982292294453401)
 
+    def test_compute_cheb2_lp_filter(self):
+        parameters = {'passband_frequency': 10,
+                      'stopband_frequency': 100,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        self.filter_under_test.filter_class = 'chebyshev_2'
+        self.filter_under_test.configure_filter(parameters)
+        self.filter_under_test.compute_parameters(target='passband')
+
+        self.assertEqual(self.filter_under_test.N, 4)
+        self.assertAlmostEqual(self.filter_under_test.Wn, 444.575606682405)
+
+    def test_compute_cheb2_hp_filter(self):
+        """ This test tries to compute the parameters of a Chebyshev type2
+            high-pass filter. """
+        parameters = {'passband_frequency': 100,
+                      'stopband_frequency': 10,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        self.filter_under_test.filter_class = 'chebyshev_2'
+        self.filter_under_test.configure_filter(parameters)
+        self.filter_under_test.compute_parameters(target='passband')
+
+        self.assertEqual(self.filter_under_test.N, 4)
+        self.assertAlmostEqual(self.filter_under_test.Wn, 88.8002333258017)
+
+    def test_compute_cheb2_bp_filter(self):
+        """ This test tries to compute the parameters of a Chebyshev type2
+            band-pass filter. """
+
+        # Band-pass filter calculation
+        parameters = {'passband_frequency': [1, 2],
+                      'stopband_frequency': [0.1, 5],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+
+        self.filter_under_test.filter_class = 'chebyshev_2'
+        self.filter_under_test.configure_filter(parameters)
+        self.filter_under_test.compute_parameters(target='passband')
+        self.assertEqual(self.filter_under_test.N, 5)
+        self.assertAlmostEqual(self.filter_under_test.Wn[0], 2.70854152973696)
+        self.assertAlmostEqual(self.filter_under_test.Wn[1], 29.1510520853571)
+
+    def test_compute_cheb2_bs_filter(self):
+        """ This test tries to compute the parameters of a Chebyshev type2
+            band-stop filter. """
+        parameters = {'passband_frequency': [1, 7],
+                      'stopband_frequency': [2, 6],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+
+        self.filter_under_test.filter_class = 'chebyshev_2'
+        self.filter_under_test.configure_filter(parameters)
+        self.filter_under_test.compute_parameters(target='passband')
+        self.assertEqual(self.filter_under_test.N, 14)
+        self.assertAlmostEqual(self.filter_under_test.Wn[0], 12.460281968697171)
+        self.assertAlmostEqual(self.filter_under_test.Wn[1], 38.020080344889088)
+
     def test_compute_butterworth_filter(self):
         """ This test tries to compute the parameters (Wn and order, e.g.)
             of a filter. Because (I assume) SciPy and MATLAB already have
