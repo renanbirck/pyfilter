@@ -235,10 +235,9 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.Wn[0], 12.460281968697171)
         self.assertAlmostEqual(self.filter_under_test.Wn[1], 38.020080344889088)
 
-    def test_compute_butterworth_filter(self):
-        """ This test tries to compute the parameters (Wn and order, e.g.)
-            of a filter. Because (I assume) SciPy and MATLAB already have
-            those methods tested, this is more of a sanity check. """
+    def test_compute_butterworth_lp_filter(self):
+        """ This test tries to compute the parameters of a Butterworth
+            low-pass filter. """
 
         # Configure the filter
 
@@ -249,10 +248,6 @@ class TestAnalog(unittest.TestCase):
 
         self.filter_under_test.filter_class = 'butterworth'
 
-        # the MATLAB command line for this would be
-        # [N, Wn] = buttord(Wp, Ws, Rp, Rs, 's')
-
-        # Compute a low-pass filter
         self.filter_under_test.configure_filter(parameters)
         self.filter_under_test.compute_parameters(target='passband')
         self.assertEqual(self.filter_under_test.N, 5)
@@ -280,6 +275,10 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.A[4], 318227063.34817797)
         self.assertAlmostEqual(self.filter_under_test.A[5], 9792629962.0921497)
 
+    def test_compute_butterworth_hp_filter(self):
+        """ This test tries to compute the parameters of a Butterworth
+            high-pass filter. """
+
         # Compute a high-pass filter
 
         parameters = {'passband_frequency': 100,
@@ -287,6 +286,7 @@ class TestAnalog(unittest.TestCase):
                       'passband_attenuation': 1,
                       'stopband_attenuation': 80}
 
+        self.filter_under_test.filter_class = 'butterworth'
         self.filter_under_test.configure_filter(parameters)
 
         self.filter_under_test.compute_parameters(target='passband')
@@ -315,6 +315,11 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.A[4], 79935023616.862701)
         self.assertAlmostEqual(self.filter_under_test.A[5], 9792629864165.8633)
 
+    def test_compute_butterworth_bp_filter(self):
+        """ This test tries to compute the parameters of a Butterworth
+            band-pass filter. """
+
+
         # Compute a bandpass filter
         parameters = {'passband_frequency': [1, 2],
                       'stopband_frequency': [0.1, 5],
@@ -322,6 +327,7 @@ class TestAnalog(unittest.TestCase):
                       'stopband_attenuation': 80}
         self.filter_under_test.configure_filter(parameters)
 
+        self.filter_under_test.filter_class = 'butterworth'
         self.filter_under_test.compute_parameters(target='passband')
         self.assertEqual(self.filter_under_test.filter_type, 'bandpass')
         self.assertEqual(self.filter_under_test.N, 7)
@@ -336,12 +342,16 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.Wn[0], 5.81782828643783)
         self.assertAlmostEqual(self.filter_under_test.Wn[1], 13.5715307020618)
 
-        # Compute a band-stop filter
+    def test_compute_butterworth_bs_filter(self):
+        """ This test tries to compute the parameters of a Butterworth
+            band-stop filter. """
 
         parameters = {'passband_frequency': [1, 7],
                       'stopband_frequency': [2, 6],
                       'passband_attenuation': 1,
                       'stopband_attenuation': 80}
+
+        self.filter_under_test.filter_class = 'butterworth'
         self.filter_under_test.configure_filter(parameters)
         self.filter_under_test.compute_parameters(target='passband')
         self.assertEqual(self.filter_under_test.filter_type, 'bandstop')
