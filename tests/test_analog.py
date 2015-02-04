@@ -109,9 +109,9 @@ class TestAnalog(unittest.TestCase):
         """ This test validates the transfer function calculation. """
         raise NotImplementedError
 
-    def test_compute_cheb1_filter(self):
+    def test_compute_cheb1_lp_filter(self):
         """ This test tries to compute the parameters of a Chebyshev type1
-            filter. """
+            low-pass filter. """
 
         # Low-pass filter calculation
         parameters = {'passband_frequency': 10,
@@ -124,6 +124,58 @@ class TestAnalog(unittest.TestCase):
 
         self.assertEqual(self.filter_under_test.N, 4)
         self.assertAlmostEqual(self.filter_under_test.Wn, 62.8318530717959)
+
+    def test_compute_cheb1_hp_filter(self):
+        """ This test tries to compute the parameters of a Chebyshev type1
+            high-pass filter. """
+
+       # High-pass filter calculation
+        parameters = {'passband_frequency': 100,
+                      'stopband_frequency': 10,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+
+        self.filter_under_test.filter_class = 'chebyshev_1'
+        self.filter_under_test.configure_filter(parameters)
+        self.filter_under_test.compute_parameters(target='passband')
+
+        self.assertEqual(self.filter_under_test.N, 4)
+        self.assertAlmostEqual(self.filter_under_test.Wn, 628.318530717959)
+
+    def test_compute_cheb1_bp_filter(self):
+        """ This test tries to compute the parameters of a Chebyshev type1
+            band-pass filter. """
+
+        # Band-pass filter calculation
+        parameters = {'passband_frequency': [1, 2],
+                      'stopband_frequency': [0.1, 5],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+
+        self.filter_under_test.filter_class = 'chebyshev_1'
+        self.filter_under_test.configure_filter(parameters)
+        self.filter_under_test.compute_parameters(target='passband')
+        self.assertEqual(self.filter_under_test.N, 5)
+        self.assertAlmostEqual(self.filter_under_test.Wn[0], 6.28318530717959)
+        self.assertAlmostEqual(self.filter_under_test.Wn[1], 12.5663706143592)
+
+    def test_compute_cheb1_bs_filter(self):
+        """ This test tries to compute the parameters of a Chebyshev type1
+            band-stop filter. """
+
+        # Band-stop filter calculation
+        parameters = {'passband_frequency': [1, 7],
+                      'stopband_frequency': [2, 6],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        self.filter_under_test.filter_class = 'chebyshev_1'
+        self.filter_under_test.configure_filter(parameters)
+        self.filter_under_test.compute_parameters(target='passband')
+        self.assertEqual(self.filter_under_test.N, 14)
+        self.assertAlmostEqual(self.filter_under_test.Wn[0],
+                               10.771173962426296)
+        self.assertAlmostEqual(self.filter_under_test.Wn[1],
+                               43.982292294453401)
 
     def test_compute_butterworth_filter(self):
         """ This test tries to compute the parameters (Wn and order, e.g.)
