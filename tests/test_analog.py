@@ -35,7 +35,7 @@ class TestAnalog(unittest.TestCase):
     def test_get_classes(self):
         """ Finds the classes of supported filters. """
         self.assertEqual(self.filter_under_test.classes,
-                         ['butterworth', 'chebyshev',
+                         ['butterworth', 'chebyshev_1', 'chebyshev_2',
                           'elliptical', 'bessel'])
 
     def test_pass_initial_arguments(self):
@@ -109,7 +109,23 @@ class TestAnalog(unittest.TestCase):
         """ This test validates the transfer function calculation. """
         raise NotImplementedError
 
-    def test_compute_parameters(self):
+    def test_compute_cheb1_filter(self):
+        """ This test tries to compute the parameters of a Chebyshev type1
+            filter. """
+
+        # Low-pass filter calculation
+        parameters = {'passband_frequency': 10,
+                      'stopband_frequency': 100,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        self.filter_under_test.filter_class = 'chebyshev_1'
+        self.filter_under_test.configure_filter(parameters)
+        self.filter_under_test.compute_parameters(target='passband')
+
+        self.assertEqual(self.filter_under_test.N, 4)
+        self.assertAlmostEqual(self.filter_under_test.Wn, 62.8318530717959)
+
+    def test_compute_butterworth_filter(self):
         """ This test tries to compute the parameters (Wn and order, e.g.)
             of a filter. Because (I assume) SciPy and MATLAB already have
             those methods tested, this is more of a sanity check. """
@@ -201,6 +217,8 @@ class TestAnalog(unittest.TestCase):
         self.assertEqual(self.filter_under_test.N, 7)
         self.assertAlmostEqual(self.filter_under_test.Wn[0], 6.07569169)
         self.assertAlmostEqual(self.filter_under_test.Wn[1], 12.99553026)
+
+        self.filter_under_test.design()
 
         self.filter_under_test.compute_parameters(target='stopband')
         self.assertEqual(self.filter_under_test.filter_type, 'bandpass')

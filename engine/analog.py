@@ -17,7 +17,8 @@ class AnalogFilter(Filter):
     filter_parameters = None
 
     types = ['allpass', 'bandpass', 'bandstop', 'highpass', 'lowpass']
-    classes = ['butterworth', 'chebyshev', 'elliptical', 'bessel']
+    classes = ['butterworth', 'chebyshev_1', 'chebyshev_2',
+               'elliptical', 'bessel']
 
     class_dispatcher = None
 
@@ -137,6 +138,11 @@ class AnalogFilter(Filter):
                                                  analog=True)
             elif target == 'stopband':
                 self.N, self.Wn = custom.custom_buttord(self.Wp, self.Ws,
+                                              self.passband_attenuation,
+                                              self.stopband_attenuation,
+                                              analog=True)
+        elif self.filter_class == 'chebyshev_1':
+            self.N, self.Wn = signal.cheb1ord(self.Wp, self.Ws,
                                               self.passband_attenuation,
                                               self.stopband_attenuation,
                                               analog=True)
