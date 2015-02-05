@@ -189,7 +189,8 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.A[7], 13096311.7289864)
         self.assertAlmostEqual(self.filter_under_test.A[8], 227143051.1812073)
         self.assertAlmostEqual(self.filter_under_test.A[9], 228767861.56059638)
-        self.assertAlmostEqual(self.filter_under_test.A[10], 3068659219.6962843)
+        self.assertAlmostEqual(self.filter_under_test.A[10],
+                               3068659219.6962843)
 
     def test_compute_cheb1_bs_filter(self):
         """ This test tries to compute the parameters of a Chebyshev type1
@@ -215,16 +216,26 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.B[4], 18202171.142328978)
         self.assertAlmostEqual(self.filter_under_test.B[6], 34492453326.155769)
         self.assertAlmostEqual(self.filter_under_test.B[8], 44936338221315.367)
-        self.assertAlmostEqual(self.filter_under_test.B[10], 42576364561914056.0)
-        self.assertAlmostEqual(self.filter_under_test.B[12], 3.0255249276953297e+19)
-        self.assertAlmostEqual(self.filter_under_test.B[14], 1.6380742485482297e+22)
-        self.assertAlmostEqual(self.filter_under_test.B[16], 6.7901995359355942e+24)
-        self.assertAlmostEqual(self.filter_under_test.B[18], 2.1445302571983762e+27)
-        self.assertAlmostEqual(self.filter_under_test.B[20], 5.079758701897002e+29)
-        self.assertAlmostEqual(self.filter_under_test.B[22], 8.7508711592342312e+31)
-        self.assertAlmostEqual(self.filter_under_test.B[24], 1.0364114418785841e+34)
-        self.assertAlmostEqual(self.filter_under_test.B[26], 7.5537001784783249e+35)
-        self.assertAlmostEqual(self.filter_under_test.B[28], 2.5560692027246954e+37)
+        self.assertAlmostEqual(self.filter_under_test.B[10],
+                               42576364561914056.0)
+        self.assertAlmostEqual(self.filter_under_test.B[12],
+                               3.0255249276953297e+19)
+        self.assertAlmostEqual(self.filter_under_test.B[14],
+                               1.6380742485482297e+22)
+        self.assertAlmostEqual(self.filter_under_test.B[16],
+                               6.7901995359355942e+24)
+        self.assertAlmostEqual(self.filter_under_test.B[18],
+                               2.1445302571983762e+27)
+        self.assertAlmostEqual(self.filter_under_test.B[20],
+                               5.079758701897002e+29)
+        self.assertAlmostEqual(self.filter_under_test.B[22],
+                               8.7508711592342312e+31)
+        self.assertAlmostEqual(self.filter_under_test.B[24],
+                               1.0364114418785841e+34)
+        self.assertAlmostEqual(self.filter_under_test.B[26],
+                               7.5537001784783249e+35)
+        self.assertAlmostEqual(self.filter_under_test.B[28],
+                               2.5560692027246954e+37)
 
     def test_compute_cheb2_lp_filter(self):
         """ This test tries to compute the parameters of a Chebyshev type2
@@ -388,12 +399,57 @@ class TestAnalog(unittest.TestCase):
 
         self.filter_under_test.design()
 
+        self.assertAlmostEqual(self.filter_under_test.B[0], 759751.80527519668)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 31.0974722556149)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 1036.224236482155)
+        self.assertAlmostEqual(self.filter_under_test.A[3], 19567.149028043725)
+        self.assertAlmostEqual(self.filter_under_test.A[4], 355263.81277219893)
+        self.assertAlmostEqual(self.filter_under_test.A[5], 4595251.7849443173)
+        self.assertAlmostEqual(self.filter_under_test.A[6], 55790492.859455325)
+        self.assertAlmostEqual(self.filter_under_test.A[7], 513056794.27105772)
+        self.assertAlmostEqual(self.filter_under_test.A[8], 4405040750.9169989)
+        self.assertAlmostEqual(self.filter_under_test.A[9], 28647635164.403412)
+        self.assertAlmostEqual(self.filter_under_test.A[10],
+                               174871956719.38678)
+        self.assertAlmostEqual(self.filter_under_test.A[11],
+                               760477697837.74438)
+        self.assertAlmostEqual(self.filter_under_test.A[12],
+                               3179819056953.7124)
+        self.assertAlmostEqual(self.filter_under_test.A[13],
+                               7534656938190.1572)
+        self.assertAlmostEqual(self.filter_under_test.A[14],
+                               19130579538158.508)
+
         self.filter_under_test.compute_parameters(target='stopband')
         self.assertEqual(self.filter_under_test.filter_type, 'bandpass')
         self.assertEqual(self.filter_under_test.N, 7)
         self.assertAlmostEqual(self.filter_under_test.Wn[0], 5.81782828643783)
         self.assertAlmostEqual(self.filter_under_test.Wn[1], 13.5715307020618)
-        raise NotImplementedError("Bandpass test not implemented")
+
+        self.filter_under_test.design()
+
+        self.assertAlmostEqual(self.filter_under_test.B[0], 1684860.320277143)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 34.844822362404)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 1159.77866919475)
+        self.assertAlmostEqual(self.filter_under_test.A[3], 23309.4127006002)
+        self.assertAlmostEqual(self.filter_under_test.A[4], 423324.337255822)
+        self.assertAlmostEqual(self.filter_under_test.A[5], 5689681.03696918)
+        self.assertAlmostEqual(self.filter_under_test.A[6], 68543839.369195938)
+        self.assertAlmostEqual(self.filter_under_test.A[7], 643836464.42606068)
+        self.assertAlmostEqual(self.filter_under_test.A[8], 5412004629.6462231)
+        self.assertAlmostEqual(self.filter_under_test.A[9], 35470506117.412323)
+        self.assertAlmostEqual(self.filter_under_test.A[10],
+                               208373474926.16937)
+        self.assertAlmostEqual(self.filter_under_test.A[11],
+                               905920861700.23743)
+        self.assertAlmostEqual(self.filter_under_test.A[12],
+                               3558965506031.5586)
+        self.assertAlmostEqual(self.filter_under_test.A[13],
+                               8442608469993.46)
+        self.assertAlmostEqual(self.filter_under_test.A[14],
+                               19130579538158.492)
 
     def test_compute_butter_bs_filter(self):
         """ This test tries to compute the parameters of a Butterworth
