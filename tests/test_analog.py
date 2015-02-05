@@ -209,6 +209,23 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.Wn[1],
                                43.982292294453401)
 
+        self.filter_under_test.design(ripple=1)
+        self.assertAlmostEqual(self.filter_under_test.B[0], 0.891250938133753)
+        self.assertAlmostEqual(self.filter_under_test.B[2], 5911.10857094055)
+        self.assertAlmostEqual(self.filter_under_test.B[4], 18202171.142328978)
+        self.assertAlmostEqual(self.filter_under_test.B[6], 34492453326.155769)
+        self.assertAlmostEqual(self.filter_under_test.B[8], 44936338221315.367)
+        self.assertAlmostEqual(self.filter_under_test.B[10], 42576364561914056.0)
+        self.assertAlmostEqual(self.filter_under_test.B[12], 3.0255249276953297e+19)
+        self.assertAlmostEqual(self.filter_under_test.B[14], 1.6380742485482297e+22)
+        self.assertAlmostEqual(self.filter_under_test.B[16], 6.7901995359355942e+24)
+        self.assertAlmostEqual(self.filter_under_test.B[18], 2.1445302571983762e+27)
+        self.assertAlmostEqual(self.filter_under_test.B[20], 5.079758701897002e+29)
+        self.assertAlmostEqual(self.filter_under_test.B[22], 8.7508711592342312e+31)
+        self.assertAlmostEqual(self.filter_under_test.B[24], 1.0364114418785841e+34)
+        self.assertAlmostEqual(self.filter_under_test.B[26], 7.5537001784783249e+35)
+        self.assertAlmostEqual(self.filter_under_test.B[28], 2.5560692027246954e+37)
+
     def test_compute_cheb2_lp_filter(self):
         """ This test tries to compute the parameters of a Chebyshev type2
             low-pass filter. """
