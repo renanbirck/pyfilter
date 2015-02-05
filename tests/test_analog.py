@@ -455,25 +455,26 @@ class TestAnalog(unittest.TestCase):
         """ This test tries to compute the parameters of a Butterworth
             band-stop filter. """
 
-        parameters = {'passband_frequency': [1, 7],
-                      'stopband_frequency': [2, 6],
+        parameters = {'passband_frequency': [1, 25],
+                      'stopband_frequency': [2, 15],
                       'passband_attenuation': 1,
-                      'stopband_attenuation': 80}
+                      'stopband_attenuation': 40}
 
         self.filter_under_test.filter_class = 'butterworth'
         self.filter_under_test.configure_filter(parameters)
         self.filter_under_test.compute_parameters(target='passband')
         self.assertEqual(self.filter_under_test.filter_type, 'bandstop')
-        self.assertEqual(self.filter_under_test.N, 36)
-        self.assertAlmostEqual(self.filter_under_test.Wn[0], 10.89374879)
-        self.assertAlmostEqual(self.filter_under_test.Wn[1], 43.48740788)
+        self.assertEqual(self.filter_under_test.N, 9)
+        self.assertAlmostEqual(self.filter_under_test.Wn[0], 8.0681551)
+        self.assertAlmostEqual(self.filter_under_test.Wn[1], 146.79336908)
+        self.filter_under_test.design()
 
         self.filter_under_test.compute_parameters(target='stopband')
-        self.assertEqual(self.filter_under_test.N, 36)
+        self.assertEqual(self.filter_under_test.N, 9)
         self.assertAlmostEqual(self.filter_under_test.Wn[0],
-                               10.920538677969954)
+                               8.19898674504612, places=4)
         self.assertAlmostEqual(self.filter_under_test.Wn[1],
-                               43.380726095525773)
+                               144.451038642691, places=4)
         raise NotImplementedError("Bandstop test not implemented")
 
 if __name__ == '__main__':
