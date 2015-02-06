@@ -469,13 +469,53 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.Wn[1], 146.79336908)
         self.filter_under_test.design()
 
+        target_B_coefs = [1, 0, 10659.165019231212, 0, 50496799.514312126,
+                          0, 139547260472.68924, 0, 247909546226676.62,
+                          0, 2.9361208478586816e+17, 0, 2.3182664173133981e+20,
+                          0, 1.176704014318369e+23, 0, 3.484078407614217e+25,
+                          0, 4.5848600847778207e+27]
+        target_A_coefs = [1, 798.886667535808, 329769.118807736, 90767049.233665258,
+                          18246055317.574032, 2779764493559.9541, 323737622832967.31,
+                          28439472756901696.0, 1.8160086510982392e+18,
+                          7.8893059749655937e+19, 2.1507928764897341e+21,
+                          3.9891732058277967e+22, 5.3781783783668304e+23,
+                          5.4692869382179803e+24, 4.2517955086597104e+25,
+                          2.5050262147266555e+26, 1.0778906831551873e+27,
+                          3.092648654056598e+27, 4.5848600847778174e+27]
+
+        for pos, B in enumerate(target_B_coefs):
+            self.assertAlmostEqual(self.filter_under_test.B[pos], B, places=4)
+            self.assertAlmostEqual(self.filter_under_test.A[pos], target_A_coefs[pos], places=4)
+
         self.filter_under_test.compute_parameters(target='stopband')
         self.assertEqual(self.filter_under_test.N, 9)
         self.assertAlmostEqual(self.filter_under_test.Wn[0],
                                8.19898674504612, places=4)
         self.assertAlmostEqual(self.filter_under_test.Wn[1],
                                144.451038642691, places=4)
-        raise NotImplementedError("Bandstop test not implemented")
+        self.filter_under_test.design()
+
+        target_B_coefs = [0.999999999999997, 0, 10659.165019231235, 0, 50496799.514312387,
+                          0, 139547260472.68756, 0, 247909546226678.84, 0,
+                          2.936120847858713e+17, 0, 2.3182664173134024e+20, 
+                          0, 1.1767040143183764e+23, 0,
+                          3.4840784076142471e+25, 0, 4.5848600847778548e+27]
+
+        target_A_coefs = [1, 784.644294735911, 318492.53822460608,
+                          86261284.909445286, 17072986548.141478,
+                          2562592979207.1934, 294287704148591.62,
+                          25527354190801672.0, 1.6135947979406876e+18,
+                          6.9745276318961222e+19, 1.9110636917136504e+21,
+                          3.5806935741770867e+22, 4.8889336791349288e+23,
+                          5.0419941479279025e+24, 3.9784406142229909e+25,
+                          2.3806742847603819e+26, 1.0410318007203891e+27,
+                          3.0375137958120487e+27, 4.5848600847778592e+27]
+
+        for pos, B in enumerate(target_B_coefs):
+            print("pos = ", pos)
+            self.assertAlmostEqual(self.filter_under_test.B[pos], B, places=4)
+            self.assertAlmostEqual(self.filter_under_test.A[pos], target_A_coefs[pos], places=4)
+
 
 if __name__ == '__main__':
     unittest.main()
