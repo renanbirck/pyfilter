@@ -252,12 +252,15 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.Wn, 444.575606682405)
         self.filter_under_test.design()
 
-        target_B_coefs = [9.999999e-5, 0, 158.117976045623, 0, 31251617.9359552]
-        target_A_coefs = [1, 194.810986902063, 18975.6761206756, 1084508.31036336, 31251617.9359552]
+        target_B_coefs = [9.999999e-5, 0, 158.117976045623,
+                          0, 31251617.9359552]
+        target_A_coefs = [1, 194.810986902063, 18975.6761206756,
+                          1084508.31036336, 31251617.9359552]
         for idx, coef in enumerate(target_B_coefs):
-            self.assertAlmostEqual(self.filter_under_test.B[idx], coef, places=4)
-            self.assertAlmostEqual(self.filter_under_test.A[idx], target_A_coefs[idx], places=4)
-
+            self.assertAlmostEqual(self.filter_under_test.B[idx],
+                                   coef, places=4)
+            self.assertAlmostEqual(self.filter_under_test.A[idx],
+                                   target_A_coefs[idx], places=4)
 
     def test_compute_cheb2_hp_filter(self):
         """ This test tries to compute the parameters of a Chebyshev type2
@@ -277,14 +280,15 @@ class TestAnalog(unittest.TestCase):
 
         target_B_coefs = [1,  2.6640245834111e-13, 7885.48143871698,
                           2.15641845491182e-08, 7772602.19003515]
-        target_A_coefs = [1, 1369.99857286308, 946333.526262156, 383548377.904685,
+        target_A_coefs = [1, 1369.99857286308,
+                          946333.526262156, 383548377.904685,
                           77726021900.434341]
 
         for idx, coef in enumerate(target_B_coefs):
-            self.assertAlmostEqual(self.filter_under_test.B[idx], coef, places=4)
-            self.assertAlmostEqual(self.filter_under_test.A[idx], target_A_coefs[idx], places=4)
-
-
+            self.assertAlmostEqual(self.filter_under_test.B[idx],
+                                   coef, places=4)
+            self.assertAlmostEqual(self.filter_under_test.A[idx],
+                                   target_A_coefs[idx], places=4)
 
     def test_compute_cheb2_bp_filter(self):
         """ This test tries to compute the parameters of a Chebyshev type2
@@ -302,6 +306,25 @@ class TestAnalog(unittest.TestCase):
         self.assertEqual(self.filter_under_test.N, 5)
         self.assertAlmostEqual(self.filter_under_test.Wn[0], 2.70854152973696)
         self.assertAlmostEqual(self.filter_under_test.Wn[1], 29.1510520853571)
+        self.filter_under_test.design()
+
+        target_B_coefs = [0.0132212553439163, 0, 41.1531774495097, 0,
+                          27017.7489051283, 0, 256556.390945137,
+                          0, 513844.393583164]
+        target_A_coefs = [1, 23.4435180976834, 669.583359040983,
+                          9398.53292546406, 136432.286369784, 1212538.46889098,
+                          10772261.5520472, 58592163.1566463, 329589865.256886,
+                          911132871.047911, 3068659219.6963]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(self.filter_under_test.B[idx],
+                                   coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(self.filter_under_test.A[idx],
+                                   coef, places=4)
+
+
 
     def test_compute_cheb2_bs_filter(self):
         """ This test tries to compute the parameters of a Chebyshev type2
@@ -319,6 +342,8 @@ class TestAnalog(unittest.TestCase):
                                12.460281968697171)
         self.assertAlmostEqual(self.filter_under_test.Wn[1],
                                38.020080344889088)
+        self.filter_under_test.design()
+
 
     def test_compute_butter_lp_filter(self):
         """ This test tries to compute the parameters of a Butterworth
@@ -495,8 +520,10 @@ class TestAnalog(unittest.TestCase):
                           0, 2.9361208478586816e+17, 0, 2.3182664173133981e+20,
                           0, 1.176704014318369e+23, 0, 3.484078407614217e+25,
                           0, 4.5848600847778207e+27]
-        target_A_coefs = [1, 798.886667535808, 329769.118807736, 90767049.233665258,
-                          18246055317.574032, 2779764493559.9541, 323737622832967.31,
+        target_A_coefs = [1, 798.886667535808, 329769.118807736,
+                          90767049.233665258,
+                          18246055317.574032, 2779764493559.9541,
+                          323737622832967.31,
                           28439472756901696.0, 1.8160086510982392e+18,
                           7.8893059749655937e+19, 2.1507928764897341e+21,
                           3.9891732058277967e+22, 5.3781783783668304e+23,
@@ -506,7 +533,8 @@ class TestAnalog(unittest.TestCase):
 
         for pos, B in enumerate(target_B_coefs):
             self.assertAlmostEqual(self.filter_under_test.B[pos], B, places=4)
-            self.assertAlmostEqual(self.filter_under_test.A[pos], target_A_coefs[pos], places=4)
+            self.assertAlmostEqual(self.filter_under_test.A[pos],
+                                   target_A_coefs[pos], places=4)
 
         self.filter_under_test.compute_parameters(target='stopband')
         self.assertEqual(self.filter_under_test.N, 9)
@@ -516,7 +544,8 @@ class TestAnalog(unittest.TestCase):
                                144.451038642691, places=4)
         self.filter_under_test.design()
 
-        target_B_coefs = [0.999999999999997, 0, 10659.165019231235, 0, 50496799.514312387,
+        target_B_coefs = [0.999999999999997, 0, 10659.165019231235,
+                          0, 50496799.514312387,
                           0, 139547260472.68756, 0, 247909546226678.84, 0,
                           2.936120847858713e+17, 0, 2.3182664173134024e+20,
                           0, 1.1767040143183764e+23, 0,
@@ -535,7 +564,8 @@ class TestAnalog(unittest.TestCase):
         for pos, B in enumerate(target_B_coefs):
             print("pos = ", pos)
             self.assertAlmostEqual(self.filter_under_test.B[pos], B, places=4)
-            self.assertAlmostEqual(self.filter_under_test.A[pos], target_A_coefs[pos], places=4)
+            self.assertAlmostEqual(self.filter_under_test.A[pos],
+                                   target_A_coefs[pos], places=4)
 
 
 if __name__ == '__main__':
