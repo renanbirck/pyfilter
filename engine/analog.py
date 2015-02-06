@@ -167,5 +167,8 @@ class AnalogFilter(Filter):
             self.B, self.A = signal.cheby1(self.N, ripple, self.Wn,
                                            self.filter_type, analog=True,
                                            output='ba')
+        elif self.filter_class == 'chebyshev_2':
+            self.B, self.A = signal.cheby2(self.N, self.stopband_attenuation, self.Wn,
+                                           self.filter_type, analog=True, output='ba')
         else:
             raise NotImplementedError("Computation of {} not implemented yet.".format(self.filter_class))

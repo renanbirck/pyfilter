@@ -250,6 +250,14 @@ class TestAnalog(unittest.TestCase):
 
         self.assertEqual(self.filter_under_test.N, 4)
         self.assertAlmostEqual(self.filter_under_test.Wn, 444.575606682405)
+        self.filter_under_test.design()
+
+        target_B_coefs = [9.999999e-5, 0, 158.117976045623, 0, 31251617.9359552]
+        target_A_coefs = [1, 194.810986902063, 18975.6761206756, 1084508.31036336, 31251617.9359552]
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(self.filter_under_test.B[idx], coef, places=4)
+            self.assertAlmostEqual(self.filter_under_test.A[idx], target_A_coefs[idx], places=4)
+
 
     def test_compute_cheb2_hp_filter(self):
         """ This test tries to compute the parameters of a Chebyshev type2
@@ -264,6 +272,19 @@ class TestAnalog(unittest.TestCase):
 
         self.assertEqual(self.filter_under_test.N, 4)
         self.assertAlmostEqual(self.filter_under_test.Wn, 88.8002333258017)
+
+        self.filter_under_test.design()
+
+        target_B_coefs = [1,  2.6640245834111e-13, 7885.48143871698,
+                          2.15641845491182e-08, 7772602.19003515]
+        target_A_coefs = [1, 1369.99857286308, 946333.526262156, 383548377.904685,
+                          77726021900.434341]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(self.filter_under_test.B[idx], coef, places=4)
+            self.assertAlmostEqual(self.filter_under_test.A[idx], target_A_coefs[idx], places=4)
+
+
 
     def test_compute_cheb2_bp_filter(self):
         """ This test tries to compute the parameters of a Chebyshev type2
@@ -497,7 +518,7 @@ class TestAnalog(unittest.TestCase):
 
         target_B_coefs = [0.999999999999997, 0, 10659.165019231235, 0, 50496799.514312387,
                           0, 139547260472.68756, 0, 247909546226678.84, 0,
-                          2.936120847858713e+17, 0, 2.3182664173134024e+20, 
+                          2.936120847858713e+17, 0, 2.3182664173134024e+20,
                           0, 1.1767040143183764e+23, 0,
                           3.4840784076142471e+25, 0, 4.5848600847778548e+27]
 
