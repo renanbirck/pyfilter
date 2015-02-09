@@ -151,6 +151,11 @@ class AnalogFilter(Filter):
                                               self.passband_attenuation,
                                               self.stopband_attenuation,
                                               analog=True)
+        elif self.filter_class == 'elliptical':
+            self.N, self.Wn = signal.ellipord(self.Wp, self.Ws,
+                                              self.passband_attenuation,
+                                              self.stopband_attenuation,
+                                              analog=True)
         else:
             raise NotImplementedError(
                 "Filter family {} not yet implemented".format(self.filter_class))
@@ -170,5 +175,9 @@ class AnalogFilter(Filter):
         elif self.filter_class == 'chebyshev_2':
             self.B, self.A = signal.cheby2(self.N, self.stopband_attenuation, self.Wn,
                                            self.filter_type, analog=True, output='ba')
+        elif self.filter_class == 'elliptical':
+            self.B, self.A = signal.ellip(self.N, self.passband_attenuation,
+                                          self.stopband_attenuation, self.Wn,
+                                          self.filter_type, analog=True, output='ba')
         else:
             raise NotImplementedError("Computation of {} not implemented yet.".format(self.filter_class))

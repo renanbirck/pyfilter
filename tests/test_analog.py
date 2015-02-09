@@ -278,7 +278,7 @@ class TestAnalog(unittest.TestCase):
 
         self.filter_under_test.design()
 
-        target_B_coefs = [1,  2.6640245834111e-13, 7885.48143871698,
+        target_B_coefs = [1, 2.6640245834111e-13, 7885.48143871698,
                           2.15641845491182e-08, 7772602.19003515]
         target_A_coefs = [1, 1369.99857286308,
                           946333.526262156, 383548377.904685,
@@ -324,8 +324,6 @@ class TestAnalog(unittest.TestCase):
             self.assertAlmostEqual(self.filter_under_test.A[idx],
                                    coef, places=4)
 
-
-
     def test_compute_cheb2_bs_filter(self):
         """ This test tries to compute the parameters of a Chebyshev type2
             band-stop filter. """
@@ -348,7 +346,7 @@ class TestAnalog(unittest.TestCase):
                           0, 22334583333229276.0, 0,
                           3.068658299488802e+19]
         target_A_coefs = [1.00000000e+00, 790.06228468972586, 357473.38122983265,
-                          104519632.7445026,  20482841787.389153, 2506892093515.71,
+                          104519632.7445026, 20482841787.389153, 2506892093515.71,
                           161726026661856.75, 6515943167761984.0, 1.7595954374175718e+17,
                           3.070578153267778e+18, 3.0686582994888024e+19]
 
@@ -358,8 +356,6 @@ class TestAnalog(unittest.TestCase):
         for idx, coef in enumerate(target_A_coefs):
             self.assertAlmostEqual(self.filter_under_test.A[idx],
                                    coef, places=4)
-
-
 
 
     def test_compute_butter_lp_filter(self):
@@ -583,6 +579,29 @@ class TestAnalog(unittest.TestCase):
             self.assertAlmostEqual(self.filter_under_test.B[pos], B, places=4)
             self.assertAlmostEqual(self.filter_under_test.A[pos],
                                    target_A_coefs[pos], places=4)
+
+    def test_compute_elliptical_lp_filter(self):
+        parameters = {'passband_frequency': 10,
+                      'stopband_frequency': 100,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        self.filter_under_test.filter_class = 'elliptical'
+        self.filter_under_test.configure_filter(parameters)
+        self.filter_under_test.compute_parameters(target='passband')
+        self.assertEqual(self.filter_under_test.N, 4)
+        self.assertAlmostEqual(self.filter_under_test.Wn, 62.83185, places=5)
+        self.filter_under_test.design()
+
+        target_B_coefs = [9.99947e-5, 0, 55.7382135386156, 0, 3938804.2931307442]
+        target_A_coefs = [1, 59.7697622129101, 5762.1982895999772,
+                          185887.21463406115, 4419411.104776497]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(self.filter_under_test.B[idx],
+                                   coef, places=2)
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(self.filter_under_test.A[idx],
+                                   coef, places=2)
 
 
 if __name__ == '__main__':
