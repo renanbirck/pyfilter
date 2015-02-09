@@ -329,20 +329,37 @@ class TestAnalog(unittest.TestCase):
     def test_compute_cheb2_bs_filter(self):
         """ This test tries to compute the parameters of a Chebyshev type2
             band-stop filter. """
-        parameters = {'passband_frequency': [1, 7],
-                      'stopband_frequency': [2, 6],
+        parameters = {'passband_frequency': [1, 50],
+                      'stopband_frequency': [10, 20],
                       'passband_attenuation': 1,
                       'stopband_attenuation': 80}
 
         self.filter_under_test.filter_class = 'chebyshev_2'
         self.filter_under_test.configure_filter(parameters)
         self.filter_under_test.compute_parameters(target='passband')
-        self.assertEqual(self.filter_under_test.N, 14)
+        self.assertEqual(self.filter_under_test.N, 5)
         self.assertAlmostEqual(self.filter_under_test.Wn[0],
-                               12.460281968697171)
+                               60.9231519986727, places=3)
         self.assertAlmostEqual(self.filter_under_test.Wn[1],
-                               38.020080344889088)
+                               129.600700160979, places=3)
         self.filter_under_test.design()
+        target_B_coefs = [1, 0, 45374.174385258048, 0,
+                          770023239.70909572, 0, 6079859439822.2012,
+                          0, 22334583333229276.0, 0,
+                          3.068658299488802e+19]
+        target_A_coefs = [1.00000000e+00, 790.06228468972586, 357473.38122983265,
+                          104519632.7445026,  20482841787.389153, 2506892093515.71,
+                          161726026661856.75, 6515943167761984.0, 1.7595954374175718e+17,
+                          3.070578153267778e+18, 3.0686582994888024e+19]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(self.filter_under_test.B[idx],
+                                   coef, places=4)
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(self.filter_under_test.A[idx],
+                                   coef, places=4)
+
+
 
 
     def test_compute_butter_lp_filter(self):
