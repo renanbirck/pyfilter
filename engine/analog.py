@@ -119,8 +119,9 @@ class AnalogFilter(Filter):
                     - passband: optimize to the passband
         """
 
-        if target not in ['passband', 'stopband']:
-            raise ValueError("Target must be one of passband or stopband.")
+        if target not in ['passband', 'stopband', None]:
+            raise ValueError("Target must be one of passband or stopband, \
+                             or not given if filter is not Butterworth.")
         else:
             self.filter_target = target
 
@@ -138,9 +139,12 @@ class AnalogFilter(Filter):
                                                  analog=True)
             elif target == 'stopband':
                 self.N, self.Wn = custom.custom_buttord(self.Wp, self.Ws,
-                                              self.passband_attenuation,
-                                              self.stopband_attenuation,
-                                              analog=True)
+                                                        self.passband_attenuation,
+                                                        self.stopband_attenuation,
+                                                        analog=True)
+            else:
+                raise ValueError("Butterworth filters must match either the \
+                                 passband or the stopband.")
         elif self.filter_class == 'chebyshev_1':
             self.N, self.Wn = signal.cheb1ord(self.Wp, self.Ws,
                                               self.passband_attenuation,

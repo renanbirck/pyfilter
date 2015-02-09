@@ -603,6 +603,67 @@ class TestAnalog(unittest.TestCase):
             self.assertAlmostEqual(self.filter_under_test.A[idx],
                                    coef, places=2)
 
+    def test_compute_elliptical_hp_filter(self):
+        parameters = {'passband_frequency': 100,
+                      'stopband_frequency': 10,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        self.filter_under_test.filter_class = 'elliptical'
+        self.filter_under_test.configure_filter(parameters)
+        self.filter_under_test.compute_parameters(target='passband')
+        self.assertEqual(self.filter_under_test.N, 4)
+        self.assertAlmostEqual(self.filter_under_test.Wn,
+                               628.3185307, places=5)
+        self.filter_under_test.design()
+
+        target_B_coefs = [8.91250938e-01, 0, 1.96559946e+04, 0, 5.496064040835e+07]
+        target_A_coefs = [1.00000000e+00,   1.66052284e+03,   2.03209155e+06,
+                          832134764.96873713, 549635207615.95068]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(self.filter_under_test.B[idx],
+                                   coef, places=2)
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(self.filter_under_test.A[idx],
+                                   coef, places=2)
+
+    def test_compute_elliptical_bp_filter(self):
+        parameters = {'passband_frequency': [1, 2],
+                      'stopband_frequency': [0.1, 5],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+
+        self.filter_under_test.filter_class = 'elliptical'
+        self.filter_under_test.configure_filter(parameters)
+        self.filter_under_test.compute_parameters()
+        self.assertEqual(self.filter_under_test.N, 4)
+        self.assertAlmostEqual(self.filter_under_test.Wn[0],
+                               6.28318530717959, places=7)
+        self.assertAlmostEqual(self.filter_under_test.Wn[1],
+                               12.5663706143592, places=7)
+
+        self.filter_under_test.design()
+
+        target_B_coefs = [9.99947595183175e-05, 0, 0.588946412352835,
+                          0, 485.636345934744, 0, 3671.59900370003,
+                          0, 3886.29859721522]
+        target_A_coefs = [1,
+                           5.97693947945851,
+                           373.449322877403,
+                           1601.64788735756,
+                           46946.3306687963,
+                           126461.048015471,
+                           2328150.987,
+                           2942036.496778,
+                           38865023.0418]
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(self.filter_under_test.B[idx],
+                                   coef, places=2)
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(self.filter_under_test.A[idx],
+                                   coef, places=2)
+
+
 
 if __name__ == '__main__':
     unittest.main()
