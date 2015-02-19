@@ -697,5 +697,15 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.A[1], 100)
         self.assertAlmostEqual(self.filter_under_test.A[2], 20000)
 
+        self.filter_under_test.filter_type = 'bandstop'
+        self.filter_under_test.Wn = [200, 100]
+        self.filter_under_test.design()
+        self.assertAlmostEqual(self.filter_under_test.B[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.B[1], 0)
+        self.assertAlmostEqual(self.filter_under_test.B[2], 20000)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], -100)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 20000)
+
 if __name__ == '__main__':
     unittest.main()
