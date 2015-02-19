@@ -663,7 +663,39 @@ class TestAnalog(unittest.TestCase):
             self.assertAlmostEqual(self.filter_under_test.A[idx],
                                    coef, places=2)
 
+    def test_synthesis_from_N_Wn(self):
+        """ This test tries synthesizing a filter from its parameters (N and Wn).
+            (i.e. overriding the computation from Wp, Ws, Rp, Rs)"""
 
+        self.filter_under_test.filter_class = 'butterworth'
+        self.filter_under_test.filter_type = 'lowpass'
+        self.filter_under_test.N = 2
+        self.filter_under_test.Wn = 100
+        self.filter_under_test.design()
+
+        self.assertAlmostEqual(self.filter_under_test.B[0], 10000)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 141.421356237309)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 10000)
+
+        self.filter_under_test.filter_type = 'highpass'
+        self.filter_under_test.design()
+        self.assertAlmostEqual(self.filter_under_test.B[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 141.421356237309)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 10000)
+
+        self.filter_under_test.filter_type = 'bandpass'
+
+        self.filter_under_test.N = 1
+        self.filter_under_test.Wn = [100, 200]
+        self.filter_under_test.design()
+
+        self.assertAlmostEqual(self.filter_under_test.B[0], 100)
+        self.assertAlmostEqual(self.filter_under_test.B[1], 0)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 100)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 20000)
 
 if __name__ == '__main__':
     unittest.main()
