@@ -1,0 +1,13 @@
+Várias ferramentas computacionais para o projeto de filtros eletrônicos analógicos e digitais estão disponíveis no mercado; porém, elas são 'caixas pretas', não permitindo a inspeção ou estudo de seu funcionamento e apresentando limitações (por exemplo, serem atreladas aos dispositivos de um fabricante).
+
+Neste trabalho, propõe-se uma ferramenta de projeto de filtros baseada em software livre, com uma arquitetura que possibilita a expansão adicionando-se novos algoritmos, topologias ou funcionalidades diversas. Embora ela seja planejada para fins didáticos, pode-se usá-la para aplicações práticas de projeto.
+
+Será empregada a linguagem de programação Python, junto com as bibliotecas NumPy e SciPy, para as operações matemáticas, e as bibliotecas PyQt e PyQWT para visualização dos resultados em interface gráfica.
+
+-- 
+
+Many computer tools for the design of analog and digital filters are available in the market; however, they are 'black boxes' in that they do not allow the user to inspect or study its workings and often present limitations (e.g. being tied to a manufacturer's device line).
+
+In this work, we present a tool for filter design based on open-source software, that allows for expansion to add new algorithms, topologies or functionalities. While it is designed for educational purposes, it can be used for design applications.
+
+The Python programming language will be used, together with the NumPy and SciPy libraries for calculations and the PyQt and PyQWT libraries for result visualization.

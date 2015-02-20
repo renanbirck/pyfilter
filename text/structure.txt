@@ -12,3 +12,5 @@ engine   -- cálculos
 gui       -- interface gráfica
 
 tests     -- testes (um por arquivo dos cálculos)
+
+text      -- parte escrita

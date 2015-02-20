@@ -1,0 +1,18 @@
+1. Introdução
+1.1. Revisão das ferramentas atualmente disponíveis
+2. Revisão teórica
+2.1. Tipos de filtros
+2.2. Topologias de filtros
+2.3. Algoritmos
+2.4. Bibliotecas
+2.4.1. NumPy
+2.4.2. SciPy
+2.4.3. matplotlib
+2.4.4. PyQt
+3. Implementação
+3.1. Hierarquia de objetos
+3.2. Testes
+3.3. Projeto de interface gráfica
+4. Resultados/exemplos de aplicação
+5. Conclusões
+6. Bibliografia

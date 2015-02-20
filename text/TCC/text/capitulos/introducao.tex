@@ -1,0 +1,60 @@
+\chapter{Introdução}
+
+Com a evolução da tecnologia da informação, a automação residencial vem deixando de ser um 
+assunto de filmes de ficção científica e se tornando parte de nossas vidas. Ela é capaz de 
+nos  fornecer  comodidade,  praticidade,  qualidade  de  vida  e  muitos  outros  atributos. 
+Intensidade das luzes de uma sala, temperatura de ambientes, acendimento de um forno, 
+hoje  em  dia,  podem  ser  controlados  por  um  simples  comando  em  um  \textit{notebook}, 
+\textit{Smartphone} ou um \textit{tablet}, trabalhando em conjunto de um \textit{hardware} e um \textit{software} adequados.
+Um  aparelho  imprescindível em qualquer residência , e que  poderia ter um foco 
+maior de pesquisas na área de automação, é o chuveiro elétrico. Ele funciona
+de  forma  bem  simples:  A  água  ao  passar  pela  resistência,  localizada  na  parte  interna  do 
+chuveiro, aquece-se devido à alta temperatura da resistência, ocasionada pela passagem de 
+corrente elétrica (efeito joule).
+Um dos problemas encontrados nesse sistema de chuveiro elétrico convencional 
+é o tempo que se leva para ajustar a temperatura da água de acordo com nosso gosto. 
+Normalmente há a necessidade de se regular a vazão da água e a posição da estação do chuveiro (geralmente verão, inverno e desligado). Esse ajuste de temperatura leva em torno de dois minutos, o que gera, além de certo desconforto, desperdício de recursos ambientais como água e energia.
+
+Visando a aumentar o nível de conforto e reduzir o tempo gasto para o ajuste, o presente trabalho tem como proposta a implementação de um regulador de temperatura para chuveiros elétricos, onde o usuário irá entrar com a temperatura desejada através de uma interface com botões e displays e o microcontrolador irá realizar o controle do sistema para que a temperatura da água atinja o valor desejável.
+
+O chuveiro utilizado no trabalho é um ThermoSystem modelo 01 que utiliza um sistema de controle de temperatura controlado pela alteração do ângulo de disparo do sinal. Esta alteração é feita pelo usuário ao girar a haste localizada na parte inferior do chuveiro.
+
+O sistema convencional será substituído  por um sistema microcontrolado para que a temperatura final seja igual, ou muito próxima à temperatura escolhida.
+
+    Um sensor de temperatura será utilizado para verificar se a temperatura da água condiz com a temperatura desejada e caso não sejam iguais será calculado o erro entre elas. Este erro servirá de parâmetro de entrada para o controlador Proporcional Integral.
+    
+    O parâmetro de saída do controlador fornecerá um dado  do qual possibilitará o cálculo de tempo de disparo do TRIAC. Este tempo será calculado inúmeras vezes até que o sistema atinja a estabilidade.
+    
+\section{Motivação}
+As motivações mais importantes para a realização deste trabalho foram as seguintes:
+\begin{itemize}
+\item Aplicação prática de assuntos abordados durante o curso de Engenharia de Computação como microcontroladores, sistemas de controle, circuitos eletrônicos;
+\item Economia e otimização do uso de recursos ambientais, como água e energia elétrica;
+\item Automatização de um componente comum a praticamente todas as residências;
+\end{itemize}
+
+\section{Objetivos}
+
+Os objetivos principais deste trabalho são:
+
+\begin{itemize}
+\item Diminuição do tempo de ajuste de temperatura da água do banho;
+\item Economia de água e energia;
+\item Conforto na escolha da temperatura precisa em graus Celsius;
+\end{itemize}
+
+
+\section{Estrutura do trabalho}
+
+Esta seção irá comentar sobre a estrutura dos capítulos deste trabalho.
+
+    O capítulo 2 irá apresentar informações sobre os assuntos que foram estudados e pesquisados em diversas fontes e os quais ofereceram conhecimento para que a implementação do projeto fosse realizada.
+    
+    O capítulo 3 irá tratar dos procedimentos efetuados para o desenvolvimento do regulador.
+    
+    No capítulo 4 serão mostrados as etapas que foram realizadas para que a montagem do projeto se tornasse possível.
+    
+    O capítulo 5 irá apresentar os resultados obtidos, através de gráficos construídos pelo \textit{software} matemático Matlab.
+
+    
+
