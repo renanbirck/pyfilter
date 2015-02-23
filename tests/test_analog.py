@@ -663,7 +663,7 @@ class TestAnalog(unittest.TestCase):
             self.assertAlmostEqual(self.filter_under_test.A[idx],
                                    coef, places=2)
 
-    def test_synthesis_from_N_Wn(self):
+    def test_synthesis_butter_from_N_Wn(self):
         """ This test tries synthesizing a filter from its parameters (N and Wn).
             (i.e. overriding the computation from Wp, Ws, Rp, Rs)"""
 
@@ -705,6 +705,36 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.B[2], 20000)
         self.assertAlmostEqual(self.filter_under_test.A[0], 1)
         self.assertAlmostEqual(self.filter_under_test.A[1], -100)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 20000)
+
+    def test_synthesis_cheby1_from_N_Wn(self):
+
+        self.filter_under_test.filter_class = 'chebyshev_1'
+        self.filter_under_test.filter_type = 'lowpass'
+        self.filter_under_test.N = 2
+        self.filter_under_test.Wn = 100
+        self.filter_under_test.design(ripple=0.01)
+        self.assertAlmostEqual(self.filter_under_test.B[0], 104138.690430759)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 445.552810723798)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 104258.653571938)
+
+        self.filter_under_test.filter_type = 'highpass'
+        self.filter_under_test.design(ripple=0.01)
+        self.assertAlmostEqual(self.filter_under_test.B[0], 0.998849369936505)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 42.7353313570626)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 959.152996647902)
+
+        self.filter_under_test.filter_type = 'bandpass'
+        self.filter_under_test.N = 1
+        self.filter_under_test.Wn = [100, 200]
+        self.filter_under_test.design(ripple=0.01)
+
+        self.assertAlmostEqual(self.filter_under_test.B[0], 2082.77380861517)
+        self.assertAlmostEqual(self.filter_under_test.B[1], 0)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 2082.77380861517)
         self.assertAlmostEqual(self.filter_under_test.A[2], 20000)
 
 if __name__ == '__main__':
