@@ -747,5 +747,30 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.A[1], 4.80128949127172)
         self.assertAlmostEqual(self.filter_under_test.A[2], 20000)
 
+    def test_synthesis_cheby2_from_N_Wn(self):
+        self.filter_under_test.filter_class = 'chebyshev_2'
+        self.filter_under_test.filter_type = 'lowpass'
+        self.filter_under_test.N = 2
+        self.filter_under_test.Wn = 100
+        self.filter_under_test.stopband_attenuation = 80
+
+        self.filter_under_test.design()
+        self.assertAlmostEqual(self.filter_under_test.B[0], 9.999999999999e-5)
+        self.assertAlmostEqual(self.filter_under_test.B[1], 0)
+        self.assertAlmostEqual(self.filter_under_test.B[2], 2)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 1.99989999749987)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 2)
+
+        self.filter_under_test.filter_type = 'highpass'
+        self.filter_under_test.design()
+        self.assertAlmostEqual(self.filter_under_test.B[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.B[1], 0)
+        self.assertAlmostEqual(self.filter_under_test.B[2], 5000)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 9999.49998749938)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 50000000)
+
+
 if __name__ == '__main__':
     unittest.main()
