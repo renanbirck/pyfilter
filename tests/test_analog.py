@@ -771,6 +771,27 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.A[1], 9999.49998749938)
         self.assertAlmostEqual(self.filter_under_test.A[2], 50000000)
 
+        self.filter_under_test.filter_type = 'bandpass'
+        self.filter_under_test.N = 1
+        self.filter_under_test.Wn = [100, 200]
+        self.filter_under_test.design()
+        self.assertAlmostEqual(self.filter_under_test.B[0], 0.01)
+        self.assertAlmostEqual(self.filter_under_test.B[1], 0)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 0.01)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 20000)
+
+        self.filter_under_test.filter_type = 'bandstop'
+        self.filter_under_test.N = 1
+        self.filter_under_test.Wn = [100, 200]
+        self.filter_under_test.design()
+
+        self.assertAlmostEqual(self.filter_under_test.B[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.B[2], 20000)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 999999.995)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 20000.000042495394)
+
 
 if __name__ == '__main__':
     unittest.main()
