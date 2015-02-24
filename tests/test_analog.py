@@ -792,6 +792,51 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.A[1], 999999.995)
         self.assertAlmostEqual(self.filter_under_test.A[2], 20000.000042495394)
 
+    def test_synthesis_elliptical_from_N_Wn(self):
+        self.filter_under_test.filter_class = 'elliptical'
+        self.filter_under_test.filter_type = 'lowpass'
+        self.filter_under_test.N = 3
+        self.filter_under_test.Wn = 100
+        self.filter_under_test.passband_attenuation = 1
+        self.filter_under_test.stopband_attenuation = 20
+
+        self.filter_under_test.design()
+        self.assertAlmostEqual(self.filter_under_test.B[0], 32.057704478126283)
+        self.assertAlmostEqual(self.filter_under_test.B[2], 664688.33649606246)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 96.659301271536123)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 12406.733429498709)
+        self.assertAlmostEqual(self.filter_under_test.A[3], 664688.33649606246)
+
+        self.filter_under_test.filter_type = 'highpass'
+        self.filter_under_test.design()
+
+        self.assertAlmostEqual(self.filter_under_test.B[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.B[2], 4822.967805802049)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 186.65489896966477)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 14542.048651113757)
+        self.assertAlmostEqual(self.filter_under_test.A[3], 1504464.4912404355)
+
+        self.filter_under_test.filter_type = 'bandpass'
+        self.filter_under_test.N = 1
+        self.filter_under_test.Wn = [100, 200]
+        self.filter_under_test.design()
+        self.assertAlmostEqual(self.filter_under_test.B[0], 196.522672836027)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 196.522672836027)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 20000)
+
+        self.filter_under_test.filter_type = 'bandstop'
+        self.filter_under_test.design()
+        self.assertAlmostEqual(self.filter_under_test.B[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.B[1], 0)
+        self.assertAlmostEqual(self.filter_under_test.B[2], 20000)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 50.8847139909587)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 20000)
+
+
 
 if __name__ == '__main__':
     unittest.main()
