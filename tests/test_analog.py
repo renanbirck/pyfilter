@@ -836,7 +836,46 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.A[1], 50.8847139909587)
         self.assertAlmostEqual(self.filter_under_test.A[2], 20000)
 
+    def test_synthesis_bessel_from_N_Wn(self):
+        self.filter_under_test.filter_class = 'bessel'
+        self.filter_under_test.filter_type = 'lowpass'
+        self.filter_under_test.N = 2
+        self.filter_under_test.Wn = 100
 
+        self.filter_under_test.design()
+        self.assertAlmostEqual(self.filter_under_test.B[0], 10000)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 173.20508075688772)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 10000.0)
 
+        self.filter_under_test.filter_type = 'highpass'
+        self.filter_under_test.design()
+        self.assertAlmostEqual(self.filter_under_test.B[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 173.20508075688772)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 10000.0)
+
+        self.filter_under_test.filter_type = 'bandpass'
+        self.filter_under_test.N = 2
+        self.filter_under_test.Wn = [100, 200]
+        self.filter_under_test.design()
+
+        self.assertAlmostEqual(self.filter_under_test.B[0], 10000)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 173.205080757)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 50000)
+        self.assertAlmostEqual(self.filter_under_test.A[3], 3464101.6151377545)
+        self.assertAlmostEqual(self.filter_under_test.A[4], 400000000.0)
+
+        self.filter_under_test.filter_type = 'bandstop'
+        self.filter_under_test.design()
+        self.assertAlmostEqual(self.filter_under_test.B[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.B[2], 4e4)
+        self.assertAlmostEqual(self.filter_under_test.B[4], 4e8, places=5)
+        self.assertAlmostEqual(self.filter_under_test.A[0], 1)
+        self.assertAlmostEqual(self.filter_under_test.A[1], 173.205080757)
+        self.assertAlmostEqual(self.filter_under_test.A[2], 50000)
+        self.assertAlmostEqual(self.filter_under_test.A[3], 3464101.6151377549)
+        self.assertAlmostEqual(self.filter_under_test.A[4], 400000000.0, places=5)
 if __name__ == '__main__':
     unittest.main()

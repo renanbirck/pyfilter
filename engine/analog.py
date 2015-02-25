@@ -183,5 +183,7 @@ class AnalogFilter(Filter):
             self.B, self.A = signal.ellip(self.N, self.passband_attenuation,
                                           self.stopband_attenuation, self.Wn,
                                           self.filter_type, analog=True, output='ba')
+        elif self.filter_class == 'bessel':
+            self.B, self.A = signal.bessel(self.N, self.Wn, self.filter_type, analog=True)
         else:
             raise NotImplementedError("Computation of {} not implemented yet.".format(self.filter_class))
