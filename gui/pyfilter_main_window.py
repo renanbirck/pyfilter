@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_window.ui'
 #
-# Created: Sat Feb 28 16:00:35 2015
+# Created: Sat Feb 28 18:25:00 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -68,10 +68,13 @@ class Ui_MainWindow(object):
         self.actionExport_plots.setObjectName(_fromUtf8("actionExport_plots"))
         self.actionExit = QtGui.QAction(MainWindow)
         self.actionExit.setObjectName(_fromUtf8("actionExit"))
+        self.actionAbout = QtGui.QAction(MainWindow)
+        self.actionAbout.setObjectName(_fromUtf8("actionAbout"))
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionExport_plots)
         self.menuFile.addAction(self.actionExit)
+        self.menuAbout.addAction(self.actionAbout)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuOptions.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
@@ -88,4 +91,5 @@ class Ui_MainWindow(object):
         self.actionSave.setText(_translate("MainWindow", "Save...", None))
         self.actionExport_plots.setText(_translate("MainWindow", "Export plots...", None))
         self.actionExit.setText(_translate("MainWindow", "Exit", None))
+        self.actionAbout.setText(_translate("MainWindow", "About this program...", None))
 

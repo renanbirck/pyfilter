@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding: utf-8
 
 # pyfilter: a filter synthesis tool written in the Python language.
 # (c) 2015 Renan Birck <renan.ee.ufsm@gmail.com>
@@ -15,6 +16,16 @@ class StartQT4(QtGui.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        # Callbacks
+        QtCore.QObject.connect(self.ui.actionAbout,
+                               QtCore.SIGNAL("triggered()"),
+                               self.menuAbout)
+
+    def menuAbout(self):
+        message_box = QtGui.QMessageBox.information(self,
+                                                    'About PyFilter...',
+                                                    'PyFilter 0.1 (c) 2015 Renan Birck.')
+        print("Hello World")
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)

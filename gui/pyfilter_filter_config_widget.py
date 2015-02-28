@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_filter_config_widget.ui'
 #
-# Created: Sat Feb 28 16:00:35 2015
+# Created: Sat Feb 28 18:25:00 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
