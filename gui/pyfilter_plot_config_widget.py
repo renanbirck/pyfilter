@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_plot_config_widget.ui'
 #
-# Created: Sat Feb 28 18:25:00 2015
+# Created: Sat Feb 28 19:23:44 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,10 +23,10 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_DockWidget(object):
-    def setupUi(self, DockWidget):
-        DockWidget.setObjectName(_fromUtf8("DockWidget"))
-        DockWidget.resize(400, 300)
+class Ui_DockWidget_Plot_Config(object):
+    def setupUi(self, DockWidget_Plot_Config):
+        DockWidget_Plot_Config.setObjectName(_fromUtf8("DockWidget_Plot_Config"))
+        DockWidget_Plot_Config.resize(400, 300)
         self.dockWidgetContents = QtGui.QWidget()
         self.dockWidgetContents.setObjectName(_fromUtf8("dockWidgetContents"))
         self.checkBox = QtGui.QCheckBox(self.dockWidgetContents)
@@ -68,18 +68,18 @@ class Ui_DockWidget(object):
         self.pushButton = QtGui.QPushButton(self.dockWidgetContents)
         self.pushButton.setGeometry(QtCore.QRect(110, 220, 141, 26))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
-        DockWidget.setWidget(self.dockWidgetContents)
+        DockWidget_Plot_Config.setWidget(self.dockWidgetContents)
 
-        self.retranslateUi(DockWidget)
-        QtCore.QMetaObject.connectSlotsByName(DockWidget)
+        self.retranslateUi(DockWidget_Plot_Config)
+        QtCore.QMetaObject.connectSlotsByName(DockWidget_Plot_Config)
 
-    def retranslateUi(self, DockWidget):
-        DockWidget.setWindowTitle(_translate("DockWidget", "Plot options", None))
-        self.checkBox.setText(_translate("DockWidget", "X grid", None))
-        self.checkBox_2.setText(_translate("DockWidget", "Y grid", None))
-        self.checkBox_3.setText(_translate("DockWidget", "X log scale", None))
-        self.checkBox_4.setText(_translate("DockWidget", "Y log scale (dB)", None))
-        self.label.setText(_translate("DockWidget", "Frontal color:", None))
-        self.label_2.setText(_translate("DockWidget", "Back color:", None))
-        self.pushButton.setText(_translate("DockWidget", "Redraw graph", None))
+    def retranslateUi(self, DockWidget_Plot_Config):
+        DockWidget_Plot_Config.setWindowTitle(_translate("DockWidget_Plot_Config", "Plot options", None))
+        self.checkBox.setText(_translate("DockWidget_Plot_Config", "X grid", None))
+        self.checkBox_2.setText(_translate("DockWidget_Plot_Config", "Y grid", None))
+        self.checkBox_3.setText(_translate("DockWidget_Plot_Config", "X log scale", None))
+        self.checkBox_4.setText(_translate("DockWidget_Plot_Config", "Y log scale (dB)", None))
+        self.label.setText(_translate("DockWidget_Plot_Config", "Frontal color:", None))
+        self.label_2.setText(_translate("DockWidget_Plot_Config", "Back color:", None))
+        self.pushButton.setText(_translate("DockWidget_Plot_Config", "Redraw graph", None))
 

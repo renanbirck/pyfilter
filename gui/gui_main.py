@@ -20,7 +20,6 @@ class StartQT4(QtGui.QMainWindow):
         QtCore.QObject.connect(self.ui.actionAbout,
                                QtCore.SIGNAL("triggered()"),
                                self.menuAbout)
-
     def menuAbout(self):
         message_box = QtGui.QMessageBox.information(self,
                                                     'About PyFilter...',

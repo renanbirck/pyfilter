@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DockWidget</class>
- <widget class="QDockWidget" name="DockWidget">
+ <class>DockWidget_Filter_Config</class>
+ <widget class="QDockWidget" name="DockWidget_Filter_Config">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>413</width>
-    <height>434</height>
+    <height>421</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -378,6 +378,68 @@
        <width>151</width>
        <height>31</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_opt4">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>140</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Fs:</string>
+     </property>
+    </widget>
+    <widget class="QPlainTextEdit" name="plainTextEdit_opt4">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>140</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_6">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>250</y>
+      <width>181</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <widget class="QRadioButton" name="radioButton_matchPB">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>30</y>
+       <width>171</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Match passband</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButton_matchSB">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>60</y>
+       <width>141</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Match stopband</string>
      </property>
     </widget>
    </widget>

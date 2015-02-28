@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_filter_config_widget.ui'
 #
-# Created: Sat Feb 28 18:25:00 2015
+# Created: Sat Feb 28 19:23:43 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,10 +23,10 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_DockWidget(object):
-    def setupUi(self, DockWidget):
-        DockWidget.setObjectName(_fromUtf8("DockWidget"))
-        DockWidget.resize(413, 434)
+class Ui_DockWidget_Filter_Config(object):
+    def setupUi(self, DockWidget_Filter_Config):
+        DockWidget_Filter_Config.setObjectName(_fromUtf8("DockWidget_Filter_Config"))
+        DockWidget_Filter_Config.resize(413, 421)
         self.dockWidgetContents = QtGui.QWidget()
         self.dockWidgetContents.setObjectName(_fromUtf8("dockWidgetContents"))
         self.groupBox = QtGui.QGroupBox(self.dockWidgetContents)
@@ -117,36 +117,55 @@ class Ui_DockWidget(object):
         self.plainTextEdit_opt3 = QtGui.QPlainTextEdit(self.groupBox_5)
         self.plainTextEdit_opt3.setGeometry(QtCore.QRect(30, 100, 151, 31))
         self.plainTextEdit_opt3.setObjectName(_fromUtf8("plainTextEdit_opt3"))
-        DockWidget.setWidget(self.dockWidgetContents)
+        self.label_opt4 = QtGui.QLabel(self.groupBox_5)
+        self.label_opt4.setGeometry(QtCore.QRect(0, 140, 31, 20))
+        self.label_opt4.setObjectName(_fromUtf8("label_opt4"))
+        self.plainTextEdit_opt4 = QtGui.QPlainTextEdit(self.groupBox_5)
+        self.plainTextEdit_opt4.setGeometry(QtCore.QRect(30, 140, 151, 31))
+        self.plainTextEdit_opt4.setObjectName(_fromUtf8("plainTextEdit_opt4"))
+        self.groupBox_6 = QtGui.QGroupBox(self.dockWidgetContents)
+        self.groupBox_6.setGeometry(QtCore.QRect(200, 250, 181, 80))
+        self.groupBox_6.setObjectName(_fromUtf8("groupBox_6"))
+        self.radioButton_matchPB = QtGui.QRadioButton(self.groupBox_6)
+        self.radioButton_matchPB.setGeometry(QtCore.QRect(0, 30, 171, 21))
+        self.radioButton_matchPB.setObjectName(_fromUtf8("radioButton_matchPB"))
+        self.radioButton_matchSB = QtGui.QRadioButton(self.groupBox_6)
+        self.radioButton_matchSB.setGeometry(QtCore.QRect(0, 60, 141, 21))
+        self.radioButton_matchSB.setObjectName(_fromUtf8("radioButton_matchSB"))
+        DockWidget_Filter_Config.setWidget(self.dockWidgetContents)
 
-        self.retranslateUi(DockWidget)
-        QtCore.QMetaObject.connectSlotsByName(DockWidget)
+        self.retranslateUi(DockWidget_Filter_Config)
+        QtCore.QMetaObject.connectSlotsByName(DockWidget_Filter_Config)
 
-    def retranslateUi(self, DockWidget):
-        DockWidget.setWindowTitle(_translate("DockWidget", "Filter settings", None))
-        self.groupBox.setTitle(_translate("DockWidget", "Analog or digital?", None))
-        self.radioButton_Analog.setText(_translate("DockWidget", "Analog", None))
-        self.radioButton_Digital.setText(_translate("DockWidget", "Digital", None))
-        self.groupBox_2.setTitle(_translate("DockWidget", "Filter topology", None))
-        self.radioButton_Butterworth.setText(_translate("DockWidget", "Butterworth", None))
-        self.radioButton_Cheby1.setText(_translate("DockWidget", "Chebyshev Type1", None))
-        self.radioButton_Cheby2.setText(_translate("DockWidget", "Chebyshev Type2", None))
-        self.radioButton_Elliptical.setText(_translate("DockWidget", "Elliptical", None))
-        self.radioButton_Bessel.setText(_translate("DockWidget", "Bessel", None))
-        self.groupBox_3.setTitle(_translate("DockWidget", "Filter type", None))
-        self.radioButton_LP.setText(_translate("DockWidget", "Low-pass", None))
-        self.radioButton_HP.setText(_translate("DockWidget", "High-pass", None))
-        self.radioButton_BP.setText(_translate("DockWidget", "Band-pass", None))
-        self.radioButton_BS.setText(_translate("DockWidget", "Band-stop", None))
-        self.radioButton_AP.setText(_translate("DockWidget", "All-pass", None))
-        self.groupBox_4.setTitle(_translate("DockWidget", "Parameter calculation...", None))
-        self.radioButton_NWn.setText(_translate("DockWidget", "From N, Wn", None))
-        self.radioButton_AttSpecs.setText(_translate("DockWidget", "From attenuation specs", None))
-        self.pushButton.setText(_translate("DockWidget", "Design", None))
-        self.pushButton_2.setText(_translate("DockWidget", "Show coefficients", None))
-        self.pushButton_3.setText(_translate("DockWidget", "Refresh plot", None))
-        self.groupBox_5.setTitle(_translate("DockWidget", "Filter specs", None))
-        self.label_opt1.setText(_translate("DockWidget", "N:", None))
-        self.label_opt2.setText(_translate("DockWidget", "Wn:", None))
-        self.label_opt3.setText(_translate("DockWidget", "Fc:", None))
+    def retranslateUi(self, DockWidget_Filter_Config):
+        DockWidget_Filter_Config.setWindowTitle(_translate("DockWidget_Filter_Config", "Filter settings", None))
+        self.groupBox.setTitle(_translate("DockWidget_Filter_Config", "Analog or digital?", None))
+        self.radioButton_Analog.setText(_translate("DockWidget_Filter_Config", "Analog", None))
+        self.radioButton_Digital.setText(_translate("DockWidget_Filter_Config", "Digital", None))
+        self.groupBox_2.setTitle(_translate("DockWidget_Filter_Config", "Filter topology", None))
+        self.radioButton_Butterworth.setText(_translate("DockWidget_Filter_Config", "Butterworth", None))
+        self.radioButton_Cheby1.setText(_translate("DockWidget_Filter_Config", "Chebyshev Type1", None))
+        self.radioButton_Cheby2.setText(_translate("DockWidget_Filter_Config", "Chebyshev Type2", None))
+        self.radioButton_Elliptical.setText(_translate("DockWidget_Filter_Config", "Elliptical", None))
+        self.radioButton_Bessel.setText(_translate("DockWidget_Filter_Config", "Bessel", None))
+        self.groupBox_3.setTitle(_translate("DockWidget_Filter_Config", "Filter type", None))
+        self.radioButton_LP.setText(_translate("DockWidget_Filter_Config", "Low-pass", None))
+        self.radioButton_HP.setText(_translate("DockWidget_Filter_Config", "High-pass", None))
+        self.radioButton_BP.setText(_translate("DockWidget_Filter_Config", "Band-pass", None))
+        self.radioButton_BS.setText(_translate("DockWidget_Filter_Config", "Band-stop", None))
+        self.radioButton_AP.setText(_translate("DockWidget_Filter_Config", "All-pass", None))
+        self.groupBox_4.setTitle(_translate("DockWidget_Filter_Config", "Parameter calculation...", None))
+        self.radioButton_NWn.setText(_translate("DockWidget_Filter_Config", "From N, Wn", None))
+        self.radioButton_AttSpecs.setText(_translate("DockWidget_Filter_Config", "From attenuation specs", None))
+        self.pushButton.setText(_translate("DockWidget_Filter_Config", "Design", None))
+        self.pushButton_2.setText(_translate("DockWidget_Filter_Config", "Show coefficients", None))
+        self.pushButton_3.setText(_translate("DockWidget_Filter_Config", "Refresh plot", None))
+        self.groupBox_5.setTitle(_translate("DockWidget_Filter_Config", "Filter specs", None))
+        self.label_opt1.setText(_translate("DockWidget_Filter_Config", "N:", None))
+        self.label_opt2.setText(_translate("DockWidget_Filter_Config", "Wn:", None))
+        self.label_opt3.setText(_translate("DockWidget_Filter_Config", "Fc:", None))
+        self.label_opt4.setText(_translate("DockWidget_Filter_Config", "Fs:", None))
+        self.groupBox_6.setTitle(_translate("DockWidget_Filter_Config", "Options", None))
+        self.radioButton_matchPB.setText(_translate("DockWidget_Filter_Config", "Match passband", None))
+        self.radioButton_matchSB.setText(_translate("DockWidget_Filter_Config", "Match stopband", None))
 
