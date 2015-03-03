@@ -77,11 +77,11 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents">
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="pushButton_Design">
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>340</y>
+       <y>360</y>
        <width>85</width>
        <height>26</height>
       </rect>
@@ -90,11 +90,11 @@
       <string>Design</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="pushButton_ShowCoeffs">
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>370</y>
+       <y>390</y>
        <width>131</width>
        <height>26</height>
       </rect>
@@ -103,10 +103,10 @@
       <string>Show coefficients</string>
      </property>
     </widget>
-    <widget class="QGroupBox" name="groupBox_5">
+    <widget class="QGroupBox" name="groupBox_FilterSpecs">
      <property name="geometry">
       <rect>
-       <x>155</x>
+       <x>160</x>
        <y>70</y>
        <width>221</width>
        <height>171</height>
@@ -183,6 +183,9 @@
         <height>31</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>For band-pass and band-stop filters, input 2 parameters, like '1 2'.</string>
+      </property>
      </widget>
      <widget class="QLabel" name="label_opt4">
       <property name="geometry">
@@ -206,9 +209,12 @@
         <height>31</height>
        </rect>
       </property>
+      <property name="toolTip">
+       <string>For band-pass and band-stop filters, input 2 parameters, like '1 2'.</string>
+      </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_3">
+    <widget class="QGroupBox" name="groupBox_Filter_Type">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -289,11 +295,11 @@
       </property>
      </widget>
     </widget>
-    <widget class="QPushButton" name="pushButton_3">
+    <widget class="QPushButton" name="pushButton_RefreshPlot">
      <property name="geometry">
       <rect>
        <x>110</x>
-       <y>340</y>
+       <y>360</y>
        <width>85</width>
        <height>26</height>
       </rect>
@@ -302,7 +308,7 @@
       <string>Refresh plot</string>
      </property>
     </widget>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupBox_Filter_Top">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -332,7 +338,7 @@
        <rect>
         <x>10</x>
         <y>60</y>
-        <width>161</width>
+        <width>131</width>
         <height>21</height>
        </rect>
       </property>
@@ -383,7 +389,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="groupBox_AD">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -425,23 +431,26 @@
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_6">
+    <widget class="QGroupBox" name="groupBox_Options">
      <property name="geometry">
       <rect>
        <x>155</x>
        <y>250</y>
        <width>181</width>
-       <height>80</height>
+       <height>101</height>
       </rect>
      </property>
      <property name="title">
       <string>Options</string>
      </property>
      <widget class="QRadioButton" name="radioButton_matchPB">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>30</y>
+        <y>20</y>
         <width>171</width>
         <height>21</height>
        </rect>
@@ -451,10 +460,13 @@
       </property>
      </widget>
      <widget class="QRadioButton" name="radioButton_matchSB">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>60</y>
+        <y>40</y>
         <width>141</width>
         <height>21</height>
        </rect>
@@ -463,8 +475,38 @@
        <string>Match stopband</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_pbRipple">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>60</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Passband ripple 
+ (dB)</string>
+      </property>
+     </widget>
+     <widget class="QPlainTextEdit" name="plainTextEdit_pbRipple">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>60</y>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_4">
+    <widget class="QGroupBox" name="groupBox_paramCalc">
      <property name="geometry">
       <rect>
        <x>155</x>
@@ -508,7 +550,7 @@
     </widget>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockWidget">
+  <widget class="QDockWidget" name="dockWidget_PlotOptions">
    <property name="windowTitle">
     <string>Plot options</string>
    </property>
@@ -542,7 +584,7 @@
       <string>Frontal color:</string>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="doubleSpinBox_4">
+    <widget class="QDoubleSpinBox" name="doubleSpinBox_Ymax">
      <property name="geometry">
       <rect>
        <x>260</x>
@@ -552,7 +594,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox_4">
+    <widget class="QCheckBox" name="checkBox_Ydb">
      <property name="geometry">
       <rect>
        <x>90</x>
@@ -565,7 +607,7 @@
       <string>dB</string>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="doubleSpinBox">
+    <widget class="QDoubleSpinBox" name="doubleSpinBox_Xmin">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -575,7 +617,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox_2">
+    <widget class="QComboBox" name="comboBox_backColor">
      <property name="geometry">
       <rect>
        <x>90</x>
@@ -585,7 +627,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+    <widget class="QDoubleSpinBox" name="doubleSpinBox_Ymin">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -595,7 +637,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox_3">
+    <widget class="QCheckBox" name="checkBox_Xlog">
      <property name="geometry">
       <rect>
        <x>90</x>
@@ -608,7 +650,7 @@
       <string>Log</string>
      </property>
     </widget>
-    <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+    <widget class="QDoubleSpinBox" name="doubleSpinBox_Xmax">
      <property name="geometry">
       <rect>
        <x>260</x>
@@ -631,7 +673,7 @@
       <string>Y:</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox_2">
+    <widget class="QCheckBox" name="checkBox_Ygrid">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -644,7 +686,7 @@
       <string>Grid</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox">
+    <widget class="QCheckBox" name="checkBox_Xgrid">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -657,7 +699,7 @@
       <string>Grid</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="comboBox_frontColor">
      <property name="geometry">
       <rect>
        <x>90</x>
