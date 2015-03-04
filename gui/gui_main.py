@@ -36,6 +36,13 @@ class StartQT4(QtGui.QMainWindow):
                                    QtCore.SIGNAL("clicked()"),
                                    self.get_filter_kind)
 
+        # Populate the color boxes
+
+        color_names = ['Red', 'Green', 'Blue', 'Yellow', 'Black']
+        color_internal_names = ['red', 'green', 'blue', 'yellow', 'black']
+
+        color_pairs = zip(color_names, color_internal_names)
+
     def set_status(self, message):
         self.statusBar.showMessage(message);
 
