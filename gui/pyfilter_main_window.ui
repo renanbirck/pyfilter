@@ -35,7 +35,7 @@
      <x>0</x>
      <y>0</y>
      <width>1121</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -120,12 +120,12 @@
        <rect>
         <x>0</x>
         <y>20</y>
-        <width>56</width>
+        <width>71</width>
         <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string>N:</string>
+       <string>Opt1:</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_opt2">
@@ -133,18 +133,18 @@
        <rect>
         <x>0</x>
         <y>60</y>
-        <width>56</width>
+        <width>71</width>
         <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string>Wn:</string>
+       <string>Opt2:</string>
       </property>
      </widget>
      <widget class="QPlainTextEdit" name="plainTextEdit_opt1">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>90</x>
         <y>20</y>
         <width>151</width>
         <height>31</height>
@@ -154,7 +154,7 @@
      <widget class="QPlainTextEdit" name="plainTextEdit_opt2">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>90</x>
         <y>60</y>
         <width>151</width>
         <height>31</height>
@@ -165,19 +165,19 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>100</y>
-        <width>31</width>
-        <height>20</height>
+        <y>90</y>
+        <width>81</width>
+        <height>41</height>
        </rect>
       </property>
       <property name="text">
-       <string>Fc:</string>
+       <string>Opt3:</string>
       </property>
      </widget>
      <widget class="QPlainTextEdit" name="plainTextEdit_opt3">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>90</x>
         <y>100</y>
         <width>151</width>
         <height>31</height>
@@ -192,18 +192,18 @@
        <rect>
         <x>0</x>
         <y>140</y>
-        <width>31</width>
+        <width>71</width>
         <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string>Fs:</string>
+       <string>Opt4:</string>
       </property>
      </widget>
      <widget class="QPlainTextEdit" name="plainTextEdit_opt4">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>90</x>
         <y>140</y>
         <width>151</width>
         <height>31</height>
