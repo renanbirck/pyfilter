@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_window.ui'
 #
-# Created: Wed Mar  4 20:11:30 2015
+# Created: Sat Mar  7 16:39:06 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -35,10 +35,30 @@ class Ui_MainWindow(object):
         self.splitter = QtGui.QSplitter(self.centralwidget)
         self.splitter.setOrientation(QtCore.Qt.Vertical)
         self.splitter.setObjectName(_fromUtf8("splitter"))
-        self.graphicsMagPlot = QtGui.QGraphicsView(self.splitter)
-        self.graphicsMagPlot.setObjectName(_fromUtf8("graphicsMagPlot"))
-        self.graphicsPhasePlot = QtGui.QGraphicsView(self.splitter)
-        self.graphicsPhasePlot.setObjectName(_fromUtf8("graphicsPhasePlot"))
+        self.tabWidget = QtGui.QTabWidget(self.splitter)
+        self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
+        self.tab_TF = QtGui.QWidget()
+        self.tab_TF.setObjectName(_fromUtf8("tab_TF"))
+        self.verticalLayout_2 = QtGui.QVBoxLayout(self.tab_TF)
+        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.tfOutputHTML = QtWebKit.QWebView(self.tab_TF)
+        self.tfOutputHTML.setUrl(QtCore.QUrl(_fromUtf8("about:blank")))
+        self.tfOutputHTML.setObjectName(_fromUtf8("tfOutputHTML"))
+        self.verticalLayout_2.addWidget(self.tfOutputHTML)
+        self.tabWidget.addTab(self.tab_TF, _fromUtf8(""))
+        self.tab_plot = QtGui.QWidget()
+        self.tab_plot.setObjectName(_fromUtf8("tab_plot"))
+        self.gridLayout = QtGui.QGridLayout(self.tab_plot)
+        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+        self.splitter_2 = QtGui.QSplitter(self.tab_plot)
+        self.splitter_2.setOrientation(QtCore.Qt.Vertical)
+        self.splitter_2.setObjectName(_fromUtf8("splitter_2"))
+        self.graphicsView = QtGui.QGraphicsView(self.splitter_2)
+        self.graphicsView.setObjectName(_fromUtf8("graphicsView"))
+        self.graphicsView_2 = QtGui.QGraphicsView(self.splitter_2)
+        self.graphicsView_2.setObjectName(_fromUtf8("graphicsView_2"))
+        self.gridLayout.addWidget(self.splitter_2, 0, 0, 1, 1)
+        self.tabWidget.addTab(self.tab_plot, _fromUtf8(""))
         self.verticalLayout.addWidget(self.splitter)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
@@ -62,9 +82,6 @@ class Ui_MainWindow(object):
         self.pushButton_Design = QtGui.QPushButton(self.dockWidgetContents)
         self.pushButton_Design.setGeometry(QtCore.QRect(20, 360, 85, 26))
         self.pushButton_Design.setObjectName(_fromUtf8("pushButton_Design"))
-        self.pushButton_ShowCoeffs = QtGui.QPushButton(self.dockWidgetContents)
-        self.pushButton_ShowCoeffs.setGeometry(QtCore.QRect(20, 390, 131, 26))
-        self.pushButton_ShowCoeffs.setObjectName(_fromUtf8("pushButton_ShowCoeffs"))
         self.groupBox_FilterSpecs = QtGui.QGroupBox(self.dockWidgetContents)
         self.groupBox_FilterSpecs.setGeometry(QtCore.QRect(160, 70, 221, 171))
         self.groupBox_FilterSpecs.setObjectName(_fromUtf8("groupBox_FilterSpecs"))
@@ -223,6 +240,9 @@ class Ui_MainWindow(object):
         self.pushButton_4 = QtGui.QPushButton(self.dockWidgetContents_2)
         self.pushButton_4.setGeometry(QtCore.QRect(20, 180, 141, 26))
         self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
+        self.pushButton = QtGui.QPushButton(self.dockWidgetContents_2)
+        self.pushButton.setGeometry(QtCore.QRect(20, 210, 141, 27))
+        self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.dockWidget_PlotOptions.setWidget(self.dockWidgetContents_2)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.dockWidget_PlotOptions)
         self.actionOpen = QtGui.QAction(MainWindow)
@@ -245,17 +265,19 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuAbout.menuAction())
 
         self.retranslateUi(MainWindow)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QObject.connect(self.actionExit, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "PyFilter", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_TF), _translate("MainWindow", "Transfer Function", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_plot), _translate("MainWindow", "Frequency Response", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuOptions.setTitle(_translate("MainWindow", "Options", None))
         self.menuAbout.setTitle(_translate("MainWindow", "About", None))
         self.configurationsDock.setWindowTitle(_translate("MainWindow", "Filter options", None))
         self.pushButton_Design.setText(_translate("MainWindow", "Design", None))
-        self.pushButton_ShowCoeffs.setText(_translate("MainWindow", "Show coefficients", None))
         self.groupBox_FilterSpecs.setTitle(_translate("MainWindow", "Filter specs", None))
         self.label_opt1.setText(_translate("MainWindow", "Opt1:", None))
         self.label_opt2.setText(_translate("MainWindow", "Opt2:", None))
@@ -297,9 +319,11 @@ class Ui_MainWindow(object):
         self.checkBox_Xgrid.setText(_translate("MainWindow", "Grid", None))
         self.label_3.setText(_translate("MainWindow", "X:", None))
         self.pushButton_4.setText(_translate("MainWindow", "Redraw graph", None))
+        self.pushButton.setText(_translate("MainWindow", "Write to File", None))
         self.actionOpen.setText(_translate("MainWindow", "Open...", None))
         self.actionSave.setText(_translate("MainWindow", "Save...", None))
         self.actionExport_plots.setText(_translate("MainWindow", "Export plots...", None))
         self.actionExit.setText(_translate("MainWindow", "Exit", None))
         self.actionAbout.setText(_translate("MainWindow", "About this program...", None))
 
+from PyQt4 import QtWebKit

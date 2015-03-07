@@ -23,8 +23,43 @@
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
-      <widget class="QGraphicsView" name="graphicsMagPlot"/>
-      <widget class="QGraphicsView" name="graphicsPhasePlot"/>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tab_TF">
+        <attribute name="title">
+         <string>Transfer Function</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QWebView" name="tfOutputHTML">
+           <property name="url">
+            <url>
+             <string>about:blank</string>
+            </url>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_plot">
+        <attribute name="title">
+         <string>Frequency Response</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QSplitter" name="splitter_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <widget class="QGraphicsView" name="graphicsView"/>
+           <widget class="QGraphicsView" name="graphicsView_2"/>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -88,19 +123,6 @@
      </property>
      <property name="text">
       <string>Design</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_ShowCoeffs">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>390</y>
-       <width>131</width>
-       <height>26</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Show coefficients</string>
      </property>
     </widget>
     <widget class="QGroupBox" name="groupBox_FilterSpecs">
@@ -735,6 +757,19 @@
       <string>Redraw graph</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>210</y>
+       <width>141</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Write to File</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <action name="actionOpen">
@@ -763,6 +798,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKit/QWebView</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

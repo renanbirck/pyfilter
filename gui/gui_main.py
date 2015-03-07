@@ -12,6 +12,10 @@ from pyfilter_main_window import Ui_MainWindow
 
 class StartQT4(QtGui.QMainWindow):
 
+    BAND_MESSAGE = """ For the bandpass and bandstop cases,
+    give 2 frequencies separated by space,
+    like: 1 10, otherwise give one frequency."""
+
     config_dict = {}  # The dictionary of configuration
                       # used by the validation routines.
 
@@ -38,7 +42,16 @@ class StartQT4(QtGui.QMainWindow):
 
             QtCore.QObject.connect(topologyWidget,
                                    QtCore.SIGNAL("clicked()"),
-                                   self.get_filter_kind)
+                                   self.get_filter_TF)
+
+        for typeWidget in [self.ui.radioButton_AP,
+                           self.ui.radioButton_BP,
+                           self.ui.radioButton_BS,
+                           self.ui.radioButton_HP,
+                           self.ui.radioButton_LP]:
+            QtCore.QObject.connect(typeWidget,
+                                   QtCore.SIGNAL("clicked()"),
+                                   self.get_filter_type)
 
         for designParametersWidget in [self.ui.radioButton_NWn,
                                        self.ui.radioButton_AttSpecs]:
@@ -52,7 +65,8 @@ class StartQT4(QtGui.QMainWindow):
 
         # Initial preparations
         self.configure_boxes_for_design_parameters()
-        self.get_filter_kind()
+        self.get_filter_TF()
+        self.get_filter_type()
 
         # Populate the color boxes
 
@@ -85,10 +99,7 @@ class StartQT4(QtGui.QMainWindow):
 
             self.ui.plainTextEdit_opt1.setToolTip("The order. "
                                                   "It must be an integer bigger than zero.")
-            self.ui.plainTextEdit_opt2.setToolTip("The natural frequency(ies)."
-                                                  "To the bandpass and bandstop cases, \n"
-                                                  "give 2 frequencies separated by space, \n"
-                                                  "like: 1 10, otherwise give one frequency.")
+            self.ui.plainTextEdit_opt2.setToolTip("The natural frequency(ies). \n" + self.BAND_MESSAGE)
 
             self.config_dict['mode'] = "N_WN"
         elif self.ui.radioButton_AttSpecs.isChecked():
@@ -101,8 +112,8 @@ class StartQT4(QtGui.QMainWindow):
             self.ui.plainTextEdit_opt3.show()
             self.ui.plainTextEdit_opt4.show()
 
-            self.ui.plainTextEdit_opt1.setToolTip("The passband frequency, in hertz.")
-            self.ui.plainTextEdit_opt2.setToolTip("The stop frequency, in hertz.")
+            self.ui.plainTextEdit_opt1.setToolTip("The passband frequency(ies), in hertz. " + self.BAND_MESSAGE)
+            self.ui.plainTextEdit_opt2.setToolTip("The stop frequency(ies), in hertz." + self.BAND_MESSAGE)
             self.ui.plainTextEdit_opt3.setToolTip("The attenuation at passband, in dB.")
             self.ui.plainTextEdit_opt4.setToolTip("The attenuation at stopband, in dB.")
             self.config_dict['mode'] = "specs"
@@ -110,8 +121,8 @@ class StartQT4(QtGui.QMainWindow):
         else:
             raise ValueError("Somehow we chose something that can't be chosen!")
 
-    def get_filter_kind(self):
-        """ This function gets the appropriate filter type from
+    def get_filter_TF(self):
+        """ This function gets the appropriate filter transfer-fucntion from
             the chosen options and configures the other radio buttons
             and controls accordingly. """
 
@@ -132,8 +143,27 @@ class StartQT4(QtGui.QMainWindow):
             print("pick elliptical")
             choice = "elliptical"
 
-        self.config_dict['filter_kind'] = choice
+        self.config_dict['filter_TF'] = choice
         self.setup_widgets(choice)
+
+    def get_filter_type(self):
+        """ This function gets the appropriate filter type from the chosen
+            options and configures the other radio buttons
+            and controls accordingly. """
+
+        choice = None
+        if self.ui.radioButton_LP.isChecked():
+            choice = "lowpass"
+        elif self.ui.radioButton_HP.isChecked():
+            choice = "highpass"
+        elif self.ui.radioButton_BP.isChecked():
+            choice = "bandpass"
+        elif self.ui.radioButton_BS.isChecked():
+            choice = "bandstop"
+        elif self.ui.radioButton_AP.isChecked():
+            choice = "allpass"
+        self.config_dict['filter_type'] = choice
+        print("picked filter type {}".format(self.config_dict['filter_type']))
 
     def setup_widgets(self, choice):
         if choice == "butterworth":
@@ -170,6 +200,36 @@ class StartQT4(QtGui.QMainWindow):
                                            'Parameter error',
                                            'The filter order must be integer '
                                            'and bigger than zero. Please fix.')
+                return
+
+            # Wn must be either 1 or 2 parameters.
+            self.config_dict['Wn'] = self.ui.plainTextEdit_opt2.toPlainText().split()
+            try:
+                self.config_dict['Wn'] = list(map(float, self.config_dict['Wn']))
+                if not 1 <= len(self.config_dict['Wn']) <= 2:
+                    raise ValueError("Need 1 or 2 values for frequency!")
+            except:
+                QtGui.QMessageBox.critical(self,
+                                           'Parameter error',
+                                           'You need to give either 1 or 2 values '
+                                           'for the Wn parameter.')
+                return
+
+            # If filter is LP or HP, Wn must be 1 parameter.
+            # If filter is BP or BS, Wn must be 2 parameters in rising order.
+
+            if self.config_dict['filter_type'] in ['bandpass', 'bandstop']:
+                num_elements = 2
+            else:
+                num_elements = 1
+
+            if len(self.config_dict['Wn']) != num_elements:
+                QtGui.QMessageBox.critical(self,
+                                           'Parameter error',
+                                           'This filter type needs {} parameters for Wn'.format(num_elements))
+                return
+
+            print(self.config_dict['Wn'])
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
