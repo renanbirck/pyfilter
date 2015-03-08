@@ -251,7 +251,7 @@
      <widget class="QRadioButton" name="radioButton_LP">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>20</y>
         <width>104</width>
         <height>21</height>
@@ -267,7 +267,7 @@
      <widget class="QRadioButton" name="radioButton_HP">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>40</y>
         <width>104</width>
         <height>21</height>
@@ -280,7 +280,7 @@
      <widget class="QRadioButton" name="radioButton_BP">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>60</y>
         <width>104</width>
         <height>21</height>
@@ -293,7 +293,7 @@
      <widget class="QRadioButton" name="radioButton_BS">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>80</y>
         <width>104</width>
         <height>21</height>
@@ -306,7 +306,7 @@
      <widget class="QRadioButton" name="radioButton_AP">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>100</y>
         <width>104</width>
         <height>21</height>
@@ -345,7 +345,7 @@
      <widget class="QRadioButton" name="radioButton_Butterworth">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>40</y>
         <width>104</width>
         <height>21</height>
@@ -358,7 +358,7 @@
      <widget class="QRadioButton" name="radioButton_Cheby1">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>60</y>
         <width>131</width>
         <height>21</height>
@@ -371,7 +371,7 @@
      <widget class="QRadioButton" name="radioButton_Cheby2">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>80</y>
         <width>131</width>
         <height>21</height>
@@ -384,7 +384,7 @@
      <widget class="QRadioButton" name="radioButton_Elliptical">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>100</y>
         <width>104</width>
         <height>21</height>
@@ -397,7 +397,7 @@
      <widget class="QRadioButton" name="radioButton_Bessel">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>20</y>
         <width>104</width>
         <height>21</height>
@@ -426,7 +426,7 @@
      <widget class="QRadioButton" name="radioButton_Analog">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>20</y>
         <width>104</width>
         <height>21</height>
@@ -442,7 +442,7 @@
      <widget class="QRadioButton" name="radioButton_Digital">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>0</x>
         <y>40</y>
         <width>104</width>
         <height>21</height>
@@ -700,7 +700,7 @@
       <rect>
        <x>30</x>
        <y>50</y>
-       <width>89</width>
+       <width>61</width>
        <height>21</height>
       </rect>
      </property>
@@ -713,7 +713,7 @@
       <rect>
        <x>30</x>
        <y>20</y>
-       <width>89</width>
+       <width>61</width>
        <height>21</height>
       </rect>
      </property>
