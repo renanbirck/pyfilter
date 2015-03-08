@@ -76,7 +76,7 @@ class StartQT4(QtGui.QMainWindow):
         color_pairs = zip(color_names, color_internal_names)
 
     def set_status(self, message):
-        self.statusBar.showMessage(message);
+        self.statusBar.showMessage(message)
 
     def menuAbout(self):
         message_box = QtGui.QMessageBox.information(self,
@@ -193,7 +193,7 @@ class StartQT4(QtGui.QMainWindow):
 
             try:
                 temp_N = int(self.ui.plainTextEdit_opt1.toPlainText())
-                if(temp_N <= 0):
+                if temp_N <= 0:
                     raise ValueError("Order must be bigger than 0!")
             except:
                 QtGui.QMessageBox.critical(self,
@@ -208,7 +208,7 @@ class StartQT4(QtGui.QMainWindow):
                 self.config_dict['Wn'] = list(map(float, self.config_dict['Wn']))
                 if not 1 <= len(self.config_dict['Wn']) <= 2:
                     raise ValueError("Need 1 or 2 values for frequency!")
-            except:
+            except ValueError:
                 QtGui.QMessageBox.critical(self,
                                            'Parameter error',
                                            'You need to give either 1 or 2 values '
