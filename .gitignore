@@ -21,4 +21,6 @@
 *.mtc
 *.mtc1
 *.out
+*.loan
+*.ropeproject
 *.synctex.gz
