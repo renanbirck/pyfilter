@@ -1,0 +1,13 @@
+Processamento de sinal em geral:
+
+- Haykin
+- Oppenheim
+
+Filtros analógicos:
+
+- Sedra/Smith
+- Notas de aplicação de fabricantes
+
+Filtros digitais:
+
+- 
