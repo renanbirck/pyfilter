@@ -877,5 +877,6 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(self.filter_under_test.A[2], 50000)
         self.assertAlmostEqual(self.filter_under_test.A[3], 3464101.6151377549)
         self.assertAlmostEqual(self.filter_under_test.A[4], 400000000.0, places=5)
+
 if __name__ == '__main__':
     unittest.main()
