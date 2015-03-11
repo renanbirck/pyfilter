@@ -22,12 +22,18 @@ def generate_latex_for_polynomial(num,
     # Special case for the first element:
         (first_degree, first_value) = tuples[0]
 
+        if len(values) == 1:
+            return str(values[0])
+
         if first_value != 0:
             if first_value < 0:
                 string = string + '-'
             if first_value != 1:
                 string = string + str(first_value)
             string = string + variable + '^'
+        if first_degree >= 10:
+            string = string + '{' + str(first_degree) + '}'
+        else:
             string = string + str(first_degree)
 
         for (order, value) in tuples[1:]:
@@ -37,13 +43,17 @@ def generate_latex_for_polynomial(num,
                 string = string + ' - '
             else:
                 string = string + ' + '
-            if value != 1:
+            if not (value == 1 or value == -1) and order != 0:
                 string = string + str(value)
 
             if order == 1:
                 string = string + variable
+            elif order >= 10:
+                string = string + variable + '^{' + str(order) + '}'
+            elif order == 0:
+                string = string + str(value)
             elif order != 0:
-                string = string + variable + '^' + order
+                string = string + variable + '^' + str(order)
 
         return string
 

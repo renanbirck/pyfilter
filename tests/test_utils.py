@@ -50,6 +50,13 @@ class TestUtils(unittest.TestCase):
         result = utils.generate_latex_for_polynomial(num, den, variable)
         self.assertEqual(result, "\\frac{s^{10}}{2}")
 
+        num = [0] * 12
+        den = [2]
+        num[0] = 1
+        num[1] = 10
+
+        result = utils.generate_latex_for_polynomial(num, den, variable)
+        self.assertEqual(result, "\\frac{s^{11} + 10s^{10}}{2}")
 
     def test_generate_HTML(self):
         pass
