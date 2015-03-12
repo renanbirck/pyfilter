@@ -18,11 +18,16 @@ def generate_latex_for_polynomial(num,
 
     def build_string(values):
         string = ''
-        tuples = list(reversed(list(enumerate(reversed(values))))) # kill me now
-    # Special case for the first element:
+        # First I need a list of values in descending order.
+        # Then I need to enumerate them to create the (degree, value) vector,
+        # and finally I need this in descending order.
+        # TODO: use generators properly.
+
+        tuples = list(reversed(list(enumerate(reversed(values)))))
+        # Special case for the first element:
         (first_degree, first_value) = tuples[0]
 
-        if len(values) == 1:
+        if len(values) == 1: # Handle the special case first
             return str(values[0])
 
         if first_value != 0:
@@ -37,6 +42,7 @@ def generate_latex_for_polynomial(num,
             string = string + str(first_degree)
 
         for (order, value) in tuples[1:]:
+            # Correctly add the +/-.
             if value == 0:
                 continue
             elif value < 0:
@@ -46,6 +52,7 @@ def generate_latex_for_polynomial(num,
             if not (value == 1 or value == -1) and order != 0:
                 string = string + str(value)
 
+            # And the variable and power.
             if order == 1:
                 string = string + variable
             elif order >= 10:
