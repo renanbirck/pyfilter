@@ -9,6 +9,7 @@
 
 import unittest
 import sys
+import subprocess
 
 sys.path.append('../engine')
 sys.path.append('..')
@@ -59,7 +60,28 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(result, "\\frac{s^{11} + 10s^{10}}{2}")
 
     def test_generate_HTML(self):
-        pass
+        """ This tries generating table HTML for given columns. """
+        column_names = ['', 'A', 'B']
+        column_data = [[1, 2, 3, 4],
+                       [5, 6, 7, 8],
+                       [9, 0, 1, 2]]
+
+        generated_HTML_file_name = utils.generate_HTML(column_names,
+                                                       column_data)
+
+        # Use Lynx to parse the HTML, rather than doing with other library.
+
+        try:
+            parsed_output_generated = subprocess.check_output(["lynx",
+                                                               "-dump",
+                                                               generated_HTML_file_name])
+            parsed_output_reference = subprocess.check_output(["lynx",
+                                                               "-dump",
+                                                               "table_reference.html"])
+            self.assertEqual(parsed_output_generated, parsed_output_reference)
+        except:
+            raise SystemError("This test needs lynx to run.")
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_window.ui'
 #
-# Created: Sat Mar  7 22:09:20 2015
+# Created: Sat Mar 14 14:39:41 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -42,7 +42,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.tab_TF)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
         self.tfOutputHTML = QtWebKit.QWebView(self.tab_TF)
-        self.tfOutputHTML.setUrl(QtCore.QUrl(_fromUtf8("about:blank")))
+        self.tfOutputHTML.setUrl(QtCore.QUrl(_fromUtf8("file:///mnt/dados/Insync/Insync (e-mail pessoal)/Arquivos/Sources/pyfilter_TCC/gui/data/result_template.html")))
         self.tfOutputHTML.setObjectName(_fromUtf8("tfOutputHTML"))
         self.verticalLayout_2.addWidget(self.tfOutputHTML)
         self.tabWidget.addTab(self.tab_TF, _fromUtf8(""))
@@ -62,7 +62,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.splitter)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1121, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1121, 25))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -128,9 +128,6 @@ class Ui_MainWindow(object):
         self.radioButton_AP = QtGui.QRadioButton(self.groupBox_Filter_Type)
         self.radioButton_AP.setGeometry(QtCore.QRect(0, 100, 104, 21))
         self.radioButton_AP.setObjectName(_fromUtf8("radioButton_AP"))
-        self.pushButton_RefreshPlot = QtGui.QPushButton(self.dockWidgetContents)
-        self.pushButton_RefreshPlot.setGeometry(QtCore.QRect(110, 360, 85, 26))
-        self.pushButton_RefreshPlot.setObjectName(_fromUtf8("pushButton_RefreshPlot"))
         self.groupBox_Filter_Top = QtGui.QGroupBox(self.dockWidgetContents)
         self.groupBox_Filter_Top.setGeometry(QtCore.QRect(10, 70, 191, 121))
         self.groupBox_Filter_Top.setObjectName(_fromUtf8("groupBox_Filter_Top"))
@@ -241,7 +238,7 @@ class Ui_MainWindow(object):
         self.pushButton_4.setGeometry(QtCore.QRect(20, 180, 141, 26))
         self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
         self.pushButton = QtGui.QPushButton(self.dockWidgetContents_2)
-        self.pushButton.setGeometry(QtCore.QRect(20, 210, 141, 27))
+        self.pushButton.setGeometry(QtCore.QRect(170, 180, 141, 27))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.dockWidget_PlotOptions.setWidget(self.dockWidgetContents_2)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.dockWidget_PlotOptions)
@@ -291,7 +288,6 @@ class Ui_MainWindow(object):
         self.radioButton_BP.setText(_translate("MainWindow", "Band-pass", None))
         self.radioButton_BS.setText(_translate("MainWindow", "Band-stop", None))
         self.radioButton_AP.setText(_translate("MainWindow", "All-pass", None))
-        self.pushButton_RefreshPlot.setText(_translate("MainWindow", "Refresh plot", None))
         self.groupBox_Filter_Top.setTitle(_translate("MainWindow", "Filter topology", None))
         self.radioButton_Butterworth.setText(_translate("MainWindow", "Butterworth", None))
         self.radioButton_Cheby1.setText(_translate("MainWindow", "Chebyshev Type1", None))

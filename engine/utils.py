@@ -5,6 +5,7 @@
 # (c) 2015 Renan Birck <renan.ee.ufsm@gmail.com>
 
 """ This module has some useful routines used during the code. """
+import tempfile # Used to build the HTML output
 
 def generate_latex_for_polynomial(num,
                                   den,
@@ -67,3 +68,32 @@ def generate_latex_for_polynomial(num,
     num_string = build_string(num)
     den_string = build_string(den)
     return "\\frac{" + num_string + "}{" + den_string + "}"
+
+def generate_HTML(column_names, column_data):
+    transpose = lambda l: [list(i) for i in zip(*l)]
+    temp = tempfile.NamedTemporaryFile(prefix='pyfilter',
+                                       suffix='.html',
+                                       delete=False)
+
+    print("My temporary file is ", temp.name)
+    transposed_names = transpose(column_names)
+    transposed_data = transpose(column_data)
+    html_code = ''
+
+    html_code += '<table border=\"1\">\n'
+    html_code += '<tr>\n'
+
+    for line in column_names:
+        html_code += "<td>{}</td>\n".format(line)
+    html_code += '</tr>\n'
+
+    for line in transposed_data:
+        html_code += '<tr>\n'
+        for value in line:
+            html_code += '<td>{}</td>\n'.format(value)
+        html_code += '</tr>\n'
+
+    temp.write(bytes(html_code, 'UTF-8'))
+
+    temp.close()
+    return temp.name

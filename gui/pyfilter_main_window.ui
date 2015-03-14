@@ -36,7 +36,7 @@
           <widget class="QWebView" name="tfOutputHTML">
            <property name="url">
             <url>
-             <string>about:blank</string>
+             <string>file:///mnt/dados/Insync/Insync (e-mail pessoal)/Arquivos/Sources/pyfilter_TCC/gui/data/result_template.html</string>
             </url>
            </property>
           </widget>
@@ -70,7 +70,7 @@
      <x>0</x>
      <y>0</y>
      <width>1121</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
