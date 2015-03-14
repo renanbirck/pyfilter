@@ -71,16 +71,13 @@ class TestUtils(unittest.TestCase):
 
         # Use Lynx to parse the HTML, rather than doing with other library.
 
-        try:
-            parsed_output_generated = subprocess.check_output(["lynx",
-                                                               "-dump",
-                                                               generated_HTML_file_name])
-            parsed_output_reference = subprocess.check_output(["lynx",
-                                                               "-dump",
-                                                               "table_reference.html"])
-            self.assertEqual(parsed_output_generated, parsed_output_reference)
-        except:
-            raise SystemError("This test needs lynx to run.")
+        parsed_output_generated = subprocess.check_output(["lynx",
+                                                           "-dump",
+                                                           generated_HTML_file_name])
+        parsed_output_reference = subprocess.check_output(["lynx",
+                                                           "-dump",
+                                                           "table_reference.html"])
+        self.assertEqual(parsed_output_generated, parsed_output_reference)
 
 
 if __name__ == '__main__':
