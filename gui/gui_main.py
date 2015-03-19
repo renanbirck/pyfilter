@@ -105,8 +105,8 @@ class StartQT4(QtGui.QMainWindow):
         elif self.ui.radioButton_AttSpecs.isChecked():
             self.ui.label_opt1.setText("Fpass (Hz): ")
             self.ui.label_opt2.setText("Fstop (Hz): ")
-            self.ui.label_opt3.setText("Rpass (dB): ")
-            self.ui.label_opt4.setText("Rstop (dB): ")
+            self.ui.label_opt3.setText("Apass (dB): ")
+            self.ui.label_opt4.setText("Astop (dB): ")
             self.ui.label_opt3.show()
             self.ui.label_opt4.show()
             self.ui.plainTextEdit_opt3.show()
@@ -230,6 +230,47 @@ class StartQT4(QtGui.QMainWindow):
                 return
 
             print(self.config_dict['Wn'])
+
+        else:  # Design mode is from specs
+            if self.config_dict['filter_type'] in ['bandpass', 'bandstop']:
+                num_elements = 2
+            else:
+                num_elements = 1
+
+            # Validate the inputs
+            try:
+                fpass = list(map(float, self.ui.plainTextEdit_opt1.toPlainText().split()))
+                if len(fpass) != num_elements:
+                    raise ValueError("Need 1 or 2 values for passband frequency")
+            except ValueError:
+                QtGui.QMessageBox.critical(self,
+                                           'Parameter error',
+                                           'The passband frequency needs {} numbers.'.format(num_elements))
+                return
+            self.config_dict['Fp'] = fpass
+
+            try:
+                fstop = list(map(float, self.ui.plainTextEdit_opt2.toPlainText().split()))
+                if len(fstop) != num_elements:
+                    raise ValueError("Need 1 or 2 values for stopband frequency")
+            except ValueError:
+                QtGui.QMessageBox.critical(self,
+                                           'Parameter error',
+                                           'The stopband frequency needs {} numbers.'.format(num_elements))
+                return
+            self.config_dict['Fs'] = fstop
+
+            try:
+                Apass = float(self.ui.plainTextEdit_opt3.toPlainText())
+                Astop = float(self.ui.plainTextEdit_opt4.toPlainText())
+                if Apass < 0 or Astop < 0:
+                    raise ValueError("Apass and Astop must be >= 0!")
+            except:
+                QtGui.QMessageBox.critical(self,
+                                           'Parameter error',
+                                           'Both Apass and Astop should be numbers >= 0.')
+
+
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
