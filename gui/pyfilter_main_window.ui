@@ -70,7 +70,7 @@
      <x>0</x>
      <y>0</y>
      <width>1121</width>
-     <height>25</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -168,9 +168,12 @@
        <rect>
         <x>90</x>
         <y>20</y>
-        <width>151</width>
+        <width>121</width>
         <height>31</height>
        </rect>
+      </property>
+      <property name="tabChangesFocus">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QPlainTextEdit" name="plainTextEdit_opt2">
@@ -178,9 +181,12 @@
        <rect>
         <x>90</x>
         <y>60</y>
-        <width>151</width>
+        <width>121</width>
         <height>31</height>
        </rect>
+      </property>
+      <property name="tabChangesFocus">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLabel" name="label_opt3">
@@ -201,12 +207,15 @@
        <rect>
         <x>90</x>
         <y>100</y>
-        <width>151</width>
+        <width>121</width>
         <height>31</height>
        </rect>
       </property>
       <property name="toolTip">
        <string>For band-pass and band-stop filters, input 2 parameters, like '1 2'.</string>
+      </property>
+      <property name="tabChangesFocus">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QLabel" name="label_opt4">
@@ -227,12 +236,15 @@
        <rect>
         <x>90</x>
         <y>140</y>
-        <width>151</width>
+        <width>121</width>
         <height>31</height>
        </rect>
       </property>
       <property name="toolTip">
        <string>For band-pass and band-stop filters, input 2 parameters, like '1 2'.</string>
+      </property>
+      <property name="tabChangesFocus">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>
@@ -513,6 +525,9 @@
         <height>31</height>
        </rect>
       </property>
+      <property name="tabChangesFocus">
+       <bool>true</bool>
+      </property>
      </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_paramCalc">
@@ -792,6 +807,46 @@
    <header>QtWebKit/QWebView</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>radioButton_Analog</tabstop>
+  <tabstop>radioButton_Digital</tabstop>
+  <tabstop>radioButton_NWn</tabstop>
+  <tabstop>radioButton_AttSpecs</tabstop>
+  <tabstop>radioButton_Bessel</tabstop>
+  <tabstop>radioButton_Butterworth</tabstop>
+  <tabstop>radioButton_Cheby1</tabstop>
+  <tabstop>radioButton_Cheby2</tabstop>
+  <tabstop>radioButton_Elliptical</tabstop>
+  <tabstop>radioButton_LP</tabstop>
+  <tabstop>radioButton_HP</tabstop>
+  <tabstop>radioButton_BP</tabstop>
+  <tabstop>radioButton_BS</tabstop>
+  <tabstop>radioButton_AP</tabstop>
+  <tabstop>plainTextEdit_opt1</tabstop>
+  <tabstop>plainTextEdit_opt2</tabstop>
+  <tabstop>plainTextEdit_opt3</tabstop>
+  <tabstop>plainTextEdit_opt4</tabstop>
+  <tabstop>radioButton_matchPB</tabstop>
+  <tabstop>radioButton_matchSB</tabstop>
+  <tabstop>plainTextEdit_pbRipple</tabstop>
+  <tabstop>pushButton_Design</tabstop>
+  <tabstop>checkBox_Xgrid</tabstop>
+  <tabstop>checkBox_Xlog</tabstop>
+  <tabstop>doubleSpinBox_Xmin</tabstop>
+  <tabstop>doubleSpinBox_Xmax</tabstop>
+  <tabstop>checkBox_Ygrid</tabstop>
+  <tabstop>checkBox_Ydb</tabstop>
+  <tabstop>doubleSpinBox_Ymin</tabstop>
+  <tabstop>doubleSpinBox_Ymax</tabstop>
+  <tabstop>comboBox_frontColor</tabstop>
+  <tabstop>comboBox_backColor</tabstop>
+  <tabstop>pushButton_4</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>tfOutputHTML</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>graphicsView</tabstop>
+  <tabstop>graphicsView_2</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -811,4 +866,21 @@
    </hints>
   </connection>
  </connections>
+ <designerdata>
+  <property name="gridDeltaX">
+   <number>10</number>
+  </property>
+  <property name="gridDeltaY">
+   <number>10</number>
+  </property>
+  <property name="gridSnapX">
+   <bool>true</bool>
+  </property>
+  <property name="gridSnapY">
+   <bool>true</bool>
+  </property>
+  <property name="gridVisible">
+   <bool>true</bool>
+  </property>
+ </designerdata>
 </ui>
