@@ -9,6 +9,13 @@
 import sys
 from PyQt4 import QtCore, QtGui
 from pyfilter_main_window import Ui_MainWindow
+from PyQt4.QtGui import QMessageBox
+
+# Aliases
+critical = QMessageBox.critical
+information = QMessageBox.information
+warning = QMessageBox.information
+question = QMessageBox.question
 
 class StartQT4(QtGui.QMainWindow):
 
@@ -79,17 +86,15 @@ class StartQT4(QtGui.QMainWindow):
         self.statusBar.showMessage(message)
 
     def menuAbout(self):
-        message_box = QtGui.QMessageBox.information(self,
-                                                    'About PyFilter...',
-                                                    'PyFilter 0.1 (c) 2015 Renan Birck.')
-        print("Hello World")
+        information(self, 'About PyFilter...',
+                    'PyFilter 0.1 (c) 2015 Renan Birck.')
 
     def configure_boxes_for_design_parameters(self):
         """ This function configure the text boxes for the chosen design parameters.
         """
         if self.ui.radioButton_NWn.isChecked():
             self.ui.label_opt1.setText("N: ")
-            self.ui.label_opt2.setText("Wn: ")
+            self.ui.label_opt2.setText("Freq. (Hz): ")
             self.ui.label_opt3.hide()
             self.ui.label_opt4.hide()
             self.ui.plainTextEdit_opt1.setEnabled(True)
@@ -196,8 +201,7 @@ class StartQT4(QtGui.QMainWindow):
                 if temp_N <= 0:
                     raise ValueError("Order must be bigger than 0!")
             except:
-                QtGui.QMessageBox.critical(self,
-                                           'Parameter error',
+                critical(self,'Parameter error',
                                            'The filter order must be integer '
                                            'and bigger than zero. Please fix.')
                 return
@@ -209,10 +213,8 @@ class StartQT4(QtGui.QMainWindow):
                 if not 1 <= len(self.config_dict['Wn']) <= 2:
                     raise ValueError("Need 1 or 2 values for frequency!")
             except ValueError:
-                QtGui.QMessageBox.critical(self,
-                                           'Parameter error',
-                                           'You need to give either 1 or 2 values '
-                                           'for the Wn parameter.')
+                critical(self, 'Parameter error',
+                         """You need to give either 1 or 2 values for the Wn parameter.""")
                 return
 
             # If filter is LP or HP, Wn must be 1 parameter.
@@ -224,9 +226,8 @@ class StartQT4(QtGui.QMainWindow):
                 num_elements = 1
 
             if len(self.config_dict['Wn']) != num_elements:
-                QtGui.QMessageBox.critical(self,
-                                           'Parameter error',
-                                           'This filter type needs {} parameters for Wn'.format(num_elements))
+                critical(self, 'Parameter error',
+                         'This filter type needs {} parameters for Wn'.format(num_elements))
                 return
 
             print(self.config_dict['Wn'])
@@ -243,9 +244,8 @@ class StartQT4(QtGui.QMainWindow):
                 if len(fpass) != num_elements:
                     raise ValueError("Need 1 or 2 values for passband frequency")
             except ValueError:
-                QtGui.QMessageBox.critical(self,
-                                           'Parameter error',
-                                           'The passband frequency needs {} numbers.'.format(num_elements))
+                critical(self, 'Parameter error',
+                         'The passband frequency needs {} numbers.'.format(num_elements))
                 return
             self.config_dict['Fp'] = fpass
 
@@ -254,9 +254,8 @@ class StartQT4(QtGui.QMainWindow):
                 if len(fstop) != num_elements:
                     raise ValueError("Need 1 or 2 values for stopband frequency")
             except ValueError:
-                QtGui.QMessageBox.critical(self,
-                                           'Parameter error',
-                                           'The stopband frequency needs {} numbers.'.format(num_elements))
+                critical(self, 'Parameter error',
+                         'The stopband frequency needs {} numbers.'.format(num_elements))
                 return
             self.config_dict['Fs'] = fstop
 
@@ -266,9 +265,8 @@ class StartQT4(QtGui.QMainWindow):
                 if Apass < 0 or Astop < 0:
                     raise ValueError("Apass and Astop must be >= 0!")
             except:
-                QtGui.QMessageBox.critical(self,
-                                           'Parameter error',
-                                           'Both Apass and Astop should be numbers >= 0.')
+                critical(self, 'Parameter error',
+                         'Both Apass and Astop should be numbers >= 0.')
 
 
 
