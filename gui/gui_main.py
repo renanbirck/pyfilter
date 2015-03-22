@@ -11,16 +11,18 @@ from PyQt4 import QtCore, QtGui
 from pyfilter_main_window import Ui_MainWindow
 from PyQt4.QtGui import QMessageBox
 
-# Aliases
+# Aliases and other useful functions
 critical = QMessageBox.critical
 information = QMessageBox.information
 warning = QMessageBox.information
 question = QMessageBox.question
+plural = lambda n: 's' if n > 1 else ''
 
 sys.path.append('../engine')
 sys.path.append('..')
 
 from engine import analog
+
 
 
 class StartQT4(QtGui.QMainWindow):
@@ -210,6 +212,13 @@ class StartQT4(QtGui.QMainWindow):
         self.actually_design_filter()
 
     def validate_inputs(self):
+        print("Filter type is ", self.config_dict['filter_type'])
+        if 'band' in self.config_dict['filter_type']:
+            num_elements = 2 #bandstop, bandpass
+        else:
+            num_elements = 1
+
+
         if self.config_dict['mode'] == "N_WN":
             try:
                 N = int(self.ui.plainTextEdit_opt1.toPlainText())
@@ -220,23 +229,48 @@ class StartQT4(QtGui.QMainWindow):
 
             self.N = N
 
-            print("Filter type is ", self.config_dict['filter_type'])
-            if 'band' in self.config_dict['filter_type']:
-                num_elements = 2 #bandstop, bandpass
-            else:
-                num_elements = 1
-
             try:
                 Wn = list(map(float, self.ui.plainTextEdit_opt2.toPlainText().split(' ')))
                 if len(Wn) != num_elements:
-                    raise ValueError("Wn must be {} numbers.".format(num_elements))
+                    raise ValueError("Wrong number of elements.")
             except:
-                raise ValueError("Wn must be {} numbers.".format(num_elements))
+                raise ValueError("Wn must be {} number{}.".format(num_elements, plural(num_elements)))
             self.Wn = Wn
 
             print(">> N = {}, Wn = {}".format(self.N, self.Wn))
-        elif self.config_dict['mode'] = "specs":
-            raise NotImplementedError("not done yet")
+
+        elif self.config_dict['mode'] == "specs":
+            try:
+                Fpass = list(map(float, self.ui.plainTextEdit_opt1.toPlainText().split(' ')))
+                Fstop = list(map(float, self.ui.plainTextEdit_opt2.toPlainText().split(' ')))
+                if len(Fstop) != num_elements or len(Fpass) != num_elements:
+                    raise ValueError("Wrong number of elements.")
+            except:
+                raise ValueError("Fpass and Fstop must be {} number{}.".format(num_elements,
+                                                                               plural(num_elements)))
+
+            # After converting the inputs to numbers, validation them
+
+            if num_elements == 1:
+                Fpass = Fpass[0]
+                Fstop = Fstop[0]
+                if Fpass <= 0 or Fstop <= 0:
+                    raise ValueError("Both frequencies must be positive.")
+            else:
+                if Fpass[0] <= 0 or Fstop[0] <= 0 or Fpass[1] <= 0 or Fstop[1] <= 0:
+                    raise ValueError("All frequencies must be positive.")
+
+            # Special case for the bandpass and bandstop-filters.
+
+            if num_elements == 2:
+                pb0, pb1 = Fpass[0], Fpass[1]
+                sb0, sb1 = Fstop[0], Fstop[1]
+
+                if not ((pb0 > sb0 and pb1 < sb1)
+                        or (pb0 < sb0 and pb1 > sb1)):
+                    raise ValueError("""Parameters for bandpass/bandstop \
+                                     are invalid. """)
+
 
     def build_struct(self):
         raise NotImplementedError("not yet done")
