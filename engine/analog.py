@@ -60,9 +60,9 @@ class AnalogFilter(Filter):
         self.stopband_attenuation = settings['stopband_attenuation']
         self.passband_attenuation = settings['passband_attenuation']
 
-        def convert_to_Hz(x):
+        def convert_to_rad(x):
             if isinstance(x, list):
-                return list(map(convert_to_Hz, x))
+                return list(map(convert_to_rad, x))
             else:
                 if x < 0:
                     raise ValueError("Parameter must be positive.")
@@ -82,12 +82,12 @@ class AnalogFilter(Filter):
             (sb0, sb1) = settings['stopband_frequency']
 
             if pb0 > sb0 and pb1 < sb1:
-                self.Wp = convert_to_Hz(settings['passband_frequency'])
-                self.Ws = convert_to_Hz(settings['stopband_frequency'])
+                self.Wp = convert_to_rad(settings['passband_frequency'])
+                self.Ws = convert_to_rad(settings['stopband_frequency'])
                 self.filter_type = 'bandpass'
             elif pb0 < sb0 and pb1 > sb1:
-                self.Wp = convert_to_Hz(settings['passband_frequency'])
-                self.Ws = convert_to_Hz(settings['stopband_frequency'])
+                self.Wp = convert_to_rad(settings['passband_frequency'])
+                self.Ws = convert_to_rad(settings['stopband_frequency'])
                 self.filter_type = 'bandstop'
             else:
                 raise ValueError("Meaningless filter.")
@@ -95,8 +95,8 @@ class AnalogFilter(Filter):
             pb = settings['passband_frequency']
             sb = settings['stopband_frequency']
 
-            self.Wp = convert_to_Hz(pb)
-            self.Ws = convert_to_Hz(sb)
+            self.Wp = convert_to_rad(pb)
+            self.Ws = convert_to_rad(sb)
 
             # print("Wp = {}, Ws = {}", self.Wp, self.Ws)
 

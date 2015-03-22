@@ -17,6 +17,12 @@ information = QMessageBox.information
 warning = QMessageBox.information
 question = QMessageBox.question
 
+sys.path.append('../engine')
+sys.path.append('..')
+
+from engine import analog
+
+
 class StartQT4(QtGui.QMainWindow):
 
     BAND_MESSAGE = """ For the bandpass and bandstop cases,
@@ -25,6 +31,9 @@ class StartQT4(QtGui.QMainWindow):
 
     config_dict = {}  # The dictionary of configuration
                       # used by the validation routines.
+
+    N = 0
+    Wn = 0
 
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
@@ -90,8 +99,8 @@ class StartQT4(QtGui.QMainWindow):
                     'PyFilter 0.1 (c) 2015 Renan Birck.')
 
     def configure_boxes_for_design_parameters(self):
-        """ This function configure the text boxes for the chosen design parameters.
-        """
+        """ This function configure the text boxes
+        for the chosen design parameters. """
         if self.ui.radioButton_NWn.isChecked():
             self.ui.label_opt1.setText("N: ")
             self.ui.label_opt2.setText("Freq. (Hz): ")
@@ -139,11 +148,11 @@ class StartQT4(QtGui.QMainWindow):
             print("pick Butterworth")
             choice = "butterworth"
         elif self.ui.radioButton_Cheby1.isChecked():
-            print("pick Cheby1")
-            choice = "cheby1"
+            print("pick chebyshev_1")
+            choice = "chebyshev_1"
         elif self.ui.radioButton_Cheby2.isChecked():
-            print("pick Cheby2")
-            choice = "cheby2"
+            print("pick chebyshev_2")
+            choice = "chebyshev_2"
         elif self.ui.radioButton_Elliptical.isChecked():
             print("pick elliptical")
             choice = "elliptical"
@@ -166,6 +175,7 @@ class StartQT4(QtGui.QMainWindow):
         elif self.ui.radioButton_BS.isChecked():
             choice = "bandstop"
         elif self.ui.radioButton_AP.isChecked():
+            warning(self, '', 'The allpass is not made yet.')
             choice = "allpass"
         self.config_dict['filter_type'] = choice
         print("picked filter type {}".format(self.config_dict['filter_type']))
@@ -180,7 +190,7 @@ class StartQT4(QtGui.QMainWindow):
             self.ui.radioButton_matchPB.setEnabled(False)
             self.ui.radioButton_matchSB.setEnabled(False)
 
-        if choice == "cheby1":
+        if choice == "chebyshev_1":
             # Chebyshev type-1 filter needs to have the option to
             # configure the ripple.
             self.ui.label_pbRipple.setEnabled(True)
@@ -190,85 +200,49 @@ class StartQT4(QtGui.QMainWindow):
             self.ui.plainTextEdit_pbRipple.setEnabled(False)
 
     def design_filter(self):
-        """ This function designs the filter. """
-        # Parameter validation
+        try:
+            self.validate_inputs()
+        except ValueError as val:
+            critical(self, 'Error', str(val))
+            return
+
+        self.build_struct()
+        self.actually_design_filter()
+
+    def validate_inputs(self):
         if self.config_dict['mode'] == "N_WN":
-            # In N, Wn mode: N must be integer > 0
-            # Wn must be either 1 or 2 numbers > 0
-
             try:
-                temp_N = int(self.ui.plainTextEdit_opt1.toPlainText())
-                if temp_N <= 0:
-                    raise ValueError("Order must be bigger than 0!")
+                N = int(self.ui.plainTextEdit_opt1.toPlainText())
+                if N <= 0:
+                    raise ValueError("N must be integer >= 0.")
             except:
-                critical(self,'Parameter error',
-                                           'The filter order must be integer '
-                                           'and bigger than zero. Please fix.')
-                return
+                raise ValueError("N must be integer >= 0.")
 
-            # Wn must be either 1 or 2 parameters.
-            self.config_dict['Wn'] = self.ui.plainTextEdit_opt2.toPlainText().split()
-            try:
-                self.config_dict['Wn'] = list(map(float, self.config_dict['Wn']))
-                if not 1 <= len(self.config_dict['Wn']) <= 2:
-                    raise ValueError("Need 1 or 2 values for frequency!")
-            except ValueError:
-                critical(self, 'Parameter error',
-                         """You need to give either 1 or 2 values for the Wn parameter.""")
-                return
+            self.N = N
 
-            # If filter is LP or HP, Wn must be 1 parameter.
-            # If filter is BP or BS, Wn must be 2 parameters in rising order.
-
-            if self.config_dict['filter_type'] in ['bandpass', 'bandstop']:
-                num_elements = 2
+            print("Filter type is ", self.config_dict['filter_type'])
+            if 'band' in self.config_dict['filter_type']:
+                num_elements = 2 #bandstop, bandpass
             else:
                 num_elements = 1
 
-            if len(self.config_dict['Wn']) != num_elements:
-                critical(self, 'Parameter error',
-                         'This filter type needs {} parameters for Wn'.format(num_elements))
-                return
-
-            print(self.config_dict['Wn'])
-
-        else:  # Design mode is from specs
-            if self.config_dict['filter_type'] in ['bandpass', 'bandstop']:
-                num_elements = 2
-            else:
-                num_elements = 1
-
-            # Validate the inputs
             try:
-                fpass = list(map(float, self.ui.plainTextEdit_opt1.toPlainText().split()))
-                if len(fpass) != num_elements:
-                    raise ValueError("Need 1 or 2 values for passband frequency")
-            except ValueError:
-                critical(self, 'Parameter error',
-                         'The passband frequency needs {} numbers.'.format(num_elements))
-                return
-            self.config_dict['Fp'] = fpass
-
-            try:
-                fstop = list(map(float, self.ui.plainTextEdit_opt2.toPlainText().split()))
-                if len(fstop) != num_elements:
-                    raise ValueError("Need 1 or 2 values for stopband frequency")
-            except ValueError:
-                critical(self, 'Parameter error',
-                         'The stopband frequency needs {} numbers.'.format(num_elements))
-                return
-            self.config_dict['Fs'] = fstop
-
-            try:
-                Apass = float(self.ui.plainTextEdit_opt3.toPlainText())
-                Astop = float(self.ui.plainTextEdit_opt4.toPlainText())
-                if Apass < 0 or Astop < 0:
-                    raise ValueError("Apass and Astop must be >= 0!")
+                Wn = list(map(float, self.ui.plainTextEdit_opt2.toPlainText().split(' ')))
+                if len(Wn) != num_elements:
+                    raise ValueError("Wn must be {} numbers.".format(num_elements))
             except:
-                critical(self, 'Parameter error',
-                         'Both Apass and Astop should be numbers >= 0.')
+                raise ValueError("Wn must be {} numbers.".format(num_elements))
+            self.Wn = Wn
 
+            print(">> N = {}, Wn = {}".format(self.N, self.Wn))
+        elif self.config_dict['mode'] = "specs":
+            raise NotImplementedError("not done yet")
 
+    def build_struct(self):
+        raise NotImplementedError("not yet done")
+
+    def actually_design_filter(self):
+        raise NotImplementedError("not yet done")
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
