@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_window.ui'
 #
-# Created: Thu Mar 19 21:00:53 2015
+# Created: Sat Mar 28 16:40:50 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -167,6 +167,7 @@ class Ui_MainWindow(object):
         self.radioButton_matchPB = QtGui.QRadioButton(self.groupBox_Options)
         self.radioButton_matchPB.setEnabled(False)
         self.radioButton_matchPB.setGeometry(QtCore.QRect(0, 20, 171, 21))
+        self.radioButton_matchPB.setChecked(True)
         self.radioButton_matchPB.setObjectName(_fromUtf8("radioButton_matchPB"))
         self.radioButton_matchSB = QtGui.QRadioButton(self.groupBox_Options)
         self.radioButton_matchSB.setEnabled(False)
