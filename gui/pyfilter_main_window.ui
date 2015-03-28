@@ -16,6 +16,10 @@
   <property name="windowTitle">
    <string>PyFilter</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>graphics/gui_main_icon.svg</normaloff>graphics/gui_main_icon.svg</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
@@ -512,7 +516,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Passband ripple 
+       <string>Passband ripple
  (dB)</string>
       </property>
      </widget>

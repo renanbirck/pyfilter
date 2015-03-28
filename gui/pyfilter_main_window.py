@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_window.ui'
 #
-# Created: Sat Mar 28 16:40:50 2015
+# Created: Sat Mar 28 17:21:15 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,6 +28,9 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.setEnabled(True)
         MainWindow.resize(1121, 806)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("graphics/gui_main_icon.svg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
@@ -343,7 +346,7 @@ class Ui_MainWindow(object):
         self.groupBox_Options.setTitle(_translate("MainWindow", "Options", None))
         self.radioButton_matchPB.setText(_translate("MainWindow", "Match passband", None))
         self.radioButton_matchSB.setText(_translate("MainWindow", "Match stopband", None))
-        self.label_pbRipple.setText(_translate("MainWindow", "Passband ripple \n"
+        self.label_pbRipple.setText(_translate("MainWindow", "Passband ripple\n"
 " (dB)", None))
         self.groupBox_paramCalc.setTitle(_translate("MainWindow", "Parameter calculation...", None))
         self.radioButton_NWn.setText(_translate("MainWindow", "From N, Wn", None))
