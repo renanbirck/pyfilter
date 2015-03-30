@@ -1,0 +1,19 @@
+Comuns a A e D:
+
+Para N, Wn:
+- Butterworth OK
+- Cheby1 OK
+- Cheby2 OK
+- Bessel OK
+- Elíptico OK
+
+Para parâmetros:
+- Butterworth
+- Cheby1
+- Cheby2
+- Elíptico
+
+Interface:
+- Plotagem
+- HTML dos resultados
+- Gerar circuito

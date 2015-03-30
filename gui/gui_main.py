@@ -6,7 +6,7 @@
 
 # This is the main file for the GUI.
 
-import sys
+import sys, traceback
 from PyQt4 import QtCore, QtGui
 from pyfilter_main_window import Ui_MainWindow
 from PyQt4.QtGui import QMessageBox
@@ -23,6 +23,7 @@ sys.path.append('..')
 
 from engine import analog
 from math import pi
+
 
 class StartQT4(QtGui.QMainWindow):
 
@@ -137,6 +138,7 @@ class StartQT4(QtGui.QMainWindow):
         else:
             raise ValueError("Somehow we chose something that can't be chosen!")
 
+
     def get_filter_TF(self):
         """ This function gets the appropriate filter transfer-fucntion from
             the chosen options and configures the other radio buttons
@@ -196,10 +198,23 @@ class StartQT4(QtGui.QMainWindow):
             # Chebyshev type-1 filter needs to have the option to
             # configure the ripple.
             self.ui.label_pbRipple.setEnabled(True)
+            self.ui.label_pbRipple.setText("Passband\n ripple (dB): ")
             self.ui.plainTextEdit_pbRipple.setEnabled(True)
-        else:
+        elif choice == "chebyshev_2":
+            self.ui.label_pbRipple.setEnabled(False)
+            self.ui.label_sbAtt.setEnabled(True)
+            self.ui.plainTextEdit_pbRipple.setEnabled(False)
+            self.ui.plainTextEdit_sbAtt.setEnabled(True)
+        elif choice == "elliptical":
+            self.ui.label_pbRipple.setEnabled(True)
+            self.ui.label_sbAtt.setEnabled(True)
+            self.ui.plainTextEdit_pbRipple.setEnabled(True)
+            self.ui.plainTextEdit_sbAtt.setEnabled(True)
+        else:  # Bessel, Butterworth
             self.ui.label_pbRipple.setEnabled(False)
             self.ui.plainTextEdit_pbRipple.setEnabled(False)
+            self.ui.label_sbAtt.setEnabled(False)
+            self.ui.plainTextEdit_sbAtt.setEnabled(False)
 
     def design_filter(self):
         try:
@@ -208,6 +223,7 @@ class StartQT4(QtGui.QMainWindow):
             self.actually_design_filter()
         except ValueError as val:
             critical(self, 'Error', str(val))
+            print(traceback.format_exc())
             return
 
     def validate_inputs(self):
@@ -224,6 +240,20 @@ class StartQT4(QtGui.QMainWindow):
             else:
                 raise ValueError("WHAT? This is impossible.")
 
+        if self.config_dict['filter_TF'] == 'elliptical':
+            print("aqui")
+            try:
+                ripple = float(self.ui.plainTextEdit_pbRipple.toPlainText())
+                attenuation = float(self.ui.plainTextEdit_sbAtt.toPlainText())
+                if ripple <= 0 or attenuation <= 0:
+                    raise ValueError("Bad value.")
+                self.config_dict['ripple'] = ripple
+                self.config_dict['attenuation'] = attenuation
+            except:
+                raise ValueError(""" For the elliptical filter,
+                the ripple and the attenuation must
+                be positive and not zero. """)
+
         if self.config_dict['filter_TF'] == 'chebyshev_1':
             try:
                 ripple = float(self.ui.plainTextEdit_pbRipple.toPlainText())
@@ -231,11 +261,23 @@ class StartQT4(QtGui.QMainWindow):
                     raise ValueError("Bad value.")
                 self.config_dict['ripple'] = ripple
             except:
-                raise ValueError("""For the Chebyshev type1 filter,
+                raise ValueError("""For the Chebyshev type1 and
+                the elliptical filters,
                 the ripple must be positive and not zero. """)
 
+        if self.config_dict['filter_TF'] == 'chebyshev_2':
+            try:
+                attenuation = float(self.ui.plainTextEdit_sbAtt.toPlainText())
+                if attenuation <= 0:
+                    raise ValueError("Bad value.")
+                self.config_dict['attenuation'] = attenuation
+            except:
+                raise ValueError("""For the Chebyshev type2 and
+                the elliptical filters,
+                the stopband attenuation must be positive and not zero. """)
+
         if 'band' in self.config_dict['filter_type']:
-            num_elements = 2 #bandstop, bandpass
+            num_elements = 2  # bandstop, bandpass
         else:
             num_elements = 1
 
@@ -349,7 +391,16 @@ class StartQT4(QtGui.QMainWindow):
         print("Begin filter design")
         if self.analog_filter.filter_class == 'chebyshev_1':
             self.analog_filter.design(ripple=self.config_dict['ripple'])
-        else:
+        elif self.analog_filter.filter_class == 'chebyshev_2':
+            self.analog_filter.stopband_attenuation = float(self.config_dict['attenuation'])
+            self.analog_filter.design()
+        elif self.analog_filter.filter_class == 'elliptical':
+            self.analog_filter.passband_attenuation = float(self.config_dict['ripple'])
+            self.analog_filter.stopband_attenuation = float(self.config_dict['attenuation'])
+            print("Rp = ", self.analog_filter.passband_attenuation, self.config_dict['ripple'])
+            print("Rs = ", self.analog_filter.stopband_attenuation, self.config_dict['attenuation'])
+            self.analog_filter.design()
+        else:  # Bessel, Butterworth
             self.analog_filter.design()
         print("Filter design finished.")
 
