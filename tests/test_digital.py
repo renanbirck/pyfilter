@@ -12,7 +12,7 @@ sys.path.append('..')
 
 from engine import digital
 
-class TestDigital(unittest.Testcase):
+class TestDigital(unittest.TestCase):
 
     filter_under_test = None
     sample_rate = 20000
@@ -20,7 +20,7 @@ class TestDigital(unittest.Testcase):
     def setUp(self):
         """ Instance the filter. """
         self.filter_under_test = digital.DigitalFilter(sample_rate=self.sample_rate)
-        self.assertEqual(self.filter_under_test.sample_rate, sample_rate)
+        self.assertEqual(self.filter_under_test.sample_rate, self.sample_rate)
 
     def test_construct_filters(self):
         """ Try constructing some filters. """
@@ -36,4 +36,6 @@ class TestDigital(unittest.Testcase):
         self.assertIsInstance(elliptical, digital.EllipticalFilter)
         self.assertIsInstance(bessel, digital.BesselFilter)
 
+if __name__ == '__main__':
+    unittest.main()
 
