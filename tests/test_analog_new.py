@@ -29,11 +29,11 @@ class TestAnalog(unittest.TestCase):
                       'ripple': 0.01}
 
         temp_filter = analog.AnalogFilter(parameters)
-        self.assertEqual(temp_filter.parameters['passband_frequency'], 2 * pi * 1)
-        self.assertEqual(temp_filter.parameters['stopband_frequency'], 2 * pi * 10)
-        self.assertEqual(temp_filter.parameters['passband_attenuation'], 0)
-        self.assertEqual(temp_filter.parameters['stopband_attenuation'], 80)
-        self.assertEqual(temp_filter.parameters['ripple'], 0.01)
+        self.assertEqual(temp_filter.filter_parameters['passband_frequency'], 2 * pi * 1)
+        self.assertEqual(temp_filter.filter_parameters['stopband_frequency'], 2 * pi * 10)
+        self.assertEqual(temp_filter.filter_parameters['passband_attenuation'], 0)
+        self.assertEqual(temp_filter.filter_parameters['stopband_attenuation'], 80)
+        self.assertEqual(temp_filter.filter_parameters['ripple'], 0.01)
 
     def test_get_filter_kind(self):
         """ This checks that we can find the filter type from the parameters. """
