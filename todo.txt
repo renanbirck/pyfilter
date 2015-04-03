@@ -17,3 +17,10 @@ Interface:
 - Plotagem
 - HTML dos resultados
 - Gerar circuito
+
+---- 
+                rp      rs
+Butterworth     n       n
+Elíptico        s       s
+Cheby1          s       n
+Cheby2          n       s

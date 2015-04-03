@@ -196,20 +196,34 @@ class StartQT4(QtGui.QMainWindow):
 
         if choice == "chebyshev_1":
             # Chebyshev type-1 filter needs to have the option to
-            # configure the ripple.
+            # configure the ripple in both modes.
             self.ui.label_pbRipple.setEnabled(True)
             self.ui.label_pbRipple.setText("Passband\n ripple (dB): ")
             self.ui.plainTextEdit_pbRipple.setEnabled(True)
         elif choice == "chebyshev_2":
-            self.ui.label_pbRipple.setEnabled(False)
-            self.ui.label_sbAtt.setEnabled(True)
-            self.ui.plainTextEdit_pbRipple.setEnabled(False)
-            self.ui.plainTextEdit_sbAtt.setEnabled(True)
+            # Chebyshev type-2 filter needs to have the option to
+            # set the stopband attenuation.
+            if self.config_dict['mode'] == "N_WN":
+                self.ui.label_pbRipple.setEnabled(False)
+                self.ui.label_sbAtt.setEnabled(True)
+                self.ui.plainTextEdit_pbRipple.setEnabled(False)
+                self.ui.plainTextEdit_sbAtt.setEnabled(True)
+            else: # use the existing Astop
+                self.ui.label_pbRipple.setEnabled(False)
+                self.ui.label_sbAtt.setEnabled(False)
+                self.ui.plainTextEdit_pbRipple.setEnabled(False)
+                self.ui.plainTextEdit_sbAtt.setEnabled(False)
+
         elif choice == "elliptical":
+            # The elliptical needs to have the both options.
             self.ui.label_pbRipple.setEnabled(True)
-            self.ui.label_sbAtt.setEnabled(True)
             self.ui.plainTextEdit_pbRipple.setEnabled(True)
-            self.ui.plainTextEdit_sbAtt.setEnabled(True)
+            if self.config_dict['mode'] == "N_WN":
+                self.ui.label_sbAtt.setEnabled(True)
+                self.ui.plainTextEdit_sbAtt.setEnabled(True)
+            else: # use the existing Astop
+                self.ui.label_sbAtt.setEnabled(False)
+                self.ui.plainTextEdit_sbAtt.setEnabled(False)
         else:  # Bessel, Butterworth
             self.ui.label_pbRipple.setEnabled(False)
             self.ui.plainTextEdit_pbRipple.setEnabled(False)
@@ -244,7 +258,10 @@ class StartQT4(QtGui.QMainWindow):
             print("aqui")
             try:
                 ripple = float(self.ui.plainTextEdit_pbRipple.toPlainText())
-                attenuation = float(self.ui.plainTextEdit_sbAtt.toPlainText())
+                if self.config_dict['mode'] == "N_WN":
+                    attenuation = float(self.ui.plainTextEdit_sbAtt.toPlainText())
+                else:
+                    attenuation = float(self.ui.plainTextEdit_opt4.toPlainText())
                 if ripple <= 0 or attenuation <= 0:
                     raise ValueError("Bad value.")
                 self.config_dict['ripple'] = ripple
@@ -363,11 +380,11 @@ class StartQT4(QtGui.QMainWindow):
             return  # We're done here, now go on to design filter.
         else:
             filter_configs = {}
+            self.analog_filter.filter_class = self.config_dict['filter_TF']
             filter_configs['passband_frequency'] = self.config_dict['passband_frequency']
             filter_configs['stopband_frequency'] = self.config_dict['stopband_frequency']
             filter_configs['passband_attenuation'] = self.config_dict['passband_attenuation']
             filter_configs['stopband_attenuation'] = self.config_dict['stopband_attenuation']
-
             # scipy.signal functions want PB and SB swapped in the highpass case.
 
             if self.analog_filter.filter_type == 'highpass':
