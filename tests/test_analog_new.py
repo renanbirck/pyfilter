@@ -391,5 +391,52 @@ class TestAnalog(unittest.TestCase):
         self.assertListEqual(list(elliptic.B), [1.0, 0.0, 20000.0])
         self.assertListEqual(list(elliptic.A), [1.0, 4.8012894912717128, 20000.0])
 
+
+    def test_compute_cheb1_lp(self):
+        parameters = {'passband_frequency': 10,
+                      'stopband_frequency': 100,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        cheby1 = analog.ChebyshevIFilter(parameters)
+        cheby1.compute_parameters()
+
+        self.assertEqual(cheby1.N, 4)
+        self.assertAlmostEqual(cheby1.Wn, 62.8318530717959)
+
+        cheby1.ripple = 1
+        cheby1.design()
+
+        self.assertAlmostEqual(cheby1.B[0], 3828618.98570601)
+        self.assertAlmostEqual(cheby1.A[0], 1)
+        self.assertAlmostEqual(cheby1.A[1], 59.8669045905151)
+        self.assertAlmostEqual(cheby1.A[2], 5739.86489306066)
+        self.assertAlmostEqual(cheby1.A[3], 184206.894005592)
+        self.assertAlmostEqual(cheby1.A[4], 4295781.15645301)
+
+    def test_compute_cheb1_hp(self):
+
+        parameters = {'passband_frequency': 100,
+                      'stopband_frequency': 10,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+
+        cheby1 = analog.ChebyshevIFilter(parameters)
+        cheby1.ripple = 1
+        cheby1.compute_parameters()
+        cheby1.design()
+
+        self.assertEqual(cheby1.N, 4)
+        self.assertAlmostEqual(cheby1.Wn, 628.318530717959)
+
+        self.assertAlmostEqual(cheby1.B[0], 0.891250938133746)
+        self.assertAlmostEqual(cheby1.A[0], 1)
+        self.assertAlmostEqual(cheby1.A[1], 1692.86945081694)
+        self.assertAlmostEqual(cheby1.A[2], 2082471.15587304)
+        self.assertAlmostEqual(cheby1.A[3], 857479735.09746361)
+        self.assertAlmostEqual(cheby1.A[4], 565453371958.94922)
+
+
+
+
 if __name__ == '__main__':
         unittest.main()

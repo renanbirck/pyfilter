@@ -93,6 +93,12 @@ class BesselFilter(AnalogFilter):
 
 class ChebyshevIFilter(AnalogFilter):
     ripple = None
+    def _compute_parameters(self):
+        self.N, self.Wn = signal.cheb1ord(self.filter_parameters['passband_frequency'],
+                                          self.filter_parameters['stopband_frequency'],
+                                          self.filter_parameters['passband_attenuation'],
+                                          self.filter_parameters['stopband_attenuation'],
+                                          analog=True)
     def _design(self):
         if not self.ripple and 'ripple' in self.filter_parameters:
             self.ripple = self.filter_parameters['ripple']
