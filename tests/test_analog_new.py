@@ -358,7 +358,38 @@ class TestAnalog(unittest.TestCase):
 
         elliptic.filter_kind = "highpass"
         elliptic.design()
+        self.assertAlmostEqual(elliptic.Z[0], -3.1061566419652165j)
+        self.assertAlmostEqual(elliptic.Z[1], 3.1061566419652165j)
+        self.assertAlmostEqual(elliptic.P[0], -21.250101620074428+22.520415223362118j)
+        self.assertAlmostEqual(elliptic.P[1], -21.250101620074428-22.520415223362118j)
+        self.assertAlmostEqual(elliptic.K, 0.99884936993650497)
+        self.assertAlmostEqual(elliptic.B[0], 0.99884936993650497)
+        self.assertAlmostEqual(elliptic.B[1], 0)
+        self.assertAlmostEqual(elliptic.B[2], 9.6371075649932063)
 
+        elliptic.N = 1
+        elliptic.Wn = [100, 200]
+        elliptic.filter_kind = "bandpass"
+        elliptic.design()
+        self.assertAlmostEqual(elliptic.Z[0], 0)
+        self.assertAlmostEqual(elliptic.P[0], -9.64726445+0j)
+        self.assertAlmostEqual(elliptic.P[1], -2073.12654417+0.j)
+        self.assertAlmostEqual(elliptic.K, 2082.7738086151749)
+        self.assertAlmostEqual(elliptic.B[0],  2082.7738086151749)
+        self.assertAlmostEqual(elliptic.B[1], 0)
+        self.assertAlmostEqual(elliptic.A[0], 1)
+        self.assertAlmostEqual(elliptic.A[1], 2082.7738086151749)
+        self.assertAlmostEqual(elliptic.A[2], 20000)
+
+        elliptic.filter_kind = "bandstop"
+        elliptic.design()
+        self.assertListEqual(list(elliptic.Z), [141.42135623730951j,
+                                               -141.42135623730951j])
+        self.assertListEqual(list(elliptic.P), [(-2.4006447456358564-141.40097915080096j),
+                                                (-2.4006447456358564+141.40097915080096j)])
+        self.assertAlmostEqual(elliptic.K, 1)
+        self.assertListEqual(list(elliptic.B), [1.0, 0.0, 20000.0])
+        self.assertListEqual(list(elliptic.A), [1.0, 4.8012894912717128, 20000.0])
 
 if __name__ == '__main__':
         unittest.main()
