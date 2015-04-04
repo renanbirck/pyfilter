@@ -3,7 +3,9 @@
 # pyfilter: a Python program for filter synthesis and analysis.
 # (c) 2015 Renan Birck <renan.ee.ufsm@gmail.com>
 
-""" This module is a testbench for the AnalogFilter class. """
+""" This module is a testbench for the new AnalogFilter class,
+    which is done in a much more OO way. """
+
 import unittest
 import sys
 from math import pi
@@ -94,6 +96,10 @@ class TestAnalog(unittest.TestCase):
         self.assertListEqual(list(butterworth.P), [-70.710678118654755+70.710678118654741j,
                                                    -70.710678118654755-70.710678118654741j])
         self.assertEqual(butterworth.K, 10000)
+        self.assertListEqual(list(butterworth.B), [10000])
+        self.assertAlmostEqual(butterworth.A[0], 1)
+        self.assertAlmostEqual(butterworth.A[1], 141.42135623730951)
+        self.assertAlmostEqual(butterworth.A[2], 10000)
 
         ### Highpass test
         butterworth.filter_kind = "highpass"
@@ -102,6 +108,44 @@ class TestAnalog(unittest.TestCase):
         self.assertListEqual(list(butterworth.P), [-70.71067811865476-70.71067811865474j,
                                                    -70.71067811865476+70.71067811865474j])
         self.assertEqual(butterworth.K, 1)
+        self.assertListEqual(list(butterworth.B), [1, 0, 0])
+        self.assertAlmostEqual(butterworth.A[0], 1)
+        self.assertAlmostEqual(butterworth.A[1], 141.42135623730951)
+        self.assertAlmostEqual(butterworth.A[2], 10000)
+
+
+        ### Bandpass test
+        butterworth.N = 1
+        butterworth.Wn = [100, 200]
+        butterworth.filter_kind = "bandpass"
+        butterworth.design()
+        self.assertEqual(butterworth.Z, 0)
+        self.assertAlmostEqual(butterworth.P[0], -50 - 132.28756555323j)
+        self.assertAlmostEqual(butterworth.P[1], -50 + 132.28756555323j)
+        self.assertAlmostEqual(butterworth.K, 100)
+        self.assertAlmostEqual(butterworth.B[0], 100)
+        self.assertAlmostEqual(butterworth.B[1], 0)
+        self.assertAlmostEqual(butterworth.A[0], 1)
+        self.assertAlmostEqual(butterworth.A[1], 100)
+        self.assertAlmostEqual(butterworth.A[2], 20000)
+
+        ### Bandstop test
+        butterworth.N = 1
+        butterworth.Wn = [100, 200]
+        butterworth.filter_kind = "bandstop"
+        butterworth.design()
+        self.assertAlmostEqual(butterworth.Z[0], +141.42135623731j)
+        self.assertAlmostEqual(butterworth.Z[1], -141.42135623731j)
+        self.assertAlmostEqual(butterworth.P[0], -50 + 132.28756555323j)
+        self.assertAlmostEqual(butterworth.P[1], -50 - 132.28756555323j)
+        self.assertAlmostEqual(butterworth.K, 1)
+        self.assertAlmostEqual(butterworth.B[0], 1)
+        self.assertAlmostEqual(butterworth.B[1], 0)
+        self.assertAlmostEqual(butterworth.B[2], 20000)
+        self.assertAlmostEqual(butterworth.A[0], 1)
+        self.assertAlmostEqual(butterworth.A[1], 100)
+        self.assertAlmostEqual(butterworth.A[2], 20000)
+
 
 if __name__ == '__main__':
         unittest.main()
