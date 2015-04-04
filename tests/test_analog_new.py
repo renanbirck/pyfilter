@@ -335,5 +335,30 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(cheby2.A[1], 3160.69612585582)
         self.assertAlmostEqual(cheby2.A[2], 20000)
 
+    def test_elliptic_N_Wn(self):
+        elliptic = analog.EllipticFilter()
+        elliptic.N = 2
+        elliptic.Wn = 100 # 100 rad/s
+        elliptic.ripple = 0.01
+        elliptic.stopband_attenuation = 40
+        elliptic.filter_kind = "lowpass"
+        elliptic.design()
+
+        self.assertAlmostEqual(elliptic.Z[0], 3219.4126544993424j)
+        self.assertAlmostEqual(elliptic.Z[1], -3219.4126544993424j)
+        self.assertAlmostEqual(elliptic.P[0], -221.64707884-234.89695898j)
+        self.assertAlmostEqual(elliptic.P[1], -221.64707884+234.89695898j)
+        self.assertAlmostEqual(elliptic.K, 0.010051889531786585)
+        self.assertAlmostEqual(elliptic.B[0], 0.010051889531786585)
+        self.assertAlmostEqual(elliptic.B[1], 0)
+        self.assertAlmostEqual(elliptic.B[2], 104183.99356636693)
+        self.assertAlmostEqual(elliptic.A[0], 1)
+        self.assertAlmostEqual(elliptic.A[1], 443.29415767889253)
+        self.assertAlmostEqual(elliptic.A[2], 104304.00889474427)
+
+        elliptic.filter_kind = "highpass"
+        elliptic.design()
+
+
 if __name__ == '__main__':
         unittest.main()

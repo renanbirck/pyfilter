@@ -112,3 +112,18 @@ class ChebyshevIIFilter(AnalogFilter):
         self.Z, self.P, self.K = signal.cheby2(self.N, self.stopband_attenuation, self.Wn,
                                                self.filter_kind, analog=True, output='zpk')
 
+class EllipticFilter(AnalogFilter):
+    ripple = None
+    stopband_attenuation = None
+
+    def _design(self):
+        if not self.stopband_attenuation:
+            self.stopband_attenuation = self.filter_parameters['stopband_attenuation']
+
+        if not self.ripple:
+            self.ripple = self.filter_parameters['ripple']
+
+        self.Z, self.P, self.K = signal.ellip(self.N, self.ripple,
+                                              self.stopband_attenuation,
+                                              self.Wn, self.filter_kind, analog=True,
+                                              output='zpk')
