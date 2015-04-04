@@ -88,7 +88,7 @@ class TestAnalog(unittest.TestCase):
     def test_butterworth_N_Wn(self):
         butterworth = analog.ButterworthFilter()
         butterworth.N = 2
-        butterworth.Wn = 100 # 100 Hz
+        butterworth.Wn = 100 # 100 rad/s
         butterworth.filter_kind = "lowpass"
         butterworth.design()
 
@@ -148,7 +148,7 @@ class TestAnalog(unittest.TestCase):
     def test_bessel_N_Wn(self):
         bessel = analog.BesselFilter()
         bessel.N = 2
-        bessel.Wn = 100 # 100 Hz
+        bessel.Wn = 100 # 100 rad/s
         bessel.filter_kind = "lowpass"
         bessel.design()
         self.assertEqual(list(bessel.Z), [])
@@ -203,6 +203,70 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(bessel.A[0], 1)
         self.assertAlmostEqual(bessel.A[1], 100)
         self.assertAlmostEqual(bessel.A[2], 20000)
+
+    def test_cheby1_N_Wn(self):
+
+        cheby1 = analog.ChebyshevIFilter()
+        cheby1.N = 2
+        cheby1.Wn = 100 # 100 rad/s
+        cheby1.ripple = 0.01
+        cheby1.filter_kind = "lowpass"
+        cheby1.design()
+
+        self.assertAlmostEqual(list(cheby1.Z), [])
+        self.assertAlmostEqual(cheby1.P[0], -222.776405361899 + 233.729174015502j)
+        self.assertAlmostEqual(cheby1.P[1], -222.776405361899 - 233.729174015502j)
+        self.assertAlmostEqual(cheby1.K, 104138.690430759)
+        self.assertAlmostEqual(cheby1.B[0], 104138.690430759)
+        self.assertAlmostEqual(cheby1.A[0], 1)
+        self.assertAlmostEqual(cheby1.A[1], 445.552810723798)
+        self.assertAlmostEqual(cheby1.A[2], 104258.653571938)
+
+        cheby1.N = 2
+        cheby1.Wn = 100 # 100 rad/s
+        cheby1.ripple = 1
+        cheby1.filter_kind = "highpass"
+        cheby1.design()
+
+        self.assertEqual(list(cheby1.Z), [0, 0])
+        self.assertAlmostEqual(cheby1.P[0], -49.7834034127213 - 81.190039788561j)
+        self.assertAlmostEqual(cheby1.P[1], -49.7834034127213 + 81.190039788561j)
+        self.assertAlmostEqual(cheby1.K, 0.891250938133745)
+        self.assertAlmostEqual(cheby1.B[0], 0.891250938133745)
+        self.assertAlmostEqual(cheby1.A[0], 1)
+        self.assertAlmostEqual(cheby1.A[1], 99.5668068254425)
+        self.assertAlmostEqual(cheby1.A[2], 9070.20981622186)
+
+        cheby1.N = 1
+        cheby1.Wn = [100, 200]
+        cheby1.ripple = 0.01
+        cheby1.filter_kind = "bandpass"
+        cheby1.design()
+
+        self.assertEqual(cheby1.Z[0], 0)
+        self.assertAlmostEqual(cheby1.P[0], -9.64726444521389)
+        self.assertAlmostEqual(cheby1.P[1], -2073.12654416996)
+        self.assertAlmostEqual(cheby1.K, 2082.77380861517)
+        self.assertAlmostEqual(cheby1.B[0], 2082.77380861517)
+        self.assertAlmostEqual(cheby1.B[1], 0)
+        self.assertAlmostEqual(cheby1.A[0], 1)
+        self.assertAlmostEqual(cheby1.A[1], 2082.77380861517)
+        self.assertAlmostEqual(cheby1.A[2], 20000)
+
+        cheby1.filter_kind = "bandstop"
+        cheby1.design()
+        self.assertAlmostEqual(cheby1.Z[0], 141.42135623731j)
+        self.assertAlmostEqual(cheby1.Z[1], -141.42135623731j)
+        self.assertAlmostEqual(cheby1.P[0], -2.40064474563586 +      141.400979150801j)
+        self.assertAlmostEqual(cheby1.P[1], -2.40064474563586 -      141.400979150801j)
+        self.assertAlmostEqual(cheby1.K, 1)
+
+        self.assertAlmostEqual(cheby1.B[0], 1)
+        self.assertAlmostEqual(cheby1.B[1], 0)
+        self.assertAlmostEqual(cheby1.B[2], 20000)
+        self.assertAlmostEqual(cheby1.A[0], 1)
+        self.assertAlmostEqual(cheby1.A[1], 4.80128949127172)
+        self.assertAlmostEqual(cheby1.A[2], 20000)
 
 
 

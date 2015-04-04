@@ -11,8 +11,9 @@ def hz_to_rad(x):
 
 class AnalogFilter():
 
-    filter_parameters = None
+    filter_parameters = {}
     filter_kind = None
+    ripple = None
     # Those are common to all types of filter
     N = None
     Wn = None
@@ -70,6 +71,7 @@ class AnalogFilter():
 
     def design(self):
         self._design()
+        self.B, self.A = signal.zpk2tf(self.Z, self.P, self.K)
 
     def _compute_parameters(self):
         raise ValueError("Please override me with your own _compute_parameters function!")
@@ -82,11 +84,20 @@ class ButterworthFilter(AnalogFilter):
         self.Z, self.P, self.K = signal.butter(self.N, self.Wn,
                                                self.filter_kind, analog=True,
                                                output='zpk')
-        self.B, self.A = signal.zpk2tf(self.Z, self.P, self.K)
 
 class BesselFilter(AnalogFilter):
     def _design(self):
         self.Z, self.P, self.K = signal.bessel(self.N, self.Wn,
                                                self.filter_kind, analog=True,
                                                output='zpk')
-        self.B, self.A = signal.zpk2tf(self.Z, self.P, self.K)
+
+class ChebyshevIFilter(AnalogFilter):
+    def _design(self):
+        if not self.ripple and 'ripple' in self.filter_parameters:
+            self.ripple = self.filter_parameters['ripple']
+        elif not self.ripple and 'ripple' not in self.filter_parameters:
+            raise ValueError("Needs a ripple value.")
+
+        self.Z, self.P, self.K = signal.cheby1(self.N, self.ripple, self.Wn,
+                                               self.filter_kind, analog=True,
+                                               output='zpk')
