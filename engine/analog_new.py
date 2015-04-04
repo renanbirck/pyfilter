@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 from math import pi
+from scipy import signal
 
 def hz_to_rad(x):
     """ Converts X Hz to radians/second. """
@@ -70,8 +71,15 @@ class AnalogFilter():
     def design(self):
         self._design()
 
+    def _compute_parameters(self):
+        raise ValueError("Please override me with your own _compute_parameters function!")
+
     def _design(self):
         raise ValueError("Please override me with your own _design function!")
 
-    def _compute_parameters(self):
-        raise ValueError("Please override me with your own _compute_parameters function!")
+class ButterworthFilter(AnalogFilter):
+    def _design(self):
+        self.Z, self.P, self.K = signal.butter(self.N, self.Wn,
+                                               self.filter_kind, analog=True,
+                                               output='zpk')
+        self.B, self.A = signal.zpk2tf(self.Z, self.P, self.K)

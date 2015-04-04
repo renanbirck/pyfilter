@@ -81,5 +81,27 @@ class TestAnalog(unittest.TestCase):
                 parameters['passband_frequency'] = invalid
                 self.filter_under_test.set_parameters(parameters)
 
+    # Those try synthesizing directly from N, Wn.
+
+    def test_butterworth_N_Wn(self):
+        butterworth = analog.ButterworthFilter()
+        butterworth.N = 2
+        butterworth.Wn = 100 # 100 Hz
+        butterworth.filter_kind = "lowpass"
+        butterworth.design()
+
+        self.assertEqual(list(butterworth.Z), [])
+        self.assertListEqual(list(butterworth.P), [-70.710678118654755+70.710678118654741j,
+                                                   -70.710678118654755-70.710678118654741j])
+        self.assertEqual(butterworth.K, 10000)
+
+        ### Highpass test
+        butterworth.filter_kind = "highpass"
+        butterworth.design()
+        self.assertListEqual(list(butterworth.Z), [0, 0])
+        self.assertListEqual(list(butterworth.P), [-70.71067811865476-70.71067811865474j,
+                                                   -70.71067811865476+70.71067811865474j])
+        self.assertEqual(butterworth.K, 1)
+
 if __name__ == '__main__':
         unittest.main()
