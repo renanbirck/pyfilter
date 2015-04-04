@@ -13,7 +13,7 @@ class AnalogFilter():
 
     filter_parameters = {}
     filter_kind = None
-    ripple = None
+    #ripple = None
     # Those are common to all types of filter
     N = None
     Wn = None
@@ -70,7 +70,7 @@ class AnalogFilter():
         self._compute_parameters()
 
     def design(self):
-        self._design()
+        self._design() # It computes Z, P, K for numerical stability.
         self.B, self.A = signal.zpk2tf(self.Z, self.P, self.K)
 
     def _compute_parameters(self):
@@ -92,6 +92,7 @@ class BesselFilter(AnalogFilter):
                                                output='zpk')
 
 class ChebyshevIFilter(AnalogFilter):
+    ripple = None
     def _design(self):
         if not self.ripple and 'ripple' in self.filter_parameters:
             self.ripple = self.filter_parameters['ripple']
@@ -101,3 +102,13 @@ class ChebyshevIFilter(AnalogFilter):
         self.Z, self.P, self.K = signal.cheby1(self.N, self.ripple, self.Wn,
                                                self.filter_kind, analog=True,
                                                output='zpk')
+
+class ChebyshevIIFilter(AnalogFilter):
+    stopband_attenuation = None
+    def _design(self):
+        if not self.stopband_attenuation:
+            self.stopband_attenuation = self.filter_parameters['stopband_attenuation']
+
+        self.Z, self.P, self.K = signal.cheby2(self.N, self.stopband_attenuation, self.Wn,
+                                               self.filter_kind, analog=True, output='zpk')
+
