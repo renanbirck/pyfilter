@@ -83,3 +83,10 @@ class ButterworthFilter(AnalogFilter):
                                                self.filter_kind, analog=True,
                                                output='zpk')
         self.B, self.A = signal.zpk2tf(self.Z, self.P, self.K)
+
+class BesselFilter(AnalogFilter):
+    def _design(self):
+        self.Z, self.P, self.K = signal.bessel(self.N, self.Wn,
+                                               self.filter_kind, analog=True,
+                                               output='zpk')
+        self.B, self.A = signal.zpk2tf(self.Z, self.P, self.K)

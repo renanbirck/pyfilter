@@ -113,7 +113,6 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(butterworth.A[1], 141.42135623730951)
         self.assertAlmostEqual(butterworth.A[2], 10000)
 
-
         ### Bandpass test
         butterworth.N = 1
         butterworth.Wn = [100, 200]
@@ -145,6 +144,66 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(butterworth.A[0], 1)
         self.assertAlmostEqual(butterworth.A[1], 100)
         self.assertAlmostEqual(butterworth.A[2], 20000)
+
+    def test_bessel_N_Wn(self):
+        bessel = analog.BesselFilter()
+        bessel.N = 2
+        bessel.Wn = 100 # 100 Hz
+        bessel.filter_kind = "lowpass"
+        bessel.design()
+        self.assertEqual(list(bessel.Z), [])
+        self.assertAlmostEqual(bessel.P[0], -86.60254038+50j)
+        self.assertAlmostEqual(bessel.P[1], -86.60254038-50j)
+        self.assertAlmostEqual(bessel.K, 10000)
+        self.assertAlmostEqual(bessel.B[0], 10000)
+        self.assertAlmostEqual(bessel.A[0], 1)
+        self.assertAlmostEqual(bessel.A[1], 173.20508075688772)
+        self.assertAlmostEqual(bessel.A[2], 1.00000000e+04)
+
+        bessel.filter_kind = "highpass"
+        bessel.design()
+
+        self.assertEqual(list(bessel.Z), [0, 0])
+        self.assertAlmostEqual(bessel.P[0], -86.60254038-50j)
+        self.assertAlmostEqual(bessel.P[1], -86.60254038+50j)
+        self.assertAlmostEqual(bessel.K, 1)
+        self.assertAlmostEqual(bessel.B[0], 1)
+        self.assertAlmostEqual(bessel.A[0], 1)
+        self.assertAlmostEqual(bessel.A[1], 173.20508075688772)
+        self.assertAlmostEqual(bessel.A[2], 1.00000000e+04)
+
+        bessel.N = 1
+        bessel.Wn = [100, 200]
+        bessel.filter_kind = "bandpass"
+        bessel.design()
+
+        self.assertEqual(list(bessel.Z), [0])
+        self.assertAlmostEqual(bessel.P[0], -50.-132.28756555j)
+        self.assertAlmostEqual(bessel.P[1], -50.+132.28756555j)
+        self.assertAlmostEqual(bessel.K, 100)
+        self.assertAlmostEqual(bessel.B[0], 100)
+        self.assertAlmostEqual(bessel.B[1], 0)
+        self.assertAlmostEqual(bessel.A[0], 1)
+        self.assertAlmostEqual(bessel.A[1], 100)
+        self.assertAlmostEqual(bessel.A[2], 20000)
+
+        bessel.N = 1
+        bessel.Wn = [100, 200]
+        bessel.filter_kind = "bandstop"
+        bessel.design()
+
+        self.assertAlmostEqual(bessel.Z[0], 0.+141.42135624j)
+        self.assertAlmostEqual(bessel.Z[1], 0.-141.42135624j)
+        self.assertAlmostEqual(bessel.P[0], -50.-132.28756555j)
+        self.assertAlmostEqual(bessel.P[1], -50.+132.28756555j)
+        self.assertAlmostEqual(bessel.K, 1)
+        self.assertAlmostEqual(bessel.B[0], 1)
+        self.assertAlmostEqual(bessel.B[1], 0)
+        self.assertAlmostEqual(bessel.B[2], 20000)
+        self.assertAlmostEqual(bessel.A[0], 1)
+        self.assertAlmostEqual(bessel.A[1], 100)
+        self.assertAlmostEqual(bessel.A[2], 20000)
+
 
 
 if __name__ == '__main__':
