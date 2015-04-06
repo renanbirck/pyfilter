@@ -108,6 +108,27 @@ class ButterworthFilter(AnalogFilter):
                                                output='zpk')
 
 class BesselFilter(AnalogFilter):
+    # Since the Bessel filter approximates the Butterworth filter, the calculation
+    # can be done similarly.
+    target = None
+    def _compute_parameters(self):
+        if self.target == 'passband':
+            self.N, self.Wn = signal.buttord(self.filter_parameters['passband_frequency'],
+                                             self.filter_parameters['stopband_frequency'],
+                                             self.filter_parameters['passband_attenuation'],
+                                             self.filter_parameters['stopband_attenuation'],
+                                             analog=True)
+        elif self.target == 'stopband':
+            self.N, self.Wn = custom.custom_buttord(self.filter_parameters['passband_frequency'],
+                                             self.filter_parameters['stopband_frequency'],
+                                             self.filter_parameters['passband_attenuation'],
+                                             self.filter_parameters['stopband_attenuation'],
+                                             analog=True)
+
+        else:
+            raise ValueError("Butterworth filters must match or the passband\
+                              or the stopband.")
+
     def _design(self):
         self.Z, self.P, self.K = signal.bessel(self.N, self.Wn,
                                                self.filter_kind, analog=True,
@@ -134,6 +155,7 @@ class ChebyshevIFilter(AnalogFilter):
 class ChebyshevIIFilter(AnalogFilter):
     stopband_attenuation = None
     def _compute_parameters(self):
+
         self.N, self.Wn = signal.cheb2ord(self.filter_parameters['passband_frequency'],
                 self.filter_parameters['stopband_frequency'],
                 self.filter_parameters['passband_attenuation'],
@@ -142,8 +164,10 @@ class ChebyshevIIFilter(AnalogFilter):
         if not self.stopband_attenuation:
             self.stopband_attenuation = self.filter_parameters['stopband_attenuation']
 
-        self.Z, self.P, self.K = signal.cheby2(self.N, self.stopband_attenuation, self.Wn,
-                                               self.filter_kind, analog=True, output='zpk')
+        self.Z, self.P, self.K = signal.cheby2(self.N, self.stopband_attenuation,
+                                               self.Wn,
+                                               self.filter_kind,
+                                               analog=True, output='zpk')
 
 class EllipticFilter(AnalogFilter):
     ripple = None
