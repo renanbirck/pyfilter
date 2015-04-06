@@ -375,7 +375,7 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(elliptic.P[0], -9.64726445+0j)
         self.assertAlmostEqual(elliptic.P[1], -2073.12654417+0.j)
         self.assertAlmostEqual(elliptic.K, 2082.7738086151749)
-        self.assertAlmostEqual(elliptic.B[0],  2082.7738086151749)
+        self.assertAlmostEqual(elliptic.B[0], 2082.7738086151749)
         self.assertAlmostEqual(elliptic.B[1], 0)
         self.assertAlmostEqual(elliptic.A[0], 1)
         self.assertAlmostEqual(elliptic.A[1], 2082.7738086151749)
@@ -384,7 +384,7 @@ class TestAnalog(unittest.TestCase):
         elliptic.filter_kind = "bandstop"
         elliptic.design()
         self.assertListEqual(list(elliptic.Z), [141.42135623730951j,
-                                               -141.42135623730951j])
+                                            -141.42135623730951j])
         self.assertListEqual(list(elliptic.P), [(-2.4006447456358564-141.40097915080096j),
                                                 (-2.4006447456358564+141.40097915080096j)])
         self.assertAlmostEqual(elliptic.K, 1)
@@ -449,8 +449,8 @@ class TestAnalog(unittest.TestCase):
         cheby1.design()
 
         self.assertEqual(cheby1.N, 5)
-        self.assertAlmostEqual(cheby1.Wn[0],  6.28318530717959)
-        self.assertAlmostEqual(cheby1.Wn[1],  12.5663706143592)
+        self.assertAlmostEqual(cheby1.Wn[0], 6.28318530717959)
+        self.assertAlmostEqual(cheby1.Wn[1], 12.5663706143592)
         self.assertAlmostEqual(cheby1.B[0], 1202.79612788877)
         self.assertAlmostEqual(cheby1.A[0], 1)
         self.assertAlmostEqual(cheby1.A[1], 5.88621448427819)
@@ -823,7 +823,7 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(ellip.Wn, 200 * pi)
 
         target_B_coefs = [8.91250938e-01, 0, 1.96559946e+04, 0, 5.496064040835e+07]
-        target_A_coefs = [1.00000000e+00,   1.66052284e+03,   2.03209155e+06,
+        target_A_coefs = [1.00000000e+00, 1.66052284e+03, 2.03209155e+06,
                           832134764.96873713, 549635207615.95068]
 
         for idx, coef in enumerate(target_B_coefs):
@@ -854,14 +854,14 @@ class TestAnalog(unittest.TestCase):
                           0, 485.636345934744, 0, 3671.59900370003,
                           0, 3886.29859721522]
         target_A_coefs = [1,
-                           5.97693947945851,
-                           373.449322877403,
-                           1601.64788735756,
-                           46946.3306687963,
-                           126461.048015471,
-                           2328150.987,
-                           2942036.496778,
-                           38865023.0418]
+                          5.97693947945851,
+                          373.449322877403,
+                          1601.64788735756,
+                          46946.3306687963,
+                          126461.048015471,
+                          2328150.987,
+                          2942036.496778,
+                          38865023.0418]
         for idx, coef in enumerate(target_B_coefs):
             self.assertAlmostEqual(ellip.B[idx],
                                    coef, places=2)
