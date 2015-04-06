@@ -111,6 +111,11 @@ class ChebyshevIFilter(AnalogFilter):
 
 class ChebyshevIIFilter(AnalogFilter):
     stopband_attenuation = None
+    def _compute_parameters(self):
+        self.N, self.Wn = signal.cheb2ord(self.filter_parameters['passband_frequency'],
+                self.filter_parameters['stopband_frequency'],
+                self.filter_parameters['passband_attenuation'],
+                self.filter_parameters['stopband_attenuation'], analog=True)
     def _design(self):
         if not self.stopband_attenuation:
             self.stopband_attenuation = self.filter_parameters['stopband_attenuation']
