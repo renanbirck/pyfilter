@@ -606,12 +606,13 @@ class TestAnalog(unittest.TestCase):
                                129.600700160979, places=3)
         cheby2.design()
         target_B_coefs = [1, 0, 45374.174385258048, 0,
-                         770023239.70909572, 0, 6079859439822.2012,
+                         770023239.70909572, 0,
+                         6079859439822.2012,
                          0, 22334583333229276.0, 0,
                          3.068658299488802e+19]
         target_A_coefs = [1.00000000e+00, 790.06228468972586, 357473.38122983265,
                          104519632.7445026, 20482841787.389153, 2506892093515.71,
-                         161726026661856.78, 6515943167761986.0, 1.7595954374175722e+17,
+                         161726026661856.75, 6515943167761984.0, 1.7595954374175718e+17,
                          3.070578153267778e+18, 3.0686582994888024e+19]
 
         for idx, coef in enumerate(target_B_coefs):
@@ -650,7 +651,7 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(butter.A[1], 322.253397435715)
         self.assertAlmostEqual(butter.A[2], 51923.626079522102)
         self.assertAlmostEqual(butter.A[3], 5170646.9170805747)
-        self.assertAlmostEqual(butter.A[4], 318227063.34817803)
+        self.assertAlmostEqual(butter.A[4], 318227063.34817803, places=3)
         self.assertAlmostEqual(butter.A[5], 9792629962.0921497)
 
     def test_compute_butter_hp(self):
@@ -668,7 +669,7 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(butter.A[0], 1)
         self.assertAlmostEqual(butter.A[1], 1776.29450307095)
         self.assertAlmostEqual(butter.A[2], 1577611.08082004)
-        self.assertAlmostEqual(butter.A[3], 865958907.6399883)
+        self.assertAlmostEqual(butter.A[3], 865958907.6399883, places=3)
         self.assertAlmostEqual(butter.A[4], 293769686363.14844)
         self.assertAlmostEqual(butter.A[5], 49829517234887.664)
 
@@ -683,7 +684,7 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(butter.A[1], 1282.91387997915)
         self.assertAlmostEqual(butter.A[2], 822934.011721574)
         self.assertAlmostEqual(butter.A[3], 326245762.84711146)
-        self.assertAlmostEqual(butter.A[4], 79935023616.862686)
+        self.assertAlmostEqual(butter.A[4], 79935023616.862686, places=3)
         self.assertAlmostEqual(butter.A[5], 9792629864165.8633)
 
     def test_compute_butter_bp(self):
@@ -709,16 +710,16 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(butter.A[5], 4595251.7849443173)
         self.assertAlmostEqual(butter.A[6], 55790492.859455325)
         self.assertAlmostEqual(butter.A[7], 513056794.27105772)
-        self.assertAlmostEqual(butter.A[8], 4405040750.916997)
+        self.assertAlmostEqual(butter.A[8], 4405040750.9169989)
         self.assertAlmostEqual(butter.A[9], 28647635164.403412)
         self.assertAlmostEqual(butter.A[10],
                                174871956719.38678)
         self.assertAlmostEqual(butter.A[11],
                                760477697837.74438)
         self.assertAlmostEqual(butter.A[12],
-                               3179819056953.7114)
+                               3179819056953.7124)
         self.assertAlmostEqual(butter.A[13],
-                               7534656938190.1543)
+                               7534656938190.1572)
         self.assertAlmostEqual(butter.A[14],
                                19130579538158.508)
 
@@ -741,15 +742,15 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(butter.A[6], 68543839.369195938)
         self.assertAlmostEqual(butter.A[7], 643836464.42606068)
         self.assertAlmostEqual(butter.A[8], 5412004629.6462231)
-        self.assertAlmostEqual(butter.A[9], 35470506117.412315)
+        self.assertAlmostEqual(butter.A[9], 35470506117.4123, places=4)
         self.assertAlmostEqual(butter.A[10],
-                               208373474926.16934)
+                               208373474926.16934, places=4)
         self.assertAlmostEqual(butter.A[11],
-                               905920861700.2373)
+                               905920861700.2374, places=4)
         self.assertAlmostEqual(butter.A[12],
-                               3558965506031.5576)
+                               3558965506031.5586)
         self.assertAlmostEqual(butter.A[13],
-                               8442608469993.4551)
+                               8442608469993.46)
         self.assertAlmostEqual(butter.A[14],
                                19130579538158.492)
 
@@ -772,19 +773,101 @@ class TestAnalog(unittest.TestCase):
                           0, 4.5848600847778207e+27]
         target_A_coefs = [1, 798.886667535808, 329769.118807736,
                           90767049.233665258,
-                          18246055317.574032, 2779764493559.9531,
-                          323737622832967.38,
-                          28439472756901700.0, 1.81600865109824e+18,
-                          7.8893059749655937e+19, 2.1507928764897349e+21,
-                          3.9891732058277975e+22, 5.3781783783668297e+23,
-                          5.4692869382179792e+24, 4.2517955086597096e+25,
-                          2.5050262147266549e+26, 1.0778906831551871e+27,
-                          3.0926486540565985e+27, 4.5848600847778174e+27]
+                          18246055317.574032, 2779764493559.954,
+                          323737622832967.31,
+                          28439472756901696.0, 1.8160086510982392e+18,
+                          7.8893059749655937e+19, 2.1507928764897341e+21,
+                          3.9891732058277967e+22, 5.3781783783668304e+23,
+                          5.4692869382179803e+24, 4.2517955086597104e+25,
+                          2.5050262147266555e+26, 1.0778906831551873e+27,
+                          3.092648654056598e+27, 4.5848600847778174e+27]
 
         for pos, B in enumerate(target_B_coefs):
             self.assertAlmostEqual(butter.B[pos], B, places=4)
             self.assertAlmostEqual(butter.A[pos],
                                    target_A_coefs[pos], places=4)
+
+    def test_compute_ellip_lp(self):
+        parameters = {'passband_frequency': 10,
+                      'stopband_frequency': 100,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        ellip = analog.EllipticFilter(parameters)
+        ellip.ripple = 1
+        ellip.compute_parameters()
+        ellip.design()
+        self.assertEqual(ellip.N, 4)
+        self.assertAlmostEqual(ellip.Wn, 62.8318530717959)
+
+        target_B_coefs = [9.99947e-5, 0, 55.7382135386156, 0, 3938804.2931307442]
+        target_A_coefs = [1, 59.7697622129101, 5762.1982895999772,
+                          185887.21463406115, 4419411.104776497]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(ellip.B[idx],
+                                   coef, places=2)
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(ellip.A[idx],
+                                   coef, places=2)
+
+    def test_compute_ellip_hp(self):
+        parameters = {'passband_frequency': 100,
+                      'stopband_frequency': 10,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        ellip = analog.EllipticFilter(parameters)
+        ellip.ripple = 1
+        ellip.compute_parameters()
+        ellip.design()
+        self.assertEqual(ellip.N, 4)
+        self.assertAlmostEqual(ellip.Wn, 200 * pi)
+
+        target_B_coefs = [8.91250938e-01, 0, 1.96559946e+04, 0, 5.496064040835e+07]
+        target_A_coefs = [1.00000000e+00,   1.66052284e+03,   2.03209155e+06,
+                          832134764.96873713, 549635207615.95068]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(ellip.B[idx],
+                                   coef, places=2)
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(ellip.A[idx],
+                                   coef, places=2)
+
+    def test_compute_ellip_bp(self):
+        parameters = {'passband_frequency': [1, 2],
+                      'stopband_frequency': [0.1, 5],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+
+        ellip = analog.EllipticFilter(parameters)
+        ellip.ripple = 1
+        ellip.compute_parameters()
+        ellip.design()
+
+        self.assertEqual(ellip.N, 4)
+        self.assertAlmostEqual(ellip.Wn[0],
+                               6.28318530717959, places=7)
+        self.assertAlmostEqual(ellip.Wn[1],
+                               12.5663706143592, places=7)
+
+        target_B_coefs = [9.99947595183175e-05, 0, 0.588946412352835,
+                          0, 485.636345934744, 0, 3671.59900370003,
+                          0, 3886.29859721522]
+        target_A_coefs = [1,
+                           5.97693947945851,
+                           373.449322877403,
+                           1601.64788735756,
+                           46946.3306687963,
+                           126461.048015471,
+                           2328150.987,
+                           2942036.496778,
+                           38865023.0418]
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(ellip.B[idx],
+                                   coef, places=2)
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(ellip.A[idx],
+                                   coef, places=2)
 
 
 

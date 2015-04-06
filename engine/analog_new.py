@@ -149,6 +149,17 @@ class EllipticFilter(AnalogFilter):
     ripple = None
     stopband_attenuation = None
 
+    def _compute_parameters(self):
+        if not self.stopband_attenuation:
+            self.stopband_attenuation = self.filter_parameters['stopband_attenuation']
+        if not self.ripple:
+            self.ripple = self.filter_parameters['ripple']
+        self.N, self.Wn = signal.ellipord(self.filter_parameters['passband_frequency'],
+                                          self.filter_parameters['stopband_frequency'],
+                                          self.ripple,
+                                          self.stopband_attenuation, analog=True)
+
+
     def _design(self):
         if not self.stopband_attenuation:
             self.stopband_attenuation = self.filter_parameters['stopband_attenuation']
