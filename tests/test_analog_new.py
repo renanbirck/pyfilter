@@ -621,6 +621,174 @@ class TestAnalog(unittest.TestCase):
             self.assertAlmostEqual(cheby2.A[idx],
                                    coef, places=2)
 
+    def test_compute_butter_lp(self):
+        parameters = {'passband_frequency': 10,
+                      'stopband_frequency': 100,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        butter = analog.ButterworthFilter(parameters)
+        butter.target = 'passband'
+        butter.compute_parameters()
+        butter.design()
+        self.assertEqual(butter.N, 5)
+        self.assertEqual(butter.Wn, 71.92210683023319)
+        self.assertAlmostEqual(butter.B[0], 1924473804.6221437)
+        self.assertAlmostEqual(butter.A[0], 1.00000000e+00)
+        self.assertAlmostEqual(butter.A[1], 232.744826787636)
+        self.assertAlmostEqual(butter.A[2], 27085.0771982035)
+        self.assertAlmostEqual(butter.A[3], 1948015.8157543)
+        self.assertAlmostEqual(butter.A[4], 86589900.200991)
+        self.assertAlmostEqual(butter.A[5], 1924473804.6221435)
+
+        butter.target = 'stopband'
+        butter.compute_parameters()
+        butter.design()
+        self.assertEqual(butter.N, 5)
+        self.assertAlmostEqual(butter.Wn, 99.5817763027)
+        self.assertAlmostEqual(butter.B[0], 9792629962.0921497)
+        self.assertAlmostEqual(butter.A[0], 1)
+        self.assertAlmostEqual(butter.A[1], 322.253397435715)
+        self.assertAlmostEqual(butter.A[2], 51923.626079522102)
+        self.assertAlmostEqual(butter.A[3], 5170646.9170805747)
+        self.assertAlmostEqual(butter.A[4], 318227063.34817803)
+        self.assertAlmostEqual(butter.A[5], 9792629962.0921497)
+
+    def test_compute_butter_hp(self):
+        parameters = {'passband_frequency': 100,
+                      'stopband_frequency': 10,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        butter = analog.ButterworthFilter(parameters)
+        butter.target = 'passband'
+        butter.compute_parameters()
+        butter.design()
+        self.assertEqual(butter.N, 5)
+        self.assertAlmostEqual(butter.Wn, 548.90518846372663)
+        self.assertAlmostEqual(butter.B[0], 1)
+        self.assertAlmostEqual(butter.A[0], 1)
+        self.assertAlmostEqual(butter.A[1], 1776.29450307095)
+        self.assertAlmostEqual(butter.A[2], 1577611.08082004)
+        self.assertAlmostEqual(butter.A[3], 865958907.6399883)
+        self.assertAlmostEqual(butter.A[4], 293769686363.14844)
+        self.assertAlmostEqual(butter.A[5], 49829517234887.664)
+
+
+        butter.target = 'stopband'
+        butter.compute_parameters()
+        butter.design()
+        self.assertEqual(butter.N, 5)
+        self.assertAlmostEqual(butter.Wn, 396.442191233058)
+        self.assertAlmostEqual(butter.B[0], 1)
+        self.assertAlmostEqual(butter.A[0], 1)
+        self.assertAlmostEqual(butter.A[1], 1282.91387997915)
+        self.assertAlmostEqual(butter.A[2], 822934.011721574)
+        self.assertAlmostEqual(butter.A[3], 326245762.84711146)
+        self.assertAlmostEqual(butter.A[4], 79935023616.862686)
+        self.assertAlmostEqual(butter.A[5], 9792629864165.8633)
+
+    def test_compute_butter_bp(self):
+        parameters = {'passband_frequency': [1, 2],
+                      'stopband_frequency': [0.1, 5],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        butter = analog.ButterworthFilter(parameters)
+        butter.target = 'passband'
+        butter.compute_parameters()
+        butter.design()
+        self.assertEqual(butter.filter_kind, 'bandpass')
+        self.assertEqual(butter.N, 7)
+        self.assertAlmostEqual(butter.Wn[0], 6.07569169)
+        self.assertAlmostEqual(butter.Wn[1], 12.99553026)
+
+        self.assertAlmostEqual(butter.B[0], 759751.80527519668)
+        self.assertAlmostEqual(butter.A[0], 1)
+        self.assertAlmostEqual(butter.A[1], 31.0974722556149)
+        self.assertAlmostEqual(butter.A[2], 1036.224236482155)
+        self.assertAlmostEqual(butter.A[3], 19567.149028043725)
+        self.assertAlmostEqual(butter.A[4], 355263.81277219893)
+        self.assertAlmostEqual(butter.A[5], 4595251.7849443173)
+        self.assertAlmostEqual(butter.A[6], 55790492.859455325)
+        self.assertAlmostEqual(butter.A[7], 513056794.27105772)
+        self.assertAlmostEqual(butter.A[8], 4405040750.916997)
+        self.assertAlmostEqual(butter.A[9], 28647635164.403412)
+        self.assertAlmostEqual(butter.A[10],
+                               174871956719.38678)
+        self.assertAlmostEqual(butter.A[11],
+                               760477697837.74438)
+        self.assertAlmostEqual(butter.A[12],
+                               3179819056953.7114)
+        self.assertAlmostEqual(butter.A[13],
+                               7534656938190.1543)
+        self.assertAlmostEqual(butter.A[14],
+                               19130579538158.508)
+
+        butter.target = 'stopband'
+        butter.compute_parameters()
+        butter.design()
+        self.assertEqual(butter.N, 7)
+        self.assertAlmostEqual(butter.Wn[0], 5.81782828643783)
+        self.assertAlmostEqual(butter.Wn[1], 13.5715307020618)
+
+        butter.design()
+
+        self.assertAlmostEqual(butter.B[0], 1684860.320277143)
+        self.assertAlmostEqual(butter.A[0], 1)
+        self.assertAlmostEqual(butter.A[1], 34.844822362404)
+        self.assertAlmostEqual(butter.A[2], 1159.77866919475)
+        self.assertAlmostEqual(butter.A[3], 23309.4127006002)
+        self.assertAlmostEqual(butter.A[4], 423324.337255822)
+        self.assertAlmostEqual(butter.A[5], 5689681.03696918)
+        self.assertAlmostEqual(butter.A[6], 68543839.369195938)
+        self.assertAlmostEqual(butter.A[7], 643836464.42606068)
+        self.assertAlmostEqual(butter.A[8], 5412004629.6462231)
+        self.assertAlmostEqual(butter.A[9], 35470506117.412315)
+        self.assertAlmostEqual(butter.A[10],
+                               208373474926.16934)
+        self.assertAlmostEqual(butter.A[11],
+                               905920861700.2373)
+        self.assertAlmostEqual(butter.A[12],
+                               3558965506031.5576)
+        self.assertAlmostEqual(butter.A[13],
+                               8442608469993.4551)
+        self.assertAlmostEqual(butter.A[14],
+                               19130579538158.492)
+
+    def test_compute_butter_bs(self):
+        parameters = {'passband_frequency': [1, 25],
+                      'stopband_frequency': [2, 15],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 40}
+        butter = analog.ButterworthFilter(parameters)
+        butter.target = 'passband'
+        butter.compute_parameters()
+        butter.design()
+        self.assertEqual(butter.N, 9)
+        self.assertAlmostEqual(butter.Wn[0], 8.0681551)
+        self.assertAlmostEqual(butter.Wn[1], 146.79336908)
+        target_B_coefs = [1, 0, 10659.165019231212, 0, 50496799.514312126,
+                          0, 139547260472.68924, 0, 247909546226676.62,
+                          0, 2.9361208478586816e+17, 0, 2.3182664173133981e+20,
+                          0, 1.176704014318369e+23, 0, 3.484078407614217e+25,
+                          0, 4.5848600847778207e+27]
+        target_A_coefs = [1, 798.886667535808, 329769.118807736,
+                          90767049.233665258,
+                          18246055317.574032, 2779764493559.9531,
+                          323737622832967.38,
+                          28439472756901700.0, 1.81600865109824e+18,
+                          7.8893059749655937e+19, 2.1507928764897349e+21,
+                          3.9891732058277975e+22, 5.3781783783668297e+23,
+                          5.4692869382179792e+24, 4.2517955086597096e+25,
+                          2.5050262147266549e+26, 1.0778906831551871e+27,
+                          3.0926486540565985e+27, 4.5848600847778174e+27]
+
+        for pos, B in enumerate(target_B_coefs):
+            self.assertAlmostEqual(butter.B[pos], B, places=4)
+            self.assertAlmostEqual(butter.A[pos],
+                                   target_A_coefs[pos], places=4)
+
+
+
+
 
 
 

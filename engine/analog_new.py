@@ -2,6 +2,8 @@
 
 from math import pi
 from scipy import signal
+import custom
+
 
 def hz_to_rad(x):
     """ Converts X Hz to radians/second. """
@@ -80,6 +82,26 @@ class AnalogFilter():
         raise ValueError("Please override me with your own _design function!")
 
 class ButterworthFilter(AnalogFilter):
+    target = None
+    def _compute_parameters(self):
+        if self.target == 'passband':
+            self.N, self.Wn = signal.buttord(self.filter_parameters['passband_frequency'],
+                                             self.filter_parameters['stopband_frequency'],
+                                             self.filter_parameters['passband_attenuation'],
+                                             self.filter_parameters['stopband_attenuation'],
+                                             analog=True)
+        elif self.target == 'stopband':
+            self.N, self.Wn = custom.custom_buttord(self.filter_parameters['passband_frequency'],
+                                             self.filter_parameters['stopband_frequency'],
+                                             self.filter_parameters['passband_attenuation'],
+                                             self.filter_parameters['stopband_attenuation'],
+                                             analog=True)
+
+        else:
+            raise ValueError("Butterworth filters must match or the passband\
+                              or the stopband.")
+
+
     def _design(self):
         self.Z, self.P, self.K = signal.butter(self.N, self.Wn,
                                                self.filter_kind, analog=True,
