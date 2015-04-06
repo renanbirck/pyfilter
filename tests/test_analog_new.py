@@ -870,10 +870,5 @@ class TestAnalog(unittest.TestCase):
                                    coef, places=2)
 
 
-
-
-
-
-
 if __name__ == '__main__':
         unittest.main()
