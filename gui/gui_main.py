@@ -138,7 +138,6 @@ class StartQT4(QtGui.QMainWindow):
         else:
             raise ValueError("Somehow we chose something that can't be chosen!")
 
-
     def get_filter_TF(self):
         """ This function gets the appropriate filter transfer-fucntion from
             the chosen options and configures the other radio buttons
@@ -200,35 +199,26 @@ class StartQT4(QtGui.QMainWindow):
             self.ui.label_pbRipple.setEnabled(True)
             self.ui.label_pbRipple.setText("Passband\n ripple (dB): ")
             self.ui.plainTextEdit_pbRipple.setEnabled(True)
-        elif choice == "chebyshev_2":
-            # Chebyshev type-2 filter needs to have the option to
-            # set the stopband attenuation.
-            if self.config_dict['mode'] == "N_WN":
-                self.ui.label_pbRipple.setEnabled(False)
-                self.ui.label_sbAtt.setEnabled(True)
-                self.ui.plainTextEdit_pbRipple.setEnabled(False)
-                self.ui.plainTextEdit_sbAtt.setEnabled(True)
-            else: # use the existing Astop
-                self.ui.label_pbRipple.setEnabled(False)
-                self.ui.label_sbAtt.setEnabled(False)
-                self.ui.plainTextEdit_pbRipple.setEnabled(False)
-                self.ui.plainTextEdit_sbAtt.setEnabled(False)
 
         elif choice == "elliptical":
             # The elliptical needs to have the both options.
             self.ui.label_pbRipple.setEnabled(True)
             self.ui.plainTextEdit_pbRipple.setEnabled(True)
-            if self.config_dict['mode'] == "N_WN":
-                self.ui.label_sbAtt.setEnabled(True)
-                self.ui.plainTextEdit_sbAtt.setEnabled(True)
-            else: # use the existing Astop
-                self.ui.label_sbAtt.setEnabled(False)
-                self.ui.plainTextEdit_sbAtt.setEnabled(False)
+
         else:  # Bessel, Butterworth
             self.ui.label_pbRipple.setEnabled(False)
             self.ui.plainTextEdit_pbRipple.setEnabled(False)
-            self.ui.label_sbAtt.setEnabled(False)
-            self.ui.plainTextEdit_sbAtt.setEnabled(False)
+
+        if self.config_dict['mode'] == "N_WN":
+            if choice in ['chebyshev_2', 'elliptical']:
+                self.ui.label_opt4.setEnabled(True)
+                self.ui.label_opt4.setText("Astop (dB):")
+                self.ui.label_opt4.show()
+                self.ui.plainTextEdit_opt4.show()
+            else:
+                self.ui.label_opt4.hide()
+                self.ui.plainTextEdit_opt4.hide()
+
 
     def design_filter(self):
         try:
@@ -241,191 +231,13 @@ class StartQT4(QtGui.QMainWindow):
             return
 
     def validate_inputs(self):
-        print("Filter type is ", self.config_dict['filter_type'])
-        print("Filter TF is ", self.config_dict['filter_TF'])
-        Fpass = 0
-        Fstop = 0
-
-        if self.config_dict['filter_TF'] == 'butterworth':
-            if self.ui.radioButton_matchPB.isChecked():
-                self.config_dict['target'] = 'passband'
-            elif self.ui.radioButton_matchSB.isChecked():
-                self.config_dict['target'] = 'stopband'
-            else:
-                raise ValueError("WHAT? This is impossible.")
-
-        if self.config_dict['filter_TF'] == 'elliptical':
-            print("aqui")
-            try:
-                ripple = float(self.ui.plainTextEdit_pbRipple.toPlainText())
-                if self.config_dict['mode'] == "N_WN":
-                    attenuation = float(self.ui.plainTextEdit_sbAtt.toPlainText())
-                else:
-                    attenuation = float(self.ui.plainTextEdit_opt4.toPlainText())
-                if ripple <= 0 or attenuation <= 0:
-                    raise ValueError("Bad value.")
-                self.config_dict['ripple'] = ripple
-                self.config_dict['attenuation'] = attenuation
-            except:
-                raise ValueError(""" For the elliptical filter,
-                the ripple and the attenuation must
-                be positive and not zero. """)
-
-        if self.config_dict['filter_TF'] == 'chebyshev_1':
-            try:
-                ripple = float(self.ui.plainTextEdit_pbRipple.toPlainText())
-                if ripple <= 0:
-                    raise ValueError("Bad value.")
-                self.config_dict['ripple'] = ripple
-            except:
-                raise ValueError("""For the Chebyshev type1 and
-                the elliptical filters,
-                the ripple must be positive and not zero. """)
-
-        if self.config_dict['filter_TF'] == 'chebyshev_2':
-            try:
-                attenuation = float(self.ui.plainTextEdit_sbAtt.toPlainText())
-                if attenuation <= 0:
-                    raise ValueError("Bad value.")
-                self.config_dict['attenuation'] = attenuation
-            except:
-                raise ValueError("""For the Chebyshev type2 and
-                the elliptical filters,
-                the stopband attenuation must be positive and not zero. """)
-
-        if 'band' in self.config_dict['filter_type']:
-            num_elements = 2  # bandstop, bandpass
-        else:
-            num_elements = 1
-
-        if self.config_dict['mode'] == "N_WN":
-            try:
-                N = int(self.ui.plainTextEdit_opt1.toPlainText())
-                if N <= 0:
-                    raise ValueError("N must be integer >= 0.")
-            except:
-                raise ValueError("N must be integer >= 0.")
-
-            self.N = N
-
-            try:
-                Wn = list(map(float, self.ui.plainTextEdit_opt2.toPlainText().split(' ')))
-                if len(Wn) != num_elements:
-                    raise ValueError("Wrong number of elements.")
-            except:
-                raise ValueError("Wn must be {} number{}.".format(num_elements, plural(num_elements)))
-
-            if num_elements == 1:
-                self.Wn = Wn[0]
-            else:
-                self.Wn = Wn
-
-            print(">> N = {}, Wn = {}".format(self.N, self.Wn))
-
-        elif self.config_dict['mode'] == "specs":
-            try:
-                Fpass = list(map(float, self.ui.plainTextEdit_opt1.toPlainText().split(' ')))
-                Fstop = list(map(float, self.ui.plainTextEdit_opt2.toPlainText().split(' ')))
-                if len(Fstop) != num_elements or len(Fpass) != num_elements:
-                    raise ValueError("Wrong number of elements.")
-            except:
-                raise ValueError("Fpass and Fstop must be {} number{}.".format(num_elements,
-                                                                               plural(num_elements)))
-
-            # After converting the inputs to numbers, validation them
-
-            if num_elements == 1:
-                Fpass = Fpass[0]
-                Fstop = Fstop[0]
-                if Fpass <= 0 or Fstop <= 0:
-                    raise ValueError("Both frequencies must be positive.")
-            else:
-                if Fpass[0] <= 0 or Fstop[0] <= 0 or Fpass[1] <= 0 or Fstop[1] <= 0:
-                    raise ValueError("All frequencies must be positive.")
-
-            # Special case for the bandpass and bandstop-filters.
-
-            if num_elements == 2:
-                pb0, pb1 = Fpass[0], Fpass[1]
-                sb0, sb1 = Fstop[0], Fstop[1]
-
-                if not ((pb0 > sb0 and pb1 < sb1)
-                        or (pb0 < sb0 and pb1 > sb1)):
-                    raise ValueError("""Parameters for bandpass/bandstop \
-                                     are invalid. """)
-            try:
-                Apass = float(self.ui.plainTextEdit_opt3.toPlainText())
-                Astop = float(self.ui.plainTextEdit_opt4.toPlainText())
-                if Apass < 0 or Astop < 0:
-                    raise ValueError("not positive")
-            except:
-                raise ValueError("Both attenuations should be positive number.")
-
-            self.config_dict['passband_frequency'] = Fpass
-            self.config_dict['stopband_frequency'] = Fstop
-            self.config_dict['passband_attenuation'] = Apass
-            self.config_dict['stopband_attenuation'] = Astop
+        raise NotImplementedError("validate_inputs() not implemented yet.")
 
     def build_struct(self):
-        # Build the filter structure.
-
-        if self.config_dict['mode'] == "N_WN":  # Direct (doesn't need any configurations)
-            self.analog_filter.filter_class = self.config_dict['filter_TF']
-            self.analog_filter.filter_type = self.config_dict['filter_type']
-            self.analog_filter.N = self.N
-            if isinstance(self.Wn, list):
-                self.analog_filter.Wn = list(map(lambda x: 2 * pi * x, self.Wn))
-            else:
-                self.analog_filter.Wn = 2 * pi * self.Wn
-            return  # We're done here, now go on to design filter.
-        else:
-            filter_configs = {}
-            self.analog_filter.filter_class = self.config_dict['filter_TF']
-            filter_configs['passband_frequency'] = self.config_dict['passband_frequency']
-            filter_configs['stopband_frequency'] = self.config_dict['stopband_frequency']
-            filter_configs['passband_attenuation'] = self.config_dict['passband_attenuation']
-            filter_configs['stopband_attenuation'] = self.config_dict['stopband_attenuation']
-            # scipy.signal functions want PB and SB swapped in the highpass case.
-
-            if self.analog_filter.filter_type == 'highpass':
-                pb = filter_configs['passband_frequency']
-                sb = filter_configs['stopband_frequency']
-                filter_configs['passband_frequency'] = sb
-                filter_configs['stopband_frequency'] = pb
-
-            self.analog_filter.configure_filter(filter_configs)
-            if self.config_dict['filter_type'] == 'butterworth':
-                self.analog_filter.compute_parameters(target=self.config_dict['target'])
-            else:
-                self.analog_filter.compute_parameters()
+        raise NotImplementedError("build_struct() not implemented yet.")
 
     def actually_design_filter(self):
-        print(self.analog_filter.N)
-        print(self.analog_filter.Wn)
-        print("The filter type is", self.analog_filter.filter_type)
-        print("The filter TF is", self.analog_filter.filter_class)
-
-        print("Begin filter design")
-        if self.analog_filter.filter_class == 'chebyshev_1':
-            self.analog_filter.design(ripple=self.config_dict['ripple'])
-        elif self.analog_filter.filter_class == 'chebyshev_2':
-            self.analog_filter.stopband_attenuation = float(self.config_dict['attenuation'])
-            self.analog_filter.design()
-        elif self.analog_filter.filter_class == 'elliptical':
-            self.analog_filter.passband_attenuation = float(self.config_dict['ripple'])
-            self.analog_filter.stopband_attenuation = float(self.config_dict['attenuation'])
-            print("Rp = ", self.analog_filter.passband_attenuation, self.config_dict['ripple'])
-            print("Rs = ", self.analog_filter.stopband_attenuation, self.config_dict['attenuation'])
-            self.analog_filter.design()
-        else:  # Bessel, Butterworth
-            self.analog_filter.design()
-        print("Filter design finished.")
-
-        print("The order is ", self.analog_filter.N, ".")
-        print("The natural freq is ", self.analog_filter.Wn, ".")
-        print("B = ", self.analog_filter.B)
-        print("A = ", self.analog_filter.A)
-
+        raise NotImplementedError("actually_design_filter() not implemented yet.")
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)

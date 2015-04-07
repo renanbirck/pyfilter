@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_window.ui'
 #
-# Created: Mon Mar 30 18:47:24 2015
+# Created: Mon Apr  6 21:24:32 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -185,15 +185,6 @@ class Ui_MainWindow(object):
         self.plainTextEdit_pbRipple.setGeometry(QtCore.QRect(100, 60, 81, 31))
         self.plainTextEdit_pbRipple.setTabChangesFocus(True)
         self.plainTextEdit_pbRipple.setObjectName(_fromUtf8("plainTextEdit_pbRipple"))
-        self.label_sbAtt = QtGui.QLabel(self.groupBox_Options)
-        self.label_sbAtt.setEnabled(False)
-        self.label_sbAtt.setGeometry(QtCore.QRect(0, 90, 111, 31))
-        self.label_sbAtt.setObjectName(_fromUtf8("label_sbAtt"))
-        self.plainTextEdit_sbAtt = QtGui.QPlainTextEdit(self.groupBox_Options)
-        self.plainTextEdit_sbAtt.setEnabled(False)
-        self.plainTextEdit_sbAtt.setGeometry(QtCore.QRect(100, 90, 81, 31))
-        self.plainTextEdit_sbAtt.setTabChangesFocus(True)
-        self.plainTextEdit_sbAtt.setObjectName(_fromUtf8("plainTextEdit_sbAtt"))
         self.groupBox_paramCalc = QtGui.QGroupBox(self.dockWidgetContents)
         self.groupBox_paramCalc.setGeometry(QtCore.QRect(155, 0, 211, 71))
         self.groupBox_paramCalc.setObjectName(_fromUtf8("groupBox_paramCalc"))
@@ -356,8 +347,6 @@ class Ui_MainWindow(object):
         self.radioButton_matchPB.setText(_translate("MainWindow", "Match passband", None))
         self.radioButton_matchSB.setText(_translate("MainWindow", "Match stopband", None))
         self.label_pbRipple.setText(_translate("MainWindow", "Passband ripple\n"
-" (dB)", None))
-        self.label_sbAtt.setText(_translate("MainWindow", "Stopband att\n"
 " (dB)", None))
         self.groupBox_paramCalc.setTitle(_translate("MainWindow", "Parameter calculation...", None))
         self.radioButton_NWn.setText(_translate("MainWindow", "From N, Wn", None))
