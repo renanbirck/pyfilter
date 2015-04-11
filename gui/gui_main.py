@@ -34,6 +34,7 @@ class StartQT4(QtGui.QMainWindow):
     config_dict = {}  # The dictionary of configuration
                       # used by the validation routines.
     filter_data = {}
+    filter_design = None
 
     N = 0
     Wn = None
@@ -350,10 +351,50 @@ class StartQT4(QtGui.QMainWindow):
             validate_specs()
 
     def build_struct(self):
-        raise NotImplementedError("build_struct() not implemented yet.")
+        """ This function initializes the filter object
+        with the needed information. """
+        def build_struct_common():
+            if self.config_dict['filter_TF'] == "butterworth":
+                self.filter_design = analog.ButterworthFilter()
+            elif self.config_dict['filter_TF'] == "chebyshev_1":
+                self.filter_design = analog.ChebyshevIFilter()
+            elif self.config_dict['filter_TF'] == "chebyshev_2":
+                self.filter_design = analog.ChebyshevIIFilter()
+            elif self.config_dict['filter_TF'] == "bessel":
+                self.filter_design = analog.BesselFilter()
+            elif self.config_dict['filter_TF'] == "elliptical":
+                self.filter_design = analog.EllipticFilter()
+            else:  # Should never happen, but... you never know.
+                raise ValueError("Unknown filter type requested!!")
+
+        def build_struct_n_wn():
+            self.filter_design.N = self.filter_data['N']
+            self.filter_design.Wn = self.filter_data['Wn']
+            self.filter_design.filter_kind = self.config_dict['filter_type']
+            if hasattr(self.filter_design, "ripple"):
+                self.filter_design.ripple = self.filter_data['ripple']
+            if hasattr(self.filter_design, "stopband_attenuation"):
+                self.filter_design.stopband_attenuation = self.filter_data['stopband_attenuation']
+        def build_struct_specs():
+            raise NotImplementedError("build_struct_specs() not implemented yet.")
+
+        build_struct_common()
+        if self.config_dict['mode'] == "N_WN":
+            build_struct_n_wn()
+        elif self.config_dict['mode'] == "specs":
+            build_struct_specs()
+
 
     def actually_design_filter(self):
-        raise NotImplementedError("actually_design_filter() not implemented yet.")
+        """ Where the actual design happens. """
+        print("Begin design.")
+        self.filter_design.design()
+        print("Design finished.")
+        print("Z: ", self.filter_design.Z)
+        print("P: ", self.filter_design.P)
+        print("K: ", self.filter_design.K)
+        print("B: ", self.filter_design.B)
+        print("A: ", self.filter_design.A)
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)

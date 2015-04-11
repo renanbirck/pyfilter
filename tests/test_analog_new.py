@@ -168,6 +168,8 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(bessel.P[1], -86.60254038+50j)
         self.assertAlmostEqual(bessel.K, 1)
         self.assertAlmostEqual(bessel.B[0], 1)
+        self.assertAlmostEqual(bessel.B[1], 0)
+        self.assertAlmostEqual(bessel.B[2], 0)
         self.assertAlmostEqual(bessel.A[0], 1)
         self.assertAlmostEqual(bessel.A[1], 173.20508075688772)
         self.assertAlmostEqual(bessel.A[2], 1.00000000e+04)
@@ -366,6 +368,9 @@ class TestAnalog(unittest.TestCase):
         self.assertAlmostEqual(elliptic.B[0], 0.99884936993650497)
         self.assertAlmostEqual(elliptic.B[1], 0)
         self.assertAlmostEqual(elliptic.B[2], 9.6371075649932063)
+        self.assertAlmostEqual(elliptic.A[0], 1)
+        self.assertAlmostEqual(elliptic.A[1], 42.50020324)
+        self.assertAlmostEqual(elliptic.A[2], 958.73592069)
 
         elliptic.N = 1
         elliptic.Wn = [100, 200]
