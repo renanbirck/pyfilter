@@ -6,6 +6,49 @@
 
 """ This module has some useful routines used during the code. """
 import tempfile # Used to build the HTML output
+from numpy.polynomial import Polynomial
+
+def generate_polynomial(coefs, variable='x'):
+    """ Generates a polynomial from the given coefficients. """
+    power = len(coefs) - 1
+    polynomial = ''
+
+    first = coefs[0]
+    coefs = coefs[1:]
+
+    if first == 1:
+        polynomial = variable + "^" + str(power)
+    else:
+        polynomial = str(first) + variable + "^" + str(power)
+
+    power = power - 1
+
+    for term in coefs:
+        if term == 0:
+            power = power - 1
+            continue
+
+        if term < 0:
+            operator_term = " - "
+            value_term = str(abs(term))
+        elif term > 0:
+            operator_term = " + "
+            value_term = str(term)
+        else:
+            continue
+
+        if power == 1:
+            power_term = variable
+        elif power == 0:
+            power_term = ''
+        else:
+            power_term = variable + '^' + str(power)
+
+        polynomial = polynomial + operator_term + value_term + power_term
+
+        power = power - 1
+
+    return polynomial
 
 def generate_latex_for_polynomial(num,
                                   den,

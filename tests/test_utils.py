@@ -23,7 +23,7 @@ class TestUtils(unittest.TestCase):
         coefs = [1, 2, 3, 4]
         variable = 's'
         result = utils.generate_polynomial(coefs, variable)
-        self.assertEqual(result, "s^3 + 2s^2 + 3s + 1")
+        self.assertEqual(result, "s^3 + 2s^2 + 3s + 4")
 
         coefs = [1, 0, 1]
         result = utils.generate_polynomial(coefs, variable)
