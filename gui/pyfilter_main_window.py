@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_window.ui'
 #
-# Created: Mon Apr  6 21:24:32 2015
+# Created: Sat Apr 11 11:25:38 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -136,7 +136,7 @@ class Ui_MainWindow(object):
         self.radioButton_AP.setGeometry(QtCore.QRect(0, 100, 104, 21))
         self.radioButton_AP.setObjectName(_fromUtf8("radioButton_AP"))
         self.groupBox_Filter_Top = QtGui.QGroupBox(self.dockWidgetContents)
-        self.groupBox_Filter_Top.setGeometry(QtCore.QRect(10, 70, 191, 121))
+        self.groupBox_Filter_Top.setGeometry(QtCore.QRect(10, 0, 191, 121))
         self.groupBox_Filter_Top.setObjectName(_fromUtf8("groupBox_Filter_Top"))
         self.radioButton_Butterworth = QtGui.QRadioButton(self.groupBox_Filter_Top)
         self.radioButton_Butterworth.setGeometry(QtCore.QRect(0, 40, 104, 21))
@@ -154,16 +154,6 @@ class Ui_MainWindow(object):
         self.radioButton_Bessel.setGeometry(QtCore.QRect(0, 20, 104, 21))
         self.radioButton_Bessel.setChecked(True)
         self.radioButton_Bessel.setObjectName(_fromUtf8("radioButton_Bessel"))
-        self.groupBox_AD = QtGui.QGroupBox(self.dockWidgetContents)
-        self.groupBox_AD.setGeometry(QtCore.QRect(10, 0, 120, 80))
-        self.groupBox_AD.setObjectName(_fromUtf8("groupBox_AD"))
-        self.radioButton_Analog = QtGui.QRadioButton(self.groupBox_AD)
-        self.radioButton_Analog.setGeometry(QtCore.QRect(0, 20, 104, 21))
-        self.radioButton_Analog.setChecked(True)
-        self.radioButton_Analog.setObjectName(_fromUtf8("radioButton_Analog"))
-        self.radioButton_Digital = QtGui.QRadioButton(self.groupBox_AD)
-        self.radioButton_Digital.setGeometry(QtCore.QRect(0, 40, 104, 21))
-        self.radioButton_Digital.setObjectName(_fromUtf8("radioButton_Digital"))
         self.groupBox_Options = QtGui.QGroupBox(self.dockWidgetContents)
         self.groupBox_Options.setGeometry(QtCore.QRect(155, 250, 211, 141))
         self.groupBox_Options.setObjectName(_fromUtf8("groupBox_Options"))
@@ -274,8 +264,6 @@ class Ui_MainWindow(object):
         self.tabWidget.setCurrentIndex(0)
         QtCore.QObject.connect(self.actionExit, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        MainWindow.setTabOrder(self.radioButton_Analog, self.radioButton_Digital)
-        MainWindow.setTabOrder(self.radioButton_Digital, self.radioButton_NWn)
         MainWindow.setTabOrder(self.radioButton_NWn, self.radioButton_AttSpecs)
         MainWindow.setTabOrder(self.radioButton_AttSpecs, self.radioButton_Bessel)
         MainWindow.setTabOrder(self.radioButton_Bessel, self.radioButton_Butterworth)
@@ -313,7 +301,7 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.graphicsView, self.graphicsView_2)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "PyFilter", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "PyFilter (Analog)", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_TF), _translate("MainWindow", "Transfer Function", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_plot), _translate("MainWindow", "Frequency Response", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
@@ -340,9 +328,6 @@ class Ui_MainWindow(object):
         self.radioButton_Cheby2.setText(_translate("MainWindow", "Chebyshev Type2", None))
         self.radioButton_Elliptical.setText(_translate("MainWindow", "Elliptical", None))
         self.radioButton_Bessel.setText(_translate("MainWindow", "Bessel", None))
-        self.groupBox_AD.setTitle(_translate("MainWindow", "Analog or digital?", None))
-        self.radioButton_Analog.setText(_translate("MainWindow", "Analog", None))
-        self.radioButton_Digital.setText(_translate("MainWindow", "Digital", None))
         self.groupBox_Options.setTitle(_translate("MainWindow", "Options", None))
         self.radioButton_matchPB.setText(_translate("MainWindow", "Match passband", None))
         self.radioButton_matchSB.setText(_translate("MainWindow", "Match stopband", None))

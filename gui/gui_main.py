@@ -21,7 +21,7 @@ plural = lambda n: 's' if n > 1 else ''
 sys.path.append('../engine')
 sys.path.append('..')
 
-from engine import analog
+from engine import analog_new as analog
 from math import pi
 
 
@@ -33,10 +33,15 @@ class StartQT4(QtGui.QMainWindow):
 
     config_dict = {}  # The dictionary of configuration
                       # used by the validation routines.
+    filter_data = {}
 
-    analog_filter = analog.AnalogFilter()
     N = 0
-    Wn = 0
+    Wn = None
+    ripple = 0
+    passband_frequency = None
+    stopband_frequency = None
+    passband_attenuation = 0
+    stopband_attenuation = 0
 
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
@@ -225,13 +230,55 @@ class StartQT4(QtGui.QMainWindow):
             self.validate_inputs()
             self.build_struct()
             self.actually_design_filter()
-        except ValueError as val:
-            critical(self, 'Error', str(val))
+        except Exception as went_wrong:
+            critical(self, 'Error', str(went_wrong))
+            print("Internal error happened! Please report the traceback to the developer.")
+            print("The traceback is: ")
+            print("---------------------------")
             print(traceback.format_exc())
+            print("---------------------------")
             return
 
     def validate_inputs(self):
-        raise NotImplementedError("validate_inputs() not implemented yet.")
+        def validate_n_wn():
+            N = self.ui.plainTextEdit_opt1.toPlainText()
+            try:
+                N = int(N)
+                if N <= 0 or N > 500:
+                    raise ValueError("out of range")
+            except:
+                raise ValueError("Filter order must be between 0 and 500.")
+            pass
+            self.filter_data['N'] = N
+            print(">> N: ", self.filter_data['N'])
+
+            # Validate Wn
+            Wn = self.ui.plainTextEdit_opt2.toPlainText()
+            if 'band' in self.config_dict['filter_type']:
+                try:
+                    Wn = Wn.split(' ')[0:2]
+                    Wn = [2 * pi * float(Wn[0]), 2 * pi * float(Wn[1])]
+                except:
+                    raise ValueError("Needs two parameters for Wn.")
+            else:
+                try:
+                    Wn = Wn.split(' ')[0]
+                    Wn = 2 * pi * float(Wn)
+                    if Wn <= 0:
+                        raise ValueError("Wn must be positive.")
+                except:
+                    raise ValueError("Wn must be a positive number.")
+            self.filter_data['Wn'] = Wn
+
+            print(">> Wn: ", self.filter_data['Wn'])
+
+        def validate_specs():
+            raise NotImplementedError("validate_specs() not implemented yet.")
+
+        if self.config_dict['mode'] == "N_WN":
+            validate_n_wn()
+        elif self.config_dict['mode'] == "specs":
+            validate_specs()
 
     def build_struct(self):
         raise NotImplementedError("build_struct() not implemented yet.")
