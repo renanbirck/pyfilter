@@ -19,6 +19,24 @@ from engine import utils
 class TestUtils(unittest.TestCase):
     """ The testbench for routines under the utils.py code. """
 
+    def test_generate_polynomial(self):
+        coefs = [1, 2, 3, 4]
+        variable = 's'
+        result = utils.generate_polynomial(coefs, variable)
+        self.assertEqual(result, "s^3 + 2s^2 + 3s + 1")
+
+        coefs = [1, 0, 1]
+        result = utils.generate_polynomial(coefs, variable)
+        self.assertEqual(result, "s^2 + 1")
+
+        coefs = [2.5, 0, -1.5]
+        result = utils.generate_polynomial(coefs, variable)
+        self.assertEqual(result, "2.5s^2 - 1.5")
+
+        coefs = [-3.5, -1.5, 1]
+        result = utils.generate_polynomial(coefs, variable)
+        self.assertEqual(result, "-3.5s^2 - 1.5s + 1")
+
     def test_generate_latex_for_polynomial(self):
         num = [1, 2, 3]
         den = [4, 5, 6]
@@ -78,7 +96,6 @@ class TestUtils(unittest.TestCase):
                                                            "-dump",
                                                            "table_reference.html"])
         self.assertEqual(parsed_output_generated, parsed_output_reference)
-
 
 if __name__ == '__main__':
     unittest.main()
