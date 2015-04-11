@@ -301,7 +301,47 @@ class StartQT4(QtGui.QMainWindow):
             print(">> Wn: ", self.filter_data['Wn'])
 
         def validate_specs():
-            raise NotImplementedError("validate_specs() not implemented yet.")
+            Wp = self.ui.plainTextEdit_opt1.toPlainText()
+            Ws = self.ui.plainTextEdit_opt2.toPlainText()
+            Rp = self.ui.plainTextEdit_opt3.toPlainText()
+            Rs = self.ui.plainTextEdit_opt4.toPlainText()
+
+            if 'band' in self.config_dict['filter_type']:
+                try:
+                    print(Wp, Ws)
+                    Wp = Wp.split(' ')
+                    Ws = Ws.split(' ')
+                    Wp = [float(Wp[0]), float(Wp[1])]
+                    Ws = [float(Ws[0]), float(Ws[1])]
+                    if Wp[0] <= 0 or Ws[0] <= 0 or Wp[1] <= 0 or Ws[1] <= 0:
+                        raise ValueError("must be positive.")
+                except:
+                    raise ValueError("Both Wp and Ws need 2 positive parameters.")
+            else:
+                try:
+                    Wp = float(Wp)
+                    Ws = float(Ws)
+                    if Wp <= 0 or Ws <= 0:
+                        raise ValueError("must be positive.")
+                except:
+                    raise ValueError("Both Wp and Ws must be positive.")
+
+            # Validate according to filter type chosen.
+
+            if 'band' in self.config_dict['filter_type']:
+                pb0, pb1, sb0, sb1 = Wp[0], Wp[1], Ws[0], Ws[1]
+                if self.config_dict['filter_type'] == 'bandpass':
+                    if not (pb0 > sb0 and pb1 < sb1):
+                        raise ValueError("The bandpass filter needs that the passband "
+                                         "be inside the stopband.")
+                elif self.config_dict['filter_type'] == 'bandstop':
+                    if not (pb0 < sb0 and pb1 > sb1):
+                        raise ValueError("The bandstop filter needs that the stopband "
+                                         "be inside the passband.")
+            self.filter_data['passband_frequency'] = Wp
+            self.filter_data['stopband_frequency'] = Ws
+            self.filter_data['passband_attenuation'] = Rp
+            self.filter_data['stopband_attenuation'] = Rs
 
         validate_common()
         if self.config_dict['mode'] == "N_WN":
