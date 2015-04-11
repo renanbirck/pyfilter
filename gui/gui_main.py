@@ -240,6 +240,34 @@ class StartQT4(QtGui.QMainWindow):
             return
 
     def validate_inputs(self):
+
+        def validate_common():
+            if self.config_dict['filter_TF'] in ['bessel', 'butterworth']:
+                return # not needed to enter here
+
+            if self.config_dict['filter_TF'] in ['elliptical', 'chebyshev_2']:
+                # Needs stopband attenuation
+                stopband_attenuation = self.ui.plainTextEdit_opt4.toPlainText()
+                try:
+                    stopband_attenuation = float(stopband_attenuation)
+                    if stopband_attenuation <= 0:
+                        raise ValueError("must be positive")
+                except:
+                    raise ValueError("Stopband attenuation must be positive.")
+                self.filter_data['stopband_attenuation'] = stopband_attenuation
+                print(">> Stopband attenuation (dB): ", stopband_attenuation)
+
+            if self.config_dict['filter_TF'] in ['elliptical', 'chebyshev_1']:
+                ripple = self.ui.plainTextEdit_pbRipple.toPlainText()
+                try:
+                    ripple = float(ripple)
+                    if ripple <= 0:
+                        raise ValueError("must be positive")
+                except:
+                    raise ValueError("Ripple must be positive.")
+                self.filter_data['ripple'] = ripple
+                print(">> Ripple (dB): ", ripple)
+
         def validate_n_wn():
             N = self.ui.plainTextEdit_opt1.toPlainText()
             try:
@@ -275,6 +303,7 @@ class StartQT4(QtGui.QMainWindow):
         def validate_specs():
             raise NotImplementedError("validate_specs() not implemented yet.")
 
+        validate_common()
         if self.config_dict['mode'] == "N_WN":
             validate_n_wn()
         elif self.config_dict['mode'] == "specs":
