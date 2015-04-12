@@ -28,12 +28,19 @@ def generate_polynomial(coefs, variable='x'):
             power = power - 1
             continue
 
-        if term < 0:
+        if term == 1 and power != 0:
+            operator_term = " + "
+            value_term = ''
+        elif term == -1 and power != 0:
+            operator_term = " - "
+            value_term = ''
+        elif term < 0:
             operator_term = " - "
             value_term = str(abs(term))
         elif term > 0:
             operator_term = " + "
             value_term = str(term)
+
         else:
             continue
 

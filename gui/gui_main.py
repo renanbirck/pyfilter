@@ -375,6 +375,7 @@ class StartQT4(QtGui.QMainWindow):
                 self.filter_design.ripple = self.filter_data['ripple']
             if hasattr(self.filter_design, "stopband_attenuation"):
                 self.filter_design.stopband_attenuation = self.filter_data['stopband_attenuation']
+
         def build_struct_specs():
             raise NotImplementedError("build_struct_specs() not implemented yet.")
 
@@ -383,7 +384,6 @@ class StartQT4(QtGui.QMainWindow):
             build_struct_n_wn()
         elif self.config_dict['mode'] == "specs":
             build_struct_specs()
-
 
     def actually_design_filter(self):
         """ Where the actual design happens. """
@@ -395,6 +395,7 @@ class StartQT4(QtGui.QMainWindow):
         print("K: ", self.filter_design.K)
         print("B: ", self.filter_design.B)
         print("A: ", self.filter_design.A)
+        print("-------------------------")
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)

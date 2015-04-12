@@ -37,6 +37,10 @@ class TestUtils(unittest.TestCase):
         result = utils.generate_polynomial(coefs, variable)
         self.assertEqual(result, "-3.5s^2 - 1.5s + 1")
 
+        coefs = [3, 1, 0]
+        result = utils.generate_polynomial(coefs, variable)
+        self.assertEqual(result, "3s^2 + s")
+
     def test_generate_latex_for_polynomial(self):
         num = [1, 2, 3]
         den = [4, 5, 6]
