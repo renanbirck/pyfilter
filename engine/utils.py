@@ -5,8 +5,43 @@
 # (c) 2015 Renan Birck <renan.ee.ufsm@gmail.com>
 
 """ This module has some useful routines used during the code. """
-import tempfile # Used to build the HTML output
-from numpy.polynomial import Polynomial
+import tempfile  # Used to build the HTML output
+
+
+class HTMLReport():
+    """ A VERY simple class to generate
+    the basic HTML that Pyfilter uses. Then I avoid the need
+    to add some big library. """
+
+    output = None
+    HTML_text = ''
+
+    def __init__(self):
+        self.output = tempfile.NamedTemporaryFile(prefix='pyfilter',
+                                                  suffix='.html',
+                                                  delete=False)
+        print("My output file name is ", self.output.name)
+
+    def put_polynomial(self, num, den, variable='x'):
+        """ Writes a polynomial to the HTML file. """
+        num_text = generate_polynomial(num, variable)
+        den_text = generate_polynomial(den, variable)
+        dashes = "-" * max(len(num_text), len(den_text))
+        self.HTML_text = self.HTML_text + '<code>'
+        self.HTML_text = self.HTML_text + num_text + '<br>'
+        self.HTML_text = self.HTML_text + dashes + '<br>'
+        self.HTML_text = self.HTML_text + den_text + '<br>'
+        self.HTML_text = self.HTML_text + '</code>'
+
+    def put_table(self, column_names, column_data):
+        """ Writes a table to the HTML file. """
+        self.HTML_text = self.HTML_text + generate_HTML_table(column_names,
+                                                              column_data)
+
+    def write(self):
+        """ Writes the HTML file. """
+        self.output.write(bytes(self.HTML_text, 'UTF-8'))
+        self.output.close()
 
 def generate_polynomial(coefs, variable='x'):
     """ Generates a polynomial from the given coefficients. """
@@ -78,7 +113,7 @@ def generate_latex_for_polynomial(num,
         # Special case for the first element:
         (first_degree, first_value) = tuples[0]
 
-        if len(values) == 1: # Handle the special case first
+        if len(values) == 1:  # Handle the special case first
             return str(values[0])
 
         if first_value != 0:
@@ -120,12 +155,22 @@ def generate_latex_for_polynomial(num,
     return "\\frac{" + num_string + "}{" + den_string + "}"
 
 def generate_HTML(column_names, column_data):
-    transpose = lambda l: [list(i) for i in zip(*l)]
+    """ Generates HTML for given table information. """
     temp = tempfile.NamedTemporaryFile(prefix='pyfilter',
                                        suffix='.html',
                                        delete=False)
 
     print("My temporary file is ", temp.name)
+    html_code = generate_HTML_table(column_names, column_data)
+
+    temp.write(bytes(html_code, 'UTF-8'))
+
+    temp.close()
+    return temp.name
+
+def generate_HTML_table(column_names, column_data):
+
+    transpose = lambda l: [list(i) for i in zip(*l)]
     transposed_names = transpose(column_names)
     transposed_data = transpose(column_data)
     html_code = ''
@@ -143,7 +188,4 @@ def generate_HTML(column_names, column_data):
             html_code += '<td>{}</td>\n'.format(value)
         html_code += '</tr>\n'
 
-    temp.write(bytes(html_code, 'UTF-8'))
-
-    temp.close()
-    return temp.name
+    return html_code

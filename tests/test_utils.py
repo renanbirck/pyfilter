@@ -81,7 +81,7 @@ class TestUtils(unittest.TestCase):
         result = utils.generate_latex_for_polynomial(num, den, variable)
         self.assertEqual(result, "\\frac{s^{11} + 10s^{10}}{2}")
 
-    def test_generate_HTML(self):
+    def test_generate_HTML_table(self):
         """ This tries generating table HTML for given columns. """
         column_names = ['', 'A', 'B']
         column_data = [[1, 2, 3, 4],
@@ -99,6 +99,28 @@ class TestUtils(unittest.TestCase):
         parsed_output_reference = subprocess.check_output(["lynx",
                                                            "-dump",
                                                            "table_reference.html"])
+        self.assertEqual(parsed_output_generated, parsed_output_reference)
+
+    def test_generate_HTML_report(self):
+        html = utils.HTMLReport()
+        html.put_polynomial([1, 2, 3], [4, 5, 6], variable='s')
+        column_names = ['', 'A', 'B']
+        column_data = [[1, 2, 3, 4],
+                       [5, 6, 7, 8],
+                       [9, 0, 1, 2]]
+        html.put_table(column_names, column_data)
+        html.write()
+
+        file_name = html.output.name
+
+        parsed_output_generated = subprocess.check_output(["lynx",
+                                                           "-dump",
+                                                           file_name])
+
+        parsed_output_reference = subprocess.check_output(["lynx",
+                                                           "-dump",
+                                                           "report_reference.html"])
+
         self.assertEqual(parsed_output_generated, parsed_output_reference)
 
 if __name__ == '__main__':

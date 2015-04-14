@@ -353,6 +353,8 @@ class StartQT4(QtGui.QMainWindow):
     def build_struct(self):
         """ This function initializes the filter object
         with the needed information. """
+        config = {}
+
         def build_struct_common():
             if self.config_dict['filter_TF'] == "butterworth":
                 self.filter_design = analog.ButterworthFilter()
@@ -367,6 +369,8 @@ class StartQT4(QtGui.QMainWindow):
             else:  # Should never happen, but... you never know.
                 raise ValueError("Unknown filter type requested!!")
 
+
+
         def build_struct_n_wn():
             self.filter_design.N = self.filter_data['N']
             self.filter_design.Wn = self.filter_data['Wn']
@@ -377,6 +381,18 @@ class StartQT4(QtGui.QMainWindow):
                 self.filter_design.stopband_attenuation = self.filter_data['stopband_attenuation']
 
         def build_struct_specs():
+            config['passband_frequency'] = self.filter_data['passband_frequency']
+            config['stopband_frequency'] = self.filter_data['stopband_frequency']
+            config['passband_attenuation'] = self.filter_data['passband_attenuation']
+            config['stopband_attenuation'] = self.filter_data['stopband_attenuation']
+
+            if hasattr(self.filter_design, "ripple"):
+                self.filter_design.ripple = self.filter_data['ripple']
+            if hasattr(self.filter_design, "stopband_attenuation"):
+                self.filter_design.stopband_attenuation = self.filter_data['stopband_attenuation']
+
+            self.filter_design.set_parameters(config)
+
             raise NotImplementedError("build_struct_specs() not implemented yet.")
 
         build_struct_common()
