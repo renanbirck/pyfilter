@@ -9,8 +9,8 @@ Para N, Wn:
 
 Para parâmetros:
 - Butterworth
-- Cheby1
-- Cheby2
+- Cheby1 OK
+- Cheby2 OK
 - Elíptico
 
 Interface:

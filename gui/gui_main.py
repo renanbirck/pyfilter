@@ -369,9 +369,8 @@ class StartQT4(QtGui.QMainWindow):
             else:  # Should never happen, but... you never know.
                 raise ValueError("Unknown filter type requested!!")
 
-
-
         def build_struct_n_wn():
+            """ Builds the data structure for filter given the N, Wn. """
             self.filter_design.N = self.filter_data['N']
             self.filter_design.Wn = self.filter_data['Wn']
             self.filter_design.filter_kind = self.config_dict['filter_type']
@@ -381,19 +380,40 @@ class StartQT4(QtGui.QMainWindow):
                 self.filter_design.stopband_attenuation = self.filter_data['stopband_attenuation']
 
         def build_struct_specs():
-            config['passband_frequency'] = self.filter_data['passband_frequency']
-            config['stopband_frequency'] = self.filter_data['stopband_frequency']
-            config['passband_attenuation'] = self.filter_data['passband_attenuation']
-            config['stopband_attenuation'] = self.filter_data['stopband_attenuation']
+            """ Builds the data structure for filter given the specifications. """
+
+            if 'band' in self.config_dict['filter_type']:
+                config['passband_frequency'] = list(map(float, self.filter_data['passband_frequency']))
+                config['stopband_frequency'] = list(map(float, self.filter_data['stopband_frequency']))
+            else:
+                config['passband_frequency'] = float(self.filter_data['passband_frequency'])
+                config['stopband_frequency'] = float(self.filter_data['stopband_frequency'])
+
+            if self.config_dict['filter_type'] == "highpass": # The object model requires this.
+                config['passband_frequency'] = float(self.filter_data['stopband_frequency'])
+                config['stopband_frequency'] = float(self.filter_data['passband_frequency'])
+
+            config['passband_attenuation'] = float(self.filter_data['passband_attenuation'])
+            config['stopband_attenuation'] = float(self.filter_data['stopband_attenuation'])
 
             if hasattr(self.filter_design, "ripple"):
                 self.filter_design.ripple = self.filter_data['ripple']
             if hasattr(self.filter_design, "stopband_attenuation"):
-                self.filter_design.stopband_attenuation = self.filter_data['stopband_attenuation']
+                self.filter_design.stopband_attenuation = float(self.filter_data['stopband_attenuation'])
+            if hasattr(self.filter_design, "target"):
+                if self.ui.radioButton_matchPB.isChecked():
+                    self.filter_design.target = 'passband'
+                elif self.ui.radioButton_matchSB.isChecked():
+                    self.filter_design.target = 'stopband'
+                else:
+                    raise NotImplementedError("WHAT? Target is not passband or stopband?")
 
             self.filter_design.set_parameters(config)
+            self.filter_design.compute_parameters()
 
-            raise NotImplementedError("build_struct_specs() not implemented yet.")
+            print("You asked for", self.config_dict['filter_type'], " you got ", self.filter_design.filter_kind)
+            if self.config_dict['filter_type'] != self.filter_design.filter_kind:
+                print("You didn't get what you asked for. This means a bug. Report.")
 
         build_struct_common()
         if self.config_dict['mode'] == "N_WN":
@@ -403,6 +423,7 @@ class StartQT4(QtGui.QMainWindow):
 
     def actually_design_filter(self):
         """ Where the actual design happens. """
+        print("-------------------------")
         print("Begin design.")
         self.filter_design.design()
         print("Design finished.")
