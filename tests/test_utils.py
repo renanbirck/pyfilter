@@ -103,6 +103,8 @@ class TestUtils(unittest.TestCase):
 
     def test_generate_HTML_report(self):
         html = utils.HTMLReport()
+        html.put_text("this is text")
+        html.put_newline()
         html.put_polynomial([1, 2, 3], [4, 5, 6], variable='s')
         column_names = ['', 'A', 'B']
         column_data = [[1, 2, 3, 4],

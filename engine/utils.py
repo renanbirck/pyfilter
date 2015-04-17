@@ -22,6 +22,13 @@ class HTMLReport():
                                                   delete=False)
         print("My output file name is ", self.output.name)
 
+    def put_text(self, text):
+        """ Writes text to the HTML file. """
+        self.HTML_text = self.HTML_text + text + '<br>'
+
+    def put_newline(self):
+        self.HTML_text = self.HTML_text + '<br>'
+
     def put_polynomial(self, num, den, variable='x'):
         """ Writes a polynomial to the HTML file. """
         num_text = generate_polynomial(num, variable)

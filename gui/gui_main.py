@@ -22,6 +22,7 @@ sys.path.append('../engine')
 sys.path.append('..')
 
 from engine import analog_new as analog
+from engine import utils
 from math import pi
 
 
@@ -433,6 +434,12 @@ class StartQT4(QtGui.QMainWindow):
         print("B: ", self.filter_design.B)
         print("A: ", self.filter_design.A)
         print("-------------------------")
+
+    def report(self):
+        """ Design the report used to show the results. """
+
+        html = utils.HTMLReport()
+
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
