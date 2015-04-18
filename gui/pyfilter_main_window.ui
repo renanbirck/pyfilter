@@ -37,6 +37,16 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
+          <widget class="QPushButton" name="pushButton_saveToFile">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Save to file...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QWebView" name="tfOutputHTML">
            <property name="url">
             <url>

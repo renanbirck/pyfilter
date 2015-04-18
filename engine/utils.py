@@ -45,10 +45,11 @@ class HTMLReport():
         self.HTML_text = self.HTML_text + generate_HTML_table(column_names,
                                                               column_data)
 
-    def write(self):
+    def write(self, close=False):
         """ Writes the HTML file. """
         self.output.write(bytes(self.HTML_text, 'UTF-8'))
-        self.output.close()
+        if close:
+            self.output.close()
 
 def generate_polynomial(coefs, variable='x'):
     """ Generates a polynomial from the given coefficients. """

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_window.ui'
 #
-# Created: Sat Apr 18 15:34:38 2015
+# Created: Sat Apr 18 16:12:45 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -44,6 +44,10 @@ class Ui_MainWindow(object):
         self.tab_TF.setObjectName(_fromUtf8("tab_TF"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.tab_TF)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.pushButton_saveToFile = QtGui.QPushButton(self.tab_TF)
+        self.pushButton_saveToFile.setEnabled(False)
+        self.pushButton_saveToFile.setObjectName(_fromUtf8("pushButton_saveToFile"))
+        self.verticalLayout_2.addWidget(self.pushButton_saveToFile)
         self.tfOutputHTML = QtWebKit.QWebView(self.tab_TF)
         self.tfOutputHTML.setUrl(QtCore.QUrl(_fromUtf8("file:///mnt/dados/Insync/Insync (e-mail pessoal)/Arquivos/Sources/pyfilter_TCC/gui/data/result_template.html")))
         self.tfOutputHTML.setObjectName(_fromUtf8("tfOutputHTML"))
@@ -302,6 +306,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "PyFilter (Analog)", None))
+        self.pushButton_saveToFile.setText(_translate("MainWindow", "Save to file...", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_TF), _translate("MainWindow", "Results", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_plot), _translate("MainWindow", "Frequency Response", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))

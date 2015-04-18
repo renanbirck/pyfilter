@@ -8,10 +8,12 @@
 
 import sys
 import traceback
+import time
 from os import unlink
 from PyQt4 import QtCore, QtGui
 from pyfilter_main_window import Ui_MainWindow
 from PyQt4.QtGui import QMessageBox
+from shutil import copyfile
 
 # Aliases and other useful functions
 critical = QMessageBox.critical
@@ -63,6 +65,9 @@ class StartQT4(QtGui.QMainWindow):
         QtCore.QObject.connect(self.ui.actionAbout,
                                QtCore.SIGNAL("triggered()"),
                                self.menuAbout)
+        QtCore.QObject.connect(self.ui.pushButton_saveToFile,
+                               QtCore.SIGNAL("clicked()"),
+                               self.save_HTML_to_file)
 
         for topologyWidget in [self.ui.radioButton_Bessel,
                                self.ui.radioButton_Butterworth,
@@ -255,6 +260,21 @@ class StartQT4(QtGui.QMainWindow):
             print(traceback.format_exc())
             print("---------------------------")
             return
+
+    def save_HTML_to_file(self):
+        print("aqui ó")
+        latest_file_name = self.file_names[-1]  # the last file name
+        save_dialog = QtGui.QFileDialog()
+        file_name_to_save = save_dialog.getSaveFileName()
+        if not file_name_to_save:
+            return
+
+        try:
+            copyfile(latest_file_name, file_name_to_save)
+        except:
+            critical(self, "Error", "Could not save file! \
+                     Check that you have permission and the \
+                     disk isn't full.")
 
     def validate_inputs(self):
 
@@ -454,6 +474,7 @@ class StartQT4(QtGui.QMainWindow):
 
     def report(self):
         """ Design the report used to show the results. """
+        self.ui.pushButton_saveToFile.setEnabled(True)
 
         html = utils.HTMLReport()
         html.put_text("Transfer function: ")
@@ -491,7 +512,7 @@ class StartQT4(QtGui.QMainWindow):
         html.put_newline()
         html.put_table(columns, data)
 
-        html.write()
+        html.write(close=True)
         self.ui.tfOutputHTML.load(url)
 
 if __name__ == "__main__":
