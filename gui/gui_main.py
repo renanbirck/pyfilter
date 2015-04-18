@@ -427,9 +427,11 @@ class StartQT4(QtGui.QMainWindow):
             self.filter_design.set_parameters(config)
             self.filter_design.compute_parameters()
 
-            print("You asked for", self.config_dict['filter_type'], " you got ", self.filter_design.filter_kind)
+            print("You asked for", self.config_dict['filter_type'],
+                  " you got ", self.filter_design.filter_kind)
             if self.config_dict['filter_type'] != self.filter_design.filter_kind:
                 print("You didn't get what you asked for. This means a bug. Report.")
+                raise SystemError("Filter asked is not filter got!")
 
         build_struct_common()
         if self.config_dict['mode'] == "N_WN":
@@ -459,18 +461,37 @@ class StartQT4(QtGui.QMainWindow):
         html.put_polynomial(self.filter_design.B,
                             self.filter_design.A,
                             variable='s')
-        html.write()
 
         html.put_text("Coefficients:")
+
         len_B = len(self.filter_design.B)
         len_A = len(self.filter_design.A)
+        pad_len = abs(len_B - len_A)
+
+        padded_B = [0] * pad_len
+        print("need to pad with ", pad_len)
+
+        for element in self.filter_design.B:
+            padded_B.append(element)
+
+        print("after padding, B became ", padded_B)
+
         len_order = max(len_B, len_A)
+        coeffs = list(reversed(range(0, len_order+1)))
 
         # Keep track of the file names we've used for the reports,
         # then at the end of the program we can delete 'em.
         self.file_names.append(html.output.name)
         url = QtCore.QUrl(html.output.name)
 
+        columns = ['', 'B (num)', 'A (den)']
+        data = [coeffs,
+                padded_B,
+                self.filter_design.A]
+        html.put_newline()
+        html.put_table(columns, data)
+
+        html.write()
         self.ui.tfOutputHTML.load(url)
 
 if __name__ == "__main__":
