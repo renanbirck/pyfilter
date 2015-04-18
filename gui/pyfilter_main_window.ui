@@ -33,7 +33,7 @@
        </property>
        <widget class="QWidget" name="tab_TF">
         <attribute name="title">
-         <string>Transfer Function</string>
+         <string>Results</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>

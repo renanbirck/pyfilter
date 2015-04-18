@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_window.ui'
 #
-# Created: Sat Apr 11 11:25:38 2015
+# Created: Sat Apr 18 15:34:38 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -302,7 +302,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "PyFilter (Analog)", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_TF), _translate("MainWindow", "Transfer Function", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_TF), _translate("MainWindow", "Results", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_plot), _translate("MainWindow", "Frequency Response", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuOptions.setTitle(_translate("MainWindow", "Options", None))

@@ -6,7 +6,9 @@
 
 # This is the main file for the GUI.
 
-import sys, traceback
+import sys
+import traceback
+from os import unlink
 from PyQt4 import QtCore, QtGui
 from pyfilter_main_window import Ui_MainWindow
 from PyQt4.QtGui import QMessageBox
@@ -17,6 +19,7 @@ information = QMessageBox.information
 warning = QMessageBox.information
 question = QMessageBox.question
 plural = lambda n: 's' if n > 1 else ''
+
 
 sys.path.append('../engine')
 sys.path.append('..')
@@ -36,6 +39,7 @@ class StartQT4(QtGui.QMainWindow):
                       # used by the validation routines.
     filter_data = {}
     filter_design = None
+    file_names = []  # Used on quit
 
     N = 0
     Wn = None
@@ -100,6 +104,16 @@ class StartQT4(QtGui.QMainWindow):
         color_internal_names = ['red', 'green', 'blue', 'yellow', 'black']
 
         color_pairs = zip(color_names, color_internal_names)
+
+    def __del__(self):
+        print("Cleaning up the temporary files...")
+        for file_name in self.file_names:
+            print(file_name)
+            try:
+                unlink(file_name)
+            except:
+                pass  # File disappeared?? I don't care (I love it).
+        print("Goodbye.")
 
     def set_status(self, message):
         self.statusBar.showMessage(message)
@@ -232,6 +246,7 @@ class StartQT4(QtGui.QMainWindow):
             self.validate_inputs()
             self.build_struct()
             self.actually_design_filter()
+            self.report()
         except Exception as went_wrong:
             critical(self, 'Error', str(went_wrong))
             print("Internal error happened! Please report the traceback to the developer.")
@@ -439,7 +454,24 @@ class StartQT4(QtGui.QMainWindow):
         """ Design the report used to show the results. """
 
         html = utils.HTMLReport()
+        html.put_text("Transfer function: ")
+        html.put_newline()
+        html.put_polynomial(self.filter_design.B,
+                            self.filter_design.A,
+                            variable='s')
+        html.write()
 
+        html.put_text("Coefficients:")
+        len_B = len(self.filter_design.B)
+        len_A = len(self.filter_design.A)
+        len_order = max(len_B, len_A)
+
+        # Keep track of the file names we've used for the reports,
+        # then at the end of the program we can delete 'em.
+        self.file_names.append(html.output.name)
+        url = QtCore.QUrl(html.output.name)
+
+        self.ui.tfOutputHTML.load(url)
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
