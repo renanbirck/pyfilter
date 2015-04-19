@@ -4,10 +4,11 @@
 from math import pi
 from scipy import signal
 import custom
+from filter import Filter
 
 hz_to_rad = lambda x: 2 * pi * float(x)
 
-class DigitalFilter(object):
+class DigitalFilter(Filter):
     """ Class of a general digital filter. """
 
     sample_rate = 0

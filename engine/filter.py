@@ -2,6 +2,7 @@
 # coding: utf-8
 
 from math import pi
+from scipy import signal
 
 class Filter:
     """ Generic class for a filter. This is not called directly,
@@ -14,9 +15,9 @@ class Filter:
     # Those are common to all types of filter
     N = None
     Wn = None
-    B, A = None, None # Filter in B/A mode
-    Z, P, K = None, None, None # Filter in ZPK mode
-
+    B, A = None, None  # Filter in B/A mode
+    Z, P, K = None, None, None  # Filter in ZPK mode
+    W, H = None, None  # Filter's frequencies and values.
     def hz_to_rad(self, x):
         """ Converts X Hz to radians/second. """
         if isinstance(x, list):
@@ -71,4 +72,5 @@ class Filter:
                 raise ValueError("All values should be positive!")
             self.filter_kind = filter_kind(pb, None, sb, None)
 
-
+    def compute_frequencies(self, N=None):
+        self.W, self.H = signal.freqs(self.B, self.A, N)
