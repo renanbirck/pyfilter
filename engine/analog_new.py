@@ -2,6 +2,7 @@
 
 from math import pi
 from scipy import signal
+from filter import Filter
 import custom
 
 
@@ -11,16 +12,7 @@ def hz_to_rad(x):
         return list(map(hz_to_rad, x))
     return 2 * pi * x
 
-class AnalogFilter():
-
-    filter_parameters = {}
-    filter_kind = None
-    #ripple = None
-    # Those are common to all types of filter
-    N = None
-    Wn = None
-    B, A = None, None # Filter in B/A mode
-    Z, P, K = None, None, None # Filter in ZPK mode
+class AnalogFilter(Filter):
 
     def __init__(self, parameters=None):
         if parameters:

@@ -7,33 +7,16 @@ class Filter:
         but rather, the AnalogFilter and DigitalFilter classes
         inherit from us. """
 
-    _order = 0
-    types = None
-    topologies = None
-    classes = None
-    implementations = None
-    transfer_function = None
+    filter_parameters = {}
+    filter_kind = None
+    #ripple = None
+    # Those are common to all types of filter
+    N = None
+    Wn = None
+    B, A = None, None # Filter in B/A mode
+    Z, P, K = None, None, None # Filter in ZPK mode
+
 
     def __init__(self):
         pass
 
-    @property
-    def order(self):
-        return self._order
-
-    @order.setter
-    def order(self, new_order):
-        if new_order < 0 or not isinstance(new_order, int):
-            raise ValueError("Order must be an integer > 0")
-        self._order = new_order
-
-    def synthesize(self):
-        """ Synthesize the filter from the given configuration.
-            Here it will fail because this class is inherited
-            and other classes override this method. """
-        raise NotImplementedError("Please override this with your \
-                                   own implementation of synthesize")
-
-    def compute_order(self):
-        raise NotImplementedError("Please override this with your \
-                                   own implementation of compute_order.")

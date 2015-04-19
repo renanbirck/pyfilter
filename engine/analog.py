@@ -20,8 +20,6 @@ class AnalogFilter(Filter):
     classes = ['butterworth', 'chebyshev_1', 'chebyshev_2',
                'elliptical', 'bessel']
 
-    class_dispatcher = None
-
     passband_frequency = None
     passband_attenuation = None
     stopband_frequency = None
