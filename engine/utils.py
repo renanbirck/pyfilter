@@ -45,7 +45,7 @@ class HTMLReport():
         self.HTML_text = self.HTML_text + generate_HTML_table(column_names,
                                                               column_data)
 
-    def write(self, close=False):
+    def write(self, close=True):
         """ Writes the HTML file. """
         self.output.write(bytes(self.HTML_text, 'UTF-8'))
         if close:

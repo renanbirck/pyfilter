@@ -8,7 +8,6 @@
 
 import sys
 import traceback
-import time
 from os import unlink
 from PyQt4 import QtCore, QtGui
 from pyfilter_main_window import Ui_MainWindow
@@ -20,8 +19,6 @@ critical = QMessageBox.critical
 information = QMessageBox.information
 warning = QMessageBox.information
 question = QMessageBox.question
-plural = lambda n: 's' if n > 1 else ''
-
 
 sys.path.append('../engine')
 sys.path.append('..')
@@ -29,7 +26,6 @@ sys.path.append('..')
 from engine import analog_new as analog
 from engine import utils
 from math import pi
-
 
 class StartQT4(QtGui.QMainWindow):
 
@@ -272,9 +268,9 @@ class StartQT4(QtGui.QMainWindow):
         try:
             copyfile(latest_file_name, file_name_to_save)
         except:
-            critical(self, "Error", "Could not save file! \
-                     Check that you have permission and the \
-                     disk isn't full.")
+            critical(self, "Error", """Could not save file!
+                     Check that you have permission and the
+                     disk isn't full.""")
 
     def validate_inputs(self):
 
@@ -477,6 +473,7 @@ class StartQT4(QtGui.QMainWindow):
         self.ui.pushButton_saveToFile.setEnabled(True)
 
         html = utils.HTMLReport()
+        html.put_text("<body bgcolor=\"white\">")
         html.put_text("Transfer function: ")
         html.put_newline()
         html.put_polynomial(self.filter_design.B,
@@ -499,6 +496,7 @@ class StartQT4(QtGui.QMainWindow):
 
         len_order = max(len_B, len_A)
         coeffs = list(reversed(range(0, len_order+1)))
+        coeffs = list(map(lambda x: x-1, coeffs))
 
         # Keep track of the file names we've used for the reports,
         # then at the end of the program we can delete 'em.
@@ -511,7 +509,7 @@ class StartQT4(QtGui.QMainWindow):
                 self.filter_design.A]
         html.put_newline()
         html.put_table(columns, data)
-
+        html.put_text("</body>")
         html.write(close=True)
         self.ui.tfOutputHTML.load(url)
 
