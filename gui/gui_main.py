@@ -27,6 +27,8 @@ from engine import analog_new as analog
 from engine import utils
 from math import pi
 
+import canvas
+
 class StartQT4(QtGui.QMainWindow):
 
     BAND_MESSAGE = """ For the bandpass and bandstop cases,
@@ -248,6 +250,7 @@ class StartQT4(QtGui.QMainWindow):
             self.build_struct()
             self.actually_design_filter()
             self.report()
+            self.plot()
         except Exception as went_wrong:
             critical(self, 'Error', str(went_wrong))
             print("Internal error happened! Please report the traceback to the developer.")
@@ -512,6 +515,20 @@ class StartQT4(QtGui.QMainWindow):
         html.put_text("</body>")
         html.write(close=True)
         self.ui.tfOutputHTML.load(url)
+
+    def plot(self):
+        self.filter_design.compute_frequencies()
+        self.ui.graphicsView.hide()
+        self.ui.graphicsView_2.hide()
+
+        self.ui.magnitudePlotWidget = canvas.StaticPlot(self.ui.splitter_2, width=9,
+                                                        height=6, dpi=100)
+        self.ui.magnitudePlotWidget.compute_initial_figure([1, 2, 3], [4, 5, 6])
+        self.ui.phasePlotWidget = canvas.StaticPlot(self.ui.splitter_2, width=9,
+                                                    height=6, dpi=100)
+        self.ui.phasePlotWidget.compute_initial_figure([4, 5, 6], [7, 8, 9])
+
+        pass
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
