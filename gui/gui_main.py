@@ -100,7 +100,9 @@ class StartQT4(QtGui.QMainWindow):
         QtCore.QObject.connect(self.ui.pushButton_WriteToFile,
                                QtCore.SIGNAL("clicked()"),
                                self.write_plots_to_file)
-
+        QtCore.QObject.connect(self.ui.tabWidget,
+                               QtCore.SIGNAL("tabCloseRequested(int)"),
+                               self.destroy_tab)
         # Initial preparations
         self.configure_boxes_for_design_parameters()
         self.get_filter_TF()
@@ -118,6 +120,11 @@ class StartQT4(QtGui.QMainWindow):
         _ = [os.unlink(x) for x in self.file_names]
 
         print("Goodbye.")
+
+    def destroy_tab(self, tab_id):
+        if tab_id == 0:
+            return # The results tab shall not close.
+        self.ui.tabWidget.removeTab(tab_id)
 
     def set_status(self, message):
         self.statusBar.showMessage(message)
@@ -518,7 +525,7 @@ class StartQT4(QtGui.QMainWindow):
         self.ui.tfOutputHTML.load(url)
 
     def plot(self):
-        self.filter_design.compute_frequencies()
+        self.filter_design.compute_frequencies(N=1000)
         #self.ui.graphicsView.hide()
         #self.ui.graphicsView_2.hide()
         #self.ui.tab_plot.hide()

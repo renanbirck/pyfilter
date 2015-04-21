@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_window.ui'
 #
-# Created: Tue Apr 21 15:49:47 2015
+# Created: Tue Apr 21 16:02:25 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -39,6 +39,7 @@ class Ui_MainWindow(object):
         self.splitter.setOrientation(QtCore.Qt.Vertical)
         self.splitter.setObjectName(_fromUtf8("splitter"))
         self.tabWidget = QtGui.QTabWidget(self.splitter)
+        self.tabWidget.setTabsClosable(True)
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
         self.tab_TF = QtGui.QWidget()
         self.tab_TF.setObjectName(_fromUtf8("tab_TF"))

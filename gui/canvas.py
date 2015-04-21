@@ -62,5 +62,5 @@ class StaticPlot(Canvas):
 
         choice(x, y)
         self.axes.autoscale_view()
-        self.axes.set_xlim(left=min(x) - 1, right=max(x) + 1)
-        self.axes.set_ylim(bottom=min(y) - 1, top=max(y) + 3)
+        self.axes.set_xlim(left=min(x) * 1.1, right=(1+max(x)) * 1.2)
+        self.axes.set_ylim(bottom=min(y) * 1.1, top=(1+max(y)) * 1.3)
