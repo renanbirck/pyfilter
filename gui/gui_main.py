@@ -521,34 +521,39 @@ class StartQT4(QtGui.QMainWindow):
         self.filter_design.compute_frequencies()
         self.ui.graphicsView.hide()
         self.ui.graphicsView_2.hide()
-        try:
-            self.ui.magnitudePlotWidget.hide()
-            self.ui.phasePlotWidget.hide()
-            self.ui.magnitudeGraphToolbar.hide()
-            self.ui.phaseGraphToolbar.hide()
-        except:
-            pass  # No plot yet.
 
-        self.ui.magnitudePlotWidget = canvas.StaticPlot(self.ui.splitter_2, width=9,
+        # Build the tab used for plotting.
+
+        plot_tab = QtGui.QWidget()
+        plot_tab_layout = QtGui.QVBoxLayout()
+        plot_tab_splitter = QtGui.QSplitter()
+        plot_tab_splitter.setOrientation(QtCore.Qt.Vertical)
+        plot_tab.setLayout(plot_tab_layout)
+
+        self.ui.tabWidget.addTab(plot_tab, "Frequency Response")
+
+        plot_tab_layout.addWidget(plot_tab_splitter)
+
+        self.ui.magnitudePlotWidget = canvas.StaticPlot(plot_tab_splitter, width=9,
                                                         height=6, dpi=80)
         self.ui.magnitudePlotWidget.compute_initial_figure(self.filter_design.W/(2*pi),
                                                            20 * log10(abs(self.filter_design.H)),
                                                            mode="logx")
         self.ui.magnitudePlotWidget.set_label("Frequency (Hz)", "Gain (dB)")
+
         self.ui.magnitudeGraphToolbar = NavigationToolbar(self.ui.magnitudePlotWidget,
                                                           self)
-        self.ui.splitter_2.addWidget(self.ui.magnitudeGraphToolbar)
+        plot_tab_splitter.addWidget(self.ui.magnitudeGraphToolbar)
 
-        self.ui.phasePlotWidget = canvas.StaticPlot(self.ui.splitter_2, width=9,
+        self.ui.phasePlotWidget = canvas.StaticPlot(plot_tab_splitter, width=9,
                                                     height=6, dpi=80)
         self.ui.phasePlotWidget.compute_initial_figure(self.filter_design.W/(2*pi),
                                                        angle(self.filter_design.H) * 180/pi,
                                                        mode="logx")
         self.ui.phasePlotWidget.set_label("Frequency (Hz)", "Phase (°)")
         self.ui.phaseGraphToolbar = NavigationToolbar(self.ui.phasePlotWidget,
-                                                          self)
-        self.ui.splitter_2.addWidget(self.ui.phaseGraphToolbar)
-
+                                                      self)
+        plot_tab_splitter.addWidget(self.ui.phaseGraphToolbar)
 
         pass
 

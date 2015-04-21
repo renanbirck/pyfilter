@@ -49,10 +49,6 @@ class Canvas(FigureCanvas):
         else:
             raise ValueError("Axis must be one of X or Y.")
 
-    def dump(self, file_name):
-        Figure.savefig(file_name)
-
-
 class StaticPlot(Canvas):
     """ A very simple plotting canvas,
     that display a static plot. """
