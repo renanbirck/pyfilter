@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_window.ui'
 #
-# Created: Tue Apr 21 16:02:25 2015
+# Created: Tue Apr 21 18:23:38 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -128,19 +128,19 @@ class Ui_MainWindow(object):
         self.radioButton_AP.setGeometry(QtCore.QRect(0, 100, 104, 21))
         self.radioButton_AP.setObjectName(_fromUtf8("radioButton_AP"))
         self.groupBox_Filter_Top = QtGui.QGroupBox(self.dockWidgetContents)
-        self.groupBox_Filter_Top.setGeometry(QtCore.QRect(10, 0, 191, 121))
+        self.groupBox_Filter_Top.setGeometry(QtCore.QRect(10, 0, 191, 191))
         self.groupBox_Filter_Top.setObjectName(_fromUtf8("groupBox_Filter_Top"))
         self.radioButton_Butterworth = QtGui.QRadioButton(self.groupBox_Filter_Top)
         self.radioButton_Butterworth.setGeometry(QtCore.QRect(0, 40, 104, 21))
         self.radioButton_Butterworth.setObjectName(_fromUtf8("radioButton_Butterworth"))
         self.radioButton_Cheby1 = QtGui.QRadioButton(self.groupBox_Filter_Top)
-        self.radioButton_Cheby1.setGeometry(QtCore.QRect(0, 60, 131, 21))
+        self.radioButton_Cheby1.setGeometry(QtCore.QRect(0, 60, 131, 41))
         self.radioButton_Cheby1.setObjectName(_fromUtf8("radioButton_Cheby1"))
         self.radioButton_Cheby2 = QtGui.QRadioButton(self.groupBox_Filter_Top)
-        self.radioButton_Cheby2.setGeometry(QtCore.QRect(0, 80, 131, 21))
+        self.radioButton_Cheby2.setGeometry(QtCore.QRect(0, 100, 131, 31))
         self.radioButton_Cheby2.setObjectName(_fromUtf8("radioButton_Cheby2"))
         self.radioButton_Elliptical = QtGui.QRadioButton(self.groupBox_Filter_Top)
-        self.radioButton_Elliptical.setGeometry(QtCore.QRect(0, 100, 104, 21))
+        self.radioButton_Elliptical.setGeometry(QtCore.QRect(0, 140, 104, 21))
         self.radioButton_Elliptical.setObjectName(_fromUtf8("radioButton_Elliptical"))
         self.radioButton_Bessel = QtGui.QRadioButton(self.groupBox_Filter_Top)
         self.radioButton_Bessel.setGeometry(QtCore.QRect(0, 20, 104, 21))
@@ -314,8 +314,10 @@ class Ui_MainWindow(object):
         self.radioButton_AP.setText(_translate("MainWindow", "All-pass", None))
         self.groupBox_Filter_Top.setTitle(_translate("MainWindow", "Filter topology", None))
         self.radioButton_Butterworth.setText(_translate("MainWindow", "Butterworth", None))
-        self.radioButton_Cheby1.setText(_translate("MainWindow", "Chebyshev Type1", None))
-        self.radioButton_Cheby2.setText(_translate("MainWindow", "Chebyshev Type2", None))
+        self.radioButton_Cheby1.setText(_translate("MainWindow", "Chebyshev \n"
+"Type1", None))
+        self.radioButton_Cheby2.setText(_translate("MainWindow", "Chebyshev \n"
+"Type2", None))
         self.radioButton_Elliptical.setText(_translate("MainWindow", "Elliptical", None))
         self.radioButton_Bessel.setText(_translate("MainWindow", "Bessel", None))
         self.groupBox_Options.setTitle(_translate("MainWindow", "Options", None))
