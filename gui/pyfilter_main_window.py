@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_window.ui'
 #
-# Created: Mon Apr 20 21:06:30 2015
+# Created: Mon Apr 20 21:45:49 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -238,12 +238,12 @@ class Ui_MainWindow(object):
         self.label_3 = QtGui.QLabel(self.dockWidgetContents_2)
         self.label_3.setGeometry(QtCore.QRect(10, 16, 16, 30))
         self.label_3.setObjectName(_fromUtf8("label_3"))
-        self.pushButton_4 = QtGui.QPushButton(self.dockWidgetContents_2)
-        self.pushButton_4.setGeometry(QtCore.QRect(20, 180, 141, 26))
-        self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
-        self.pushButton = QtGui.QPushButton(self.dockWidgetContents_2)
-        self.pushButton.setGeometry(QtCore.QRect(170, 180, 141, 27))
-        self.pushButton.setObjectName(_fromUtf8("pushButton"))
+        self.pushButton_RedrawGraph = QtGui.QPushButton(self.dockWidgetContents_2)
+        self.pushButton_RedrawGraph.setGeometry(QtCore.QRect(20, 180, 141, 26))
+        self.pushButton_RedrawGraph.setObjectName(_fromUtf8("pushButton_RedrawGraph"))
+        self.pushButton_WriteToFile = QtGui.QPushButton(self.dockWidgetContents_2)
+        self.pushButton_WriteToFile.setGeometry(QtCore.QRect(170, 180, 141, 27))
+        self.pushButton_WriteToFile.setObjectName(_fromUtf8("pushButton_WriteToFile"))
         self.dockWidget_PlotOptions.setWidget(self.dockWidgetContents_2)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.dockWidget_PlotOptions)
         self.actionOpen = QtGui.QAction(MainWindow)
@@ -298,9 +298,9 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.doubleSpinBox_Ymin, self.doubleSpinBox_Ymax)
         MainWindow.setTabOrder(self.doubleSpinBox_Ymax, self.comboBox_frontColor)
         MainWindow.setTabOrder(self.comboBox_frontColor, self.comboBox_backColor)
-        MainWindow.setTabOrder(self.comboBox_backColor, self.pushButton_4)
-        MainWindow.setTabOrder(self.pushButton_4, self.pushButton)
-        MainWindow.setTabOrder(self.pushButton, self.tfOutputHTML)
+        MainWindow.setTabOrder(self.comboBox_backColor, self.pushButton_RedrawGraph)
+        MainWindow.setTabOrder(self.pushButton_RedrawGraph, self.pushButton_WriteToFile)
+        MainWindow.setTabOrder(self.pushButton_WriteToFile, self.tfOutputHTML)
         MainWindow.setTabOrder(self.tfOutputHTML, self.tabWidget)
         MainWindow.setTabOrder(self.tabWidget, self.graphicsView)
         MainWindow.setTabOrder(self.graphicsView, self.graphicsView_2)
@@ -351,8 +351,8 @@ class Ui_MainWindow(object):
         self.checkBox_Ygrid.setText(_translate("MainWindow", "Grid", None))
         self.checkBox_Xgrid.setText(_translate("MainWindow", "Grid", None))
         self.label_3.setText(_translate("MainWindow", "X:", None))
-        self.pushButton_4.setText(_translate("MainWindow", "Redraw graph", None))
-        self.pushButton.setText(_translate("MainWindow", "Write to File", None))
+        self.pushButton_RedrawGraph.setText(_translate("MainWindow", "Redraw graph", None))
+        self.pushButton_WriteToFile.setText(_translate("MainWindow", "Write to File", None))
         self.actionOpen.setText(_translate("MainWindow", "Open...", None))
         self.actionSave.setText(_translate("MainWindow", "Save...", None))
         self.actionExport_plots.setText(_translate("MainWindow", "Export plots...", None))

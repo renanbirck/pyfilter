@@ -8,7 +8,7 @@
 
 import sys
 import traceback
-from os import unlink
+import os
 from PyQt4 import QtCore, QtGui
 from pyfilter_main_window import Ui_MainWindow
 from PyQt4.QtGui import QMessageBox
@@ -96,6 +96,9 @@ class StartQT4(QtGui.QMainWindow):
         QtCore.QObject.connect(self.ui.pushButton_Design,
                                QtCore.SIGNAL("clicked()"),
                                self.design_filter)
+        QtCore.QObject.connect(self.ui.pushButton_WriteToFile,
+                               QtCore.SIGNAL("clicked()"),
+                               self.write_plots_to_file)
 
         # Initial preparations
         self.configure_boxes_for_design_parameters()
@@ -111,12 +114,8 @@ class StartQT4(QtGui.QMainWindow):
 
     def __del__(self):
         print("Cleaning up the temporary files...")
-        for file_name in self.file_names:
-            print(file_name)
-            try:
-                unlink(file_name)
-            except:
-                pass  # File disappeared?? I don't care (I love it).
+        _ = [os.unlink(x) for x in self.file_names]
+
         print("Goodbye.")
 
     def set_status(self, message):
@@ -541,6 +540,12 @@ class StartQT4(QtGui.QMainWindow):
 
         pass
 
+    def write_plots_to_file(self):
+        save_dialog = QtGui.QFileDialog()
+        file_name_to_save = save_dialog.getSaveFileName(self, "Save plots...", "",
+                                                        "Images (*.png *.jpg *.svg)")
+        if file_name_to_save:
+            self.ui.magnitudePlotWidget.dump(file_name_to_save)
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     myapp = StartQT4()

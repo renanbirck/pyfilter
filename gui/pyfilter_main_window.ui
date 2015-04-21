@@ -724,7 +724,7 @@
       <string>X:</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_4">
+    <widget class="QPushButton" name="pushButton_RedrawGraph">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -737,7 +737,7 @@
       <string>Redraw graph</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="pushButton_WriteToFile">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -816,8 +816,8 @@
   <tabstop>doubleSpinBox_Ymax</tabstop>
   <tabstop>comboBox_frontColor</tabstop>
   <tabstop>comboBox_backColor</tabstop>
-  <tabstop>pushButton_4</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>pushButton_RedrawGraph</tabstop>
+  <tabstop>pushButton_WriteToFile</tabstop>
   <tabstop>tfOutputHTML</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>graphicsView</tabstop>

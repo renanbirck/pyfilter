@@ -36,6 +36,19 @@ class Canvas(FigureCanvas):
         if y:
             self.axes.set_ylabel(y)
 
+    def add_line(self, axis, value):
+        """ Add a line at axis and value. """
+
+        if axis == 'x':
+            self.axes.axvline(value)
+        elif axis == 'y':
+            self.axes.axhline(value)
+        else:
+            raise ValueError("Axis must be one of X or Y.")
+
+    def dump(self, file_name):
+        Figure.savefig(file_name)
+
 class StaticPlot(Canvas):
     """ A very simple plotting canvas,
     that display a static plot. """
