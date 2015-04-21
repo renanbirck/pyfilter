@@ -549,11 +549,12 @@ class StartQT4(QtGui.QMainWindow):
                                                            mode="logx")
         self.ui.magnitudePlotWidget.set_label("Frequency (Hz)", "Gain (dB)")
 
-        if isinstance(self.filter_design.Wn, list):
+        if isinstance(self.filter_design.Wn, float):
+            self.ui.magnitudePlotWidget.add_line('x', self.filter_design.Wn / (2*pi))
+        else:
             for value in self.filter_design.Wn:
                 self.ui.magnitudePlotWidget.add_line('x', value / (2*pi))
-        else:
-            self.ui.magnitudePlotWidget.add_line('x', self.filter_design.Wn / (2*pi))
+            
 
         self.ui.magnitudeGraphToolbar = NavigationToolbar(self.ui.magnitudePlotWidget,
                                                           self)
