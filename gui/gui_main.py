@@ -548,7 +548,13 @@ class StartQT4(QtGui.QMainWindow):
                                                            20 * log10(abs(self.filter_design.H)),
                                                            mode="logx")
         self.ui.magnitudePlotWidget.set_label("Frequency (Hz)", "Gain (dB)")
-        self.ui.magnitudePlotWidget.add_line('x', self.filter_design.Wn / (2*pi))
+
+        if isinstance(self.filter_design.Wn, list):
+            for value in self.filter_design.Wn:
+                self.ui.magnitudePlotWidget.add_line('x', value / (2*pi))
+        else:
+            self.ui.magnitudePlotWidget.add_line('x', self.filter_design.Wn / (2*pi))
+
         self.ui.magnitudeGraphToolbar = NavigationToolbar(self.ui.magnitudePlotWidget,
                                                           self)
         plot_tab_splitter.addWidget(self.ui.magnitudeGraphToolbar)
