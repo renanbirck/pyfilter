@@ -26,9 +26,10 @@ sys.path.append('..')
 from engine import analog_new as analog
 from engine import utils
 from math import pi
-from numpy import log10, abs
+from numpy import log10, abs, angle
 
 import canvas
+from matplotlib.backends.backend_qt4 import NavigationToolbar2QT as NavigationToolbar
 
 class StartQT4(QtGui.QMainWindow):
 
@@ -523,20 +524,31 @@ class StartQT4(QtGui.QMainWindow):
         try:
             self.ui.magnitudePlotWidget.hide()
             self.ui.phasePlotWidget.hide()
+            self.ui.magnitudeGraphToolbar.hide()
+            self.ui.phaseGraphToolbar.hide()
         except:
             pass  # No plot yet.
 
         self.ui.magnitudePlotWidget = canvas.StaticPlot(self.ui.splitter_2, width=9,
                                                         height=6, dpi=80)
-        self.ui.magnitudePlotWidget.compute_initial_figure(self.filter_design.W,
+        self.ui.magnitudePlotWidget.compute_initial_figure(self.filter_design.W/(2*pi),
                                                            20 * log10(abs(self.filter_design.H)),
                                                            mode="logx")
-        self.ui.magnitudePlotWidget.set_label("Frequency (rad/s)", "Gain (dB)")
+        self.ui.magnitudePlotWidget.set_label("Frequency (Hz)", "Gain (dB)")
+        self.ui.magnitudeGraphToolbar = NavigationToolbar(self.ui.magnitudePlotWidget,
+                                                          self)
+        self.ui.splitter_2.addWidget(self.ui.magnitudeGraphToolbar)
 
         self.ui.phasePlotWidget = canvas.StaticPlot(self.ui.splitter_2, width=9,
                                                     height=6, dpi=80)
-        self.ui.phasePlotWidget.compute_initial_figure([4, 5, 6], [7, 8, 9])
-        self.ui.phasePlotWidget.set_label("Frequency (rad/s)", "Phase (rad)")
+        self.ui.phasePlotWidget.compute_initial_figure(self.filter_design.W/(2*pi),
+                                                       angle(self.filter_design.H) * 180/pi,
+                                                       mode="logx")
+        self.ui.phasePlotWidget.set_label("Frequency (Hz)", "Phase (°)")
+        self.ui.phaseGraphToolbar = NavigationToolbar(self.ui.phasePlotWidget,
+                                                          self)
+        self.ui.splitter_2.addWidget(self.ui.phaseGraphToolbar)
+
 
         pass
 
@@ -546,6 +558,7 @@ class StartQT4(QtGui.QMainWindow):
                                                         "Images (*.png *.jpg *.svg)")
         if file_name_to_save:
             self.ui.magnitudePlotWidget.dump(file_name_to_save)
+
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     myapp = StartQT4()

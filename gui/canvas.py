@@ -4,6 +4,7 @@
 
 import gui_main
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
 from matplotlib.figure import Figure
 from PyQt4 import QtCore, QtGui
 
@@ -15,6 +16,8 @@ class Canvas(FigureCanvas):
         self.axes = fig.add_subplot(111)
         # We want the axes cleared every time plot() is called
         self.axes.hold(False)
+
+        self.axes.autoscale(True, 'both')
 
         FigureCanvas.__init__(self, fig)
         self.setParent(parent)
@@ -49,6 +52,7 @@ class Canvas(FigureCanvas):
     def dump(self, file_name):
         Figure.savefig(file_name)
 
+
 class StaticPlot(Canvas):
     """ A very simple plotting canvas,
     that display a static plot. """
@@ -61,3 +65,6 @@ class StaticPlot(Canvas):
         choice = dispatchers[mode]
 
         choice(x, y)
+        self.axes.autoscale_view()
+        self.axes.set_xlim(left=min(x) - 1, right=max(x) + 1)
+        self.axes.set_ylim(bottom=min(y) - 1, top=max(y) + 3)
