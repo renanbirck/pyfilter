@@ -12,7 +12,7 @@ class Canvas(FigureCanvas):
     """ Canvas for drawing plots. """
 
     def __init__(self, parent=None, width=5, height=4, dpi=96):
-        fig = Figure(figsize=(width, height), dpi=dpi)
+        fig = Figure(figsize=(width, height), dpi=dpi, facecolor="white")
         self.axes = fig.add_subplot(111)
         # We want the axes cleared every time plot() is called
         self.axes.hold(False)
