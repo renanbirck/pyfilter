@@ -519,8 +519,9 @@ class StartQT4(QtGui.QMainWindow):
 
     def plot(self):
         self.filter_design.compute_frequencies()
-        self.ui.graphicsView.hide()
-        self.ui.graphicsView_2.hide()
+        #self.ui.graphicsView.hide()
+        #self.ui.graphicsView_2.hide()
+        #self.ui.tab_plot.hide()
 
         # Build the tab used for plotting.
 

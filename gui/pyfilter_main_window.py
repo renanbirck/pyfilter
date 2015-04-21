@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_window.ui'
 #
-# Created: Tue Apr 21 15:22:13 2015
+# Created: Tue Apr 21 15:49:47 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -49,28 +49,14 @@ class Ui_MainWindow(object):
         self.pushButton_saveToFile.setObjectName(_fromUtf8("pushButton_saveToFile"))
         self.verticalLayout_2.addWidget(self.pushButton_saveToFile)
         self.tfOutputHTML = QtWebKit.QWebView(self.tab_TF)
-        self.tfOutputHTML.setUrl(QtCore.QUrl(_fromUtf8("file:///mnt/dados/Insync/Insync (e-mail pessoal)/Arquivos/Sources/pyfilter_TCC/gui/data/result_template.html")))
+        self.tfOutputHTML.setProperty("url", QtCore.QUrl(_fromUtf8("file:///mnt/dados/Insync/Insync (e-mail pessoal)/Arquivos/Sources/pyfilter_TCC/gui/data/result_template.html")))
         self.tfOutputHTML.setObjectName(_fromUtf8("tfOutputHTML"))
         self.verticalLayout_2.addWidget(self.tfOutputHTML)
         self.tabWidget.addTab(self.tab_TF, _fromUtf8(""))
-        self.tab_plot = QtGui.QWidget()
-        self.tab_plot.setEnabled(True)
-        self.tab_plot.setObjectName(_fromUtf8("tab_plot"))
-        self.gridLayout = QtGui.QGridLayout(self.tab_plot)
-        self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.splitter_2 = QtGui.QSplitter(self.tab_plot)
-        self.splitter_2.setOrientation(QtCore.Qt.Vertical)
-        self.splitter_2.setObjectName(_fromUtf8("splitter_2"))
-        self.graphicsView = QtGui.QGraphicsView(self.splitter_2)
-        self.graphicsView.setObjectName(_fromUtf8("graphicsView"))
-        self.graphicsView_2 = QtGui.QGraphicsView(self.splitter_2)
-        self.graphicsView_2.setObjectName(_fromUtf8("graphicsView_2"))
-        self.gridLayout.addWidget(self.splitter_2, 0, 0, 1, 1)
-        self.tabWidget.addTab(self.tab_plot, _fromUtf8(""))
         self.verticalLayout.addWidget(self.splitter)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1121, 23))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1121, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -302,14 +288,11 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.pushButton_RedrawGraph, self.pushButton_WriteToFile)
         MainWindow.setTabOrder(self.pushButton_WriteToFile, self.tfOutputHTML)
         MainWindow.setTabOrder(self.tfOutputHTML, self.tabWidget)
-        MainWindow.setTabOrder(self.tabWidget, self.graphicsView)
-        MainWindow.setTabOrder(self.graphicsView, self.graphicsView_2)
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "PyFilter (Analog)", None))
         self.pushButton_saveToFile.setText(_translate("MainWindow", "Save to file...", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_TF), _translate("MainWindow", "Results", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_plot), _translate("MainWindow", "Frequency Response", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuOptions.setTitle(_translate("MainWindow", "Options", None))
         self.menuAbout.setTitle(_translate("MainWindow", "About", None))

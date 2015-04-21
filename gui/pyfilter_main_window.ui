@@ -47,31 +47,12 @@
           </widget>
          </item>
          <item>
-          <widget class="QWebView" name="tfOutputHTML">
-           <property name="url">
+          <widget class="QWebView" name="tfOutputHTML" native="true">
+           <property name="url" stdset="0">
             <url>
              <string>file:///mnt/dados/Insync/Insync (e-mail pessoal)/Arquivos/Sources/pyfilter_TCC/gui/data/result_template.html</string>
             </url>
            </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab_plot">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <attribute name="title">
-         <string>Frequency Response</string>
-        </attribute>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QSplitter" name="splitter_2">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <widget class="QGraphicsView" name="graphicsView"/>
-           <widget class="QGraphicsView" name="graphicsView_2"/>
           </widget>
          </item>
         </layout>
@@ -87,7 +68,7 @@
      <x>0</x>
      <y>0</y>
      <width>1121</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -820,8 +801,6 @@
   <tabstop>pushButton_WriteToFile</tabstop>
   <tabstop>tfOutputHTML</tabstop>
   <tabstop>tabWidget</tabstop>
-  <tabstop>graphicsView</tabstop>
-  <tabstop>graphicsView_2</tabstop>
  </tabstops>
  <resources/>
  <connections>
