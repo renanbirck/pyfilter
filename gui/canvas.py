@@ -10,7 +10,7 @@ from PyQt4 import QtCore, QtGui
 class Canvas(FigureCanvas):
     """ Canvas for drawing plots. """
 
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
+    def __init__(self, parent=None, width=5, height=4, dpi=96):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
         # We want the axes cleared every time plot() is called
@@ -27,8 +27,24 @@ class Canvas(FigureCanvas):
     def compute_initial_figure(self):
         pass
 
+    def set_label(self, x=None, y=None):
+        """ Sets the label of the axes.
+        If 'None', it doesn't change. """
+
+        if x:
+            self.axes.set_xlabel(x)
+        if y:
+            self.axes.set_ylabel(y)
+
 class StaticPlot(Canvas):
     """ A very simple plotting canvas,
     that display a static plot. """
-    def compute_initial_figure(self, x, y):
-        self.axes.plot(x, y)
+    def compute_initial_figure(self, x, y, mode="normal"):
+
+        dispatchers = {'normal': self.axes.plot,
+                       'logx': self.axes.semilogx,
+                       'logy': self.axes.semilogy,
+                       'loglog': self.axes.loglog}
+        choice = dispatchers[mode]
+
+        choice(x, y)

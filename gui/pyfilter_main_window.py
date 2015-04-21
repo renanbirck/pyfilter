@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_window.ui'
 #
-# Created: Sat Apr 18 16:12:45 2015
+# Created: Mon Apr 20 21:06:30 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -54,6 +54,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.tfOutputHTML)
         self.tabWidget.addTab(self.tab_TF, _fromUtf8(""))
         self.tab_plot = QtGui.QWidget()
+        self.tab_plot.setEnabled(True)
         self.tab_plot.setObjectName(_fromUtf8("tab_plot"))
         self.gridLayout = QtGui.QGridLayout(self.tab_plot)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))

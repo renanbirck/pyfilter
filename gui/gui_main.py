@@ -26,6 +26,7 @@ sys.path.append('..')
 from engine import analog_new as analog
 from engine import utils
 from math import pi
+from numpy import log10, abs
 
 import canvas
 
@@ -520,13 +521,23 @@ class StartQT4(QtGui.QMainWindow):
         self.filter_design.compute_frequencies()
         self.ui.graphicsView.hide()
         self.ui.graphicsView_2.hide()
+        try:
+            self.ui.magnitudePlotWidget.hide()
+            self.ui.phasePlotWidget.hide()
+        except:
+            pass  # No plot yet.
 
         self.ui.magnitudePlotWidget = canvas.StaticPlot(self.ui.splitter_2, width=9,
-                                                        height=6, dpi=100)
-        self.ui.magnitudePlotWidget.compute_initial_figure([1, 2, 3], [4, 5, 6])
+                                                        height=6, dpi=80)
+        self.ui.magnitudePlotWidget.compute_initial_figure(self.filter_design.W,
+                                                           20 * log10(abs(self.filter_design.H)),
+                                                           mode="logx")
+        self.ui.magnitudePlotWidget.set_label("Frequency (rad/s)", "Gain (dB)")
+
         self.ui.phasePlotWidget = canvas.StaticPlot(self.ui.splitter_2, width=9,
-                                                    height=6, dpi=100)
+                                                    height=6, dpi=80)
         self.ui.phasePlotWidget.compute_initial_figure([4, 5, 6], [7, 8, 9])
+        self.ui.phasePlotWidget.set_label("Frequency (rad/s)", "Phase (rad)")
 
         pass
 
