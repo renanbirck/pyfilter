@@ -55,8 +55,45 @@ class TestDigital(unittest.TestCase):
             self.assertAlmostEqual(butterworth.A[idx],
                                    coef, places=4)
 
+        butterworth.N = 2
+        butterworth.Wn = [100, 200]
+        butterworth.filter_kind = "bandpass"
+        butterworth.design()
 
-        pass
+        target_B_coefs = [241.359049192824e-006, 0, -482.718098385647e-006,
+                          0, 241.359049192824e-006]
+
+        target_A_coefs = [1, -3.95167456215460e+000, 5.85998238324547e+000,
+                          -3.86484768746649e+000,  956.543676511207e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(butterworth.B[idx],
+                                   coef, places=4)
+
+        for idx,coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(butterworth.A[idx],
+                                   coef, places=4)
+
+        butterworth.N = 2
+        butterworth.Wn = [100, 200]
+        butterworth.filter_kind = "bandstop"
+        butterworth.design()
+
+        target_B_coefs = [978.030479148820e-003, -3.90826112457980e+000,
+                          5.86046510099756e+000, -3.90826112457980e+000,
+                          978.030479148819e-003]
+        target_A_coefs = [1.00000000000000e+000, -3.95167456215460e+000,
+                          5.85998238324547e+000, -3.86484768746648e+000,
+                          956.543676511206e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(butterworth.B[idx],
+                                   coef, places=4)
+
+        for idx,coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(butterworth.A[idx],
+                                   coef, places=4)
+
 
     def test_bessel_N_Wn(self):
         pass

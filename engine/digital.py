@@ -29,8 +29,12 @@ class IIRFilter(Filter):
         raise ValueError("Please override me with your own _design function!")
 
     def normalize_Wn(self):
-        if self.Wn > self.sample_rate:
-            raise ValueError("Frequency must be smaller than sample rate.")
+        if isinstance(self.Wn, list):
+            self.Wn = list(map(lambda x: x/(self.sample_rate/2), self.Wn))
+            return
+        else:
+            if self.Wn > self.sample_rate:
+                raise ValueError("Frequency must be smaller than sample rate.")
         self.Wn = self.Wn / (self.sample_rate/2)
 
 # MATLAB-ish filter design classes.
