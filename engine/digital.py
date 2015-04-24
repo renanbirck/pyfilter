@@ -31,19 +31,18 @@ class IIRFilter(Filter):
 
     def normalize_Wn(self):
         if isinstance(self.Wn, list):
-            self.Wn = list(map(lambda x: x/(self.sample_rate/2), self.Wn))
-            return
+            return list(map(lambda x: x/(self.sample_rate/2), self.Wn))
         else:
             if self.Wn > self.sample_rate:
                 raise ValueError("Frequency must be smaller than sample rate.")
-        self.Wn = self.Wn / (self.sample_rate/2)
+        return self.Wn / (self.sample_rate/2)
 
 # MATLAB-ish filter design classes.
 class ButterworthFilter(IIRFilter):
     target = None
 
     def _design(self):
-        self.Z, self.P, self.K = signal.butter(self.N, self.Wn,
+        self.Z, self.P, self.K = signal.butter(self.N, self.normalize_Wn(),
                                                self.filter_kind, analog=False,
                                                output='zpk')
 
@@ -56,7 +55,7 @@ class ChebyshevIFilter(IIRFilter):
         elif not self.ripple and 'ripple' not in self.filter_parameters:
             raise ValueError("Needs a ripple value.")
 
-        self.Z, self.P, self.K = signal.cheby1(self.N, self.ripple, self.Wn,
+        self.Z, self.P, self.K = signal.cheby1(self.N, self.ripple, self.normalize_Wn(),
                                                self.filter_kind, analog=False,
                                                output='zpk')
 
@@ -70,6 +69,6 @@ class EllipticalFilter(IIRFilter):
 class BesselFilter(IIRFilter):
 
     def _design(self):
-        self.Z, self.P, self.K = signal.bessel(self.N, self.Wn,
+        self.Z, self.P, self.K = signal.bessel(self.N, self.normalize_Wn(),
                                                self.filter_kind, analog=False,
                                                output='zpk')

@@ -135,6 +135,22 @@ class TestDigital(unittest.TestCase):
             self.assertAlmostEqual(cheby1.A[idx],
                                    coef, places=4)
 
+        cheby1.N = 2
+        cheby1.Wn = 200
+        cheby1.ripple = 1
+        cheby1.filter_kind = 'highpass'
+        cheby1.design()
+        target_B_coefs = [863.459699559376e-003, -1.72691939911875e+000, 863.459699559376e-003]
+        target_A_coefs = [1, -1.93589973368970e+000, 939.371136116897e-003]
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(cheby1.B[idx],
+                                   coef, places=4)
+
+        for idx,coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(cheby1.A[idx],
+                                   coef, places=4)
+
+
 
         pass
 
