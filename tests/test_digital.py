@@ -96,9 +96,46 @@ class TestDigital(unittest.TestCase):
 
 
     def test_bessel_N_Wn(self):
+        bessel = digital.BesselFilter()
+        bessel.sample_rate = 20000
+        bessel.N = 2
+        bessel.Wn = 200
+        bessel.filter_kind = 'lowpass'
+        bessel.design()
+        target_B_coefs = [24.7847382520197e-006, 49.5694765040395e-006, 24.7847382520197e-006]
+        target_A_coefs = [1.00000000000000e+000, -1.98272949068507e+000, 982.828629638082e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(bessel.B[idx],
+                                   coef, places=4)
+
+        for idx,coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(bessel.A[idx],
+                                   coef, places=4)
+
+
         pass
 
     def test_cheby1_N_Wn(self):
+        cheby1 = digital.ChebyshevIFilter()
+        cheby1.sample_rate = 20000
+        cheby1.N = 2
+        cheby1.Wn = 200
+        cheby1.ripple = 1
+        cheby1.filter_kind = 'lowpass'
+        cheby1.design()
+        target_B_coefs = [937.091145651502e-006, 1.87418229130300e-003, 937.091145651502e-006]
+        target_A_coefs = [1, -1.92916981735421e+000, 933.375551589350e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(cheby1.B[idx],
+                                   coef, places=4)
+
+        for idx,coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(cheby1.A[idx],
+                                   coef, places=4)
+
+
         pass
 
     def test_cheby2_N_Wn(self):
