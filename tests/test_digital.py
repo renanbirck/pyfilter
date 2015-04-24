@@ -37,6 +37,25 @@ class TestDigital(unittest.TestCase):
             self.assertAlmostEqual(butterworth.A[idx],
                                    coef, places=4)
 
+        butterworth.N = 2
+        butterworth.Wn = 100
+        butterworth.filter_kind = "highpass"
+        butterworth.design()
+
+        target_B_coefs = [978.030479206560e-003,
+                          -1.95606095841312e+000,
+                          978.030479206560e-003]
+        target_A_coefs = [1, -1.95557824031504e+000, 956.543676511203e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(butterworth.B[idx],
+                                   coef, places=4)
+
+        for idx,coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(butterworth.A[idx],
+                                   coef, places=4)
+
+
         pass
 
     def test_bessel_N_Wn(self):

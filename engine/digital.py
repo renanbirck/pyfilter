@@ -24,6 +24,8 @@ class IIRFilter(Filter):
         raise ValueError("Please override me with your own _compute_parameters function!")
 
     def _design(self):
+        self.normalize_Wn()
+
         raise ValueError("Please override me with your own _design function!")
 
     def normalize_Wn(self):
@@ -34,6 +36,7 @@ class IIRFilter(Filter):
 # MATLAB-ish filter design classes.
 class ButterworthFilter(IIRFilter):
     target = None
+    filter_type = 'butter'
 
     def _design(self):
         self.normalize_Wn()
