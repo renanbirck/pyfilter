@@ -150,9 +150,43 @@ class TestDigital(unittest.TestCase):
             self.assertAlmostEqual(cheby1.A[idx],
                                    coef, places=4)
 
+        cheby1.N = 2
+        cheby1.Wn = [100, 200]
+        cheby1.ripple = 1
+        cheby1.filter_kind = 'bandpass'
+        cheby1.design()
+        target_B_coefs = [238.315522985134e-006, 0.00000000000000e+000, -476.631045970269e-006,
+                          0, 238.315522985134e-006]
+        target_A_coefs = [1, -3.96112196901397e+000, 5.88841922559771e+000, -3.89339798541959e+000,
+                          966.104557493301e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(cheby1.B[idx],
+                                   coef, places=4)
+
+        for idx,coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(cheby1.A[idx],
+                                   coef, places=4)
+
+        cheby1.N = 2
+        cheby1.Wn = [100, 200]
+        cheby1.ripple = 1
+        cheby1.filter_kind = 'bandstop'
+        cheby1.design()
+        target_B_coefs = [877.332031334516e-003, -3.50586484216467e+000, 5.25706903950268e+000,
+                           -3.50586484216467e+000, 877.332031334515e-003]
+        target_A_coefs = [1, -3.96440852225006e+000, 5.89808779705332e+000,
+                          -3.90288157794408e+000, 969.206138023026e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(cheby1.B[idx],
+                                   coef, places=4)
+
+        for idx,coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(cheby1.A[idx],
+                                   coef, places=4)
 
 
-        pass
 
     def test_cheby2_N_Wn(self):
         pass
