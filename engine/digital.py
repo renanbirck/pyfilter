@@ -61,7 +61,18 @@ class ChebyshevIFilter(IIRFilter):
 
 
 class ChebyshevIIFilter(IIRFilter):
-    pass
+    stopband_attenuation = None
+    def _design(self):
+        if not self.stopband_attenuation and 'stopband_attenuation' in self.filter_parameters:
+            self.stopband_attenuation = self.filter_parameters['stopband_attenuation']
+        elif not self.stopband_attenuation and 'stopband_attenuation' not in self.filter_parameters:
+            raise ValueError("Needs a stopband attenuation.")
+
+        self.Z, self.P, self.K = signal.cheby2(self.N, self.stopband_attenuation,
+                                               self.normalize_Wn(),
+                                               self.filter_kind, analog=False,
+                                               output='zpk')
+
 
 class EllipticalFilter(IIRFilter):
     pass
