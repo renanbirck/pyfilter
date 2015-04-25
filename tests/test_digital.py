@@ -202,6 +202,49 @@ class TestDigital(unittest.TestCase):
             self.assertAlmostEqual(cheby2.A[idx],
                                    coef, places=4)
 
+        cheby2.sample_rate = 20000
+        cheby2.N = 2
+        cheby2.Wn = [100, 200]
+        cheby2.stopband_attenuation = 80
+        cheby2.filter_kind = 'bandpass'
+        cheby2.design()
+
+        target_B_coefs = [100.017928631756e-006, -399.479724271789e-006,
+                          598.923980729970e-006, -399.479724271789e-006,
+                          100.017928631756e-006]
+        target_A_coefs = [1.00000000000000e+000, -3.99542476423799e+000,
+                          5.99022652135467e+000, -3.99416972119781e+000,
+                          999.371858580165e-003]
+        for idx, coef in enumerate(target_B_coefs):
+             self.assertAlmostEqual(cheby2.B[idx],
+                                    coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+             self.assertAlmostEqual(cheby2.A[idx],
+                                    coef, places=4)
+
+        cheby2.sample_rate = 20000
+        cheby2.N = 2
+        cheby2.Wn = [100, 200]
+        cheby2.stopband_attenuation = 80
+        cheby2.filter_kind = 'bandstop'
+        cheby2.design()
+
+        target_B_coefs = [232.861754223389e-003, -1.05027977124056e+000,
+                          1.57483705794453e+000, -1.05027977124056e+000,
+                          262.861754223389e-003]
+        target_A_coefs = [1.00000000000000e+000, -1.87519417681152e+000,
+                          926.289867090544e-003, -225.365365669609e-003,
+                          174.270699300762e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+             self.assertAlmostEqual(cheby2.B[idx],
+                                    coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+             self.assertAlmostEqual(cheby2.A[idx],
+                                    coef, places=4)
+
 
     def test_ellip_N_Wn(self):
         pass
