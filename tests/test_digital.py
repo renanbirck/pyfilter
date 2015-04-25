@@ -230,7 +230,7 @@ class TestDigital(unittest.TestCase):
         cheby2.filter_kind = 'bandstop'
         cheby2.design()
 
-        target_B_coefs = [232.861754223389e-003, -1.05027977124056e+000,
+        target_B_coefs = [262.861754223389e-003, -1.05027977124056e+000,
                           1.57483705794453e+000, -1.05027977124056e+000,
                           262.861754223389e-003]
         target_A_coefs = [1.00000000000000e+000, -1.87519417681152e+000,
@@ -247,7 +247,89 @@ class TestDigital(unittest.TestCase):
 
 
     def test_ellip_N_Wn(self):
-        pass
+        ellip = digital.EllipticalFilter()
+        ellip.sample_rate = 20000
+        ellip.N = 2
+        ellip.Wn = 200
+        ellip.ripple = 1
+        ellip.stopband_attenuation = 80
+        ellip.filter_kind = 'lowpass'
+        ellip.design()
+
+        target_B_coefs = [1.03370433556178e-003, 1.68115343291991e-003, 1.03370433556178e-003]
+        target_A_coefs = [1.00000000000000e+000, -1.92917321288040e+000, 933.379168738236e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(ellip.B[idx],
+                                    coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+             self.assertAlmostEqual(ellip.A[idx],
+                                    coef, places=4)
+
+        ellip.sample_rate = 50000
+        ellip.N = 2
+        ellip.Wn = 200
+        ellip.ripple = 1
+        ellip.stopband_attenuation = 80
+        ellip.filter_kind = 'highpass'
+        ellip.design()
+
+        target_B_coefs = [880.113561737520e-003, -1.76022706689550e+000, 880.113561737520e-003]
+        target_A_coefs = [1.00000000000000e+000, -1.97472438687787e+000, 975.290182242553e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(ellip.B[idx],
+                                   coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(ellip.A[idx],
+                                   coef, places=4)
+
+        ellip.sample_rate = 50000
+        ellip.N = 2
+        ellip.Wn = [100, 200]
+        ellip.ripple = 1
+        ellip.stopband_attenuation = 80
+        ellip.filter_kind = 'bandpass'
+        ellip.design()
+        target_B_coefs = [137.838348358635e-006, -397.180205908006e-006,
+                          518.683725004420e-006, -397.180205908006e-006,
+                          137.838348358635e-006]
+        target_A_coefs = [1.00000000000000e+000, -3.98549876240398e+000,
+                          5.95730308332100e+000, -3.95810535489672e+000,
+                          986.301133036477e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(ellip.B[idx],
+                                   coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(ellip.A[idx],
+                                   coef, places=4)
+
+        ellip.sample_rate = 50000
+        ellip.N = 2
+        ellip.Wn = [100, 200]
+        ellip.ripple = 1
+        ellip.stopband_attenuation = 80
+        ellip.filter_kind = 'bandstop'
+        ellip.design()
+
+        target_B_coefs = [885.678969784819e-003, -3.54215642900254e+000,
+                          5.31295500677686e+000, -3.54215642900255e+000,
+                          885.678969784823e-003]
+        target_A_coefs = [1.00000000000000e+000, -3.98679546270721e+000,
+                          5.96116240643601e+000, -3.96193430002317e+000,
+                          987.567455415066e-003]
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(ellip.B[idx],
+                                   coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(ellip.A[idx],
+                                   coef, places=4)
+
 
 
 if __name__ == '__main__':
