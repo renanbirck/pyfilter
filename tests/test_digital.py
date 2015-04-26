@@ -501,6 +501,23 @@ class TestDigital(unittest.TestCase):
         butter.compute_parameters()
         self.assertEqual(butter.N, 5)
         self.assertAlmostEqual(butter.Wn, 0.045768368162850868)
+        butter.design()
+
+        target_B_coefs = [1.53470825990307e-006, 7.67354129951534e-006,
+                          15.3470825990307e-006, 15.3470825990307e-006,
+                          7.67354129951534e-006, 1.53470825990307e-006]
+        target_A_coefs = [1.00000000000000e+000, -4.53481633767399e+000,
+                          8.24563188183775e+000, -7.51327290057926e+000,
+                          3.43014167292325e+000, -627.635205843430e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(butter.B[idx],
+                                   coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(butter.A[idx],
+                                   coef, places=4)
+
 
 if __name__ == '__main__':
     unittest.main()
