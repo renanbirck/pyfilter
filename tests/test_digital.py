@@ -416,12 +416,12 @@ class TestDigital(unittest.TestCase):
                           39.6714495427978e+000]
 
         for idx, coef in enumerate(target_B_coefs):
-             self.assertAlmostEqual(cheby1.B[idx],
-                                    coef, places=4)
+            self.assertAlmostEqual(cheby1.B[idx],
+                                   coef, places=4)
 
         for idx, coef in enumerate(target_A_coefs):
-             self.assertAlmostEqual(cheby1.A[idx],
-                                    coef, places=4)
+            self.assertAlmostEqual(cheby1.A[idx],
+                                   coef, places=4)
 
     def test_compute_cheb1_bs(self):
         parameters = {'passband_frequency': [10, 70],
@@ -568,6 +568,83 @@ class TestDigital(unittest.TestCase):
         for idx, coef in enumerate(target_A_coefs):
             self.assertAlmostEqual(butter.A[idx],
                                    coef, places=4)
+
+    def test_compute_butter_bp(self):
+        parameters = {'passband_frequency': [1, 2],
+                      'stopband_frequency': [0.1, 5],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        butter = digital.ButterworthFilter(parameters)
+        butter.sample_rate = 50
+
+        butter.target = 'stopband'
+        butter.compute_parameters()
+        butter.design()
+        self.assertEqual(butter.N, 7)
+        self.assertAlmostEqual(butter.Wn[0], 36.5880780276322e-003)
+        self.assertAlmostEqual(butter.Wn[1], 87.3893423777441e-003)
+        target_B_coefs = [14.3375327927349e-009, 0.00000000000000e+000,
+                          -100.362729549144e-009, 0.00000000000000e+000,
+                          301.088188647432e-009, 0.00000000000000e+000,
+                          -501.813647745721e-009, 0.00000000000000e+000,
+                          501.813647745721e-009, 0.00000000000000e+000,
+                          -301.088188647432e-009, 0.00000000000000e+000,
+                          100.362729549144e-009, 0.00000000000000e+000,
+                          -14.3375327927349e-009]
+        target_A_coefs = [1.00000000000000e+000, -13.0734060396007e+000,
+                          79.5641515407404e+000, -298.774051509031e+000,
+                          773.370588276682e+000, -1.45973447099227e+003,
+                          2.07187696283509e+003, -2.24645044945352e+003,
+                          1.86977093042128e+003, -1.18884359044868e+003,
+                          568.419441368658e+000, -198.180399595484e+000,
+                          47.6299635654552e+000, -7.06329781991096e+000,
+                          487.627850612888e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(butter.B[idx],
+                                   coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(butter.A[idx],
+                                   coef, places=4)
+
+
+        butter.target = 'passband'
+        butter.compute_parameters()
+        butter.design()
+        self.assertEqual(butter.N, 7)
+        self.assertAlmostEqual(butter.Wn[0], 0.038675590426020465)
+        self.assertAlmostEqual(butter.Wn[1], 0.082716323618103132)
+
+        target_B_coefs = [5.21183518025846e-009, 0.00000000000000e+000,
+                          -36.4828462618092e-009, 0.00000000000000e+000,
+                          109.448538785428e-009, 0.00000000000000e+000,
+                          -182.414231309046e-009, 0.00000000000000e+000,
+                          182.414231309046e-009, 0.00000000000000e+000,
+                          -109.448538785428e-009, 0.00000000000000e+000,
+                          36.4828462618092e-009, 0.00000000000000e+000,
+                          -5.21183518025846e-009]
+        target_A_coefs = [1.00000000000000e+00,  -1.31673106824993e+01,
+                          8.07078725006832e+01,  -3.05219413464552e+02,
+                          7.95623289716231e+02,  -1.51224871120647e+03,
+                          2.16133044191775e+03,  -2.35960723130886e+03,
+                          1.97739925345442e+03,  -1.26581693976280e+03,
+                          6.09301525711200e+02,  -2.13854323618345e+02,
+                          5.17378511442546e+01,  -7.72295169986461e+00,
+                          5.36647298877683e-01]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(butter.B[idx],
+                                   coef, places=2)
+
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(butter.A[idx],
+                                   coef, places=1)
+
+
+    def test_compute_butter_bs(self):
+        raise NotImplementedError
 
 
 if __name__ == '__main__':
