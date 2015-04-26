@@ -459,13 +459,48 @@ class TestDigital(unittest.TestCase):
                           -1.21903894e+01, 1.69279910e+00, -1.13719952e-01]
 
         for idx, coef in enumerate(target_B_coefs):
-             self.assertAlmostEqual(cheby1.B[idx],
-                                    coef, places=4)
+            self.assertAlmostEqual(cheby1.B[idx],
+                                   coef, places=4)
 
         for idx, coef in enumerate(target_A_coefs):
-             self.assertAlmostEqual(cheby1.A[idx],
-                                    coef, places=4)
+            self.assertAlmostEqual(cheby1.A[idx],
+                                   coef, places=4)
 
+    def test_compute_butter_lp(self):
+        parameters = {'passband_frequency': 10,
+                      'stopband_frequency': 100,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        butter = digital.ButterworthFilter(parameters)
+        butter.sample_rate = 500
+
+        butter.target = 'stopband'
+        butter.compute_parameters()
+        butter.design()
+        self.assertEqual(butter.N, 5)
+        self.assertAlmostEqual(butter.Wn, 72.9848327762502e-003)
+
+        target_B_coefs = [13.9554935029984e-006, 69.7774675149920e-006,
+                          139.554935029984e-006, 139.554935029984e-006,
+                          69.7774675149920e-006, 13.9554935029984e-006]
+
+        target_A_coefs = [1.00000000000000e+000, -4.25847314441103e+000,
+                          7.30143280938040e+000, -6.29570509456441e+000,
+                          2.72839589436988e+000, -475.203888982748e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(butter.B[idx],
+                                   coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(butter.A[idx],
+                                   coef, places=4)
+
+
+        butter.target = 'passband'
+        butter.compute_parameters()
+        self.assertEqual(butter.N, 5)
+        self.assertAlmostEqual(butter.Wn, 0.045768368162850868)
 
 if __name__ == '__main__':
     unittest.main()

@@ -19,7 +19,6 @@ class IIRFilter(Filter):
         self._compute_parameters()
 
     def design(self):
-        self.normalize_Wn()
         self._design() # It computes Z, P, K for numerical stability.
         self.B, self.A = signal.zpk2tf(self.Z, self.P, self.K)
 
@@ -53,10 +52,35 @@ class IIRFilter(Filter):
 class ButterworthFilter(IIRFilter):
     target = None
 
+    def _compute_parameters(self):
+        normalized_pb, normalized_sb = self.denormalized_pb_sb()
+        self.already_normalized_Wn = True
+        if self.target == 'passband':
+            self.N, self.Wn = signal.buttord(normalized_pb, normalized_sb,
+                                             self.filter_parameters['passband_attenuation'],
+                                             self.filter_parameters['stopband_attenuation'],
+                                             analog=False)
+        elif self.target == 'stopband': # Match stopband (like MATLAB)
+            self.N, self.Wn = custom.custom_buttord(normalized_pb, normalized_sb,
+                                             self.filter_parameters['passband_attenuation'],
+                                             self.filter_parameters['stopband_attenuation'],
+                                             analog=False)
+
+        else:
+            raise ValueError("Butterworth filters must match or the passband\
+                              or the stopband.")
+
+
     def _design(self):
-        self.Z, self.P, self.K = signal.butter(self.N, self.normalize_Wn(),
-                                               self.filter_kind, analog=False,
-                                               output='zpk')
+        if self.already_normalized_Wn:
+            self.Z, self.P, self.K = signal.butter(self.N, self.Wn,
+                                                   self.filter_kind, analog=False,
+                                                   output='zpk')
+        else:
+            self.Z, self.P, self.K = signal.butter(self.N, self.normalize_Wn(),
+                                                   self.filter_kind, analog=False,
+                                                   output='zpk')
+
 
 class ChebyshevIFilter(IIRFilter):
     ripple = None
@@ -79,7 +103,6 @@ class ChebyshevIFilter(IIRFilter):
             raise ValueError("Needs a ripple value.")
 
         if self.already_normalized_Wn:
-            print("aqui Wn > ", self.Wn)
             self.Z, self.P, self.K = signal.cheby1(self.N, self.ripple, self.Wn,
                                                    self.filter_kind, analog=False,
                                                    output='zpk')
