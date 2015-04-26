@@ -644,7 +644,41 @@ class TestDigital(unittest.TestCase):
 
 
     def test_compute_butter_bs(self):
-        raise NotImplementedError
+
+        parameters = {'passband_frequency': [1, 7],
+                      'stopband_frequency': [2, 6],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 5}
+
+        butter = digital.ButterworthFilter(parameters)
+        butter.sample_rate = 50
+        butter.target = 'stopband'
+        butter.compute_parameters()
+        butter.design()
+
+        self.assertEqual(butter.N, 4)
+        self.assertAlmostEqual(butter.Wn[0], 0.076018239965718007)
+        self.assertAlmostEqual(butter.Wn[1], 0.25143968885666007)
+
+        target_B_coefs = [481.405830693621e-003, -3.48435290477535e+000,
+                          11.3828585629904e+000, -21.8614321972257e+000,
+                          26.9636758517415e+000, -21.8614321972257e+000,
+                          11.3828585629904e+000, -3.48435290477535e+000,
+                          481.405830693621e-003]
+        target_A_coefs = [1.00000000000000e+000, -5.94212484129793e+000,
+                          15.9489891635285e+000, -25.2696110239082e+000,
+                          25.8589005881025e+000, -17.5022117616133e+000,
+                          7.65255384709579e+000, -1.97762257668612e+000,
+                          231.761039886462e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(butter.B[idx],
+                                   coef, places=2)
+
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(butter.A[idx],
+                                   coef, places=1)
 
 
 if __name__ == '__main__':
