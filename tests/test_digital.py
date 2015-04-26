@@ -331,6 +331,35 @@ class TestDigital(unittest.TestCase):
                                    coef, places=4)
 
 
+    def test_compute_cheb1_lp(self):
+        parameters = {'passband_frequency': 10,
+                      'stopband_frequency': 100,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        cheby1 = digital.ChebyshevIFilter(parameters)
+        cheby1.sample_rate = 500
+        cheby1.compute_parameters()
+
+        self.assertEqual(cheby1.N, 4)
+        self.assertAlmostEqual(cheby1.Wn, 0.04)
+        cheby1.ripple = 1
+
+        cheby1.design()
+        target_B_coefs = [3.61092006543050e-006, 14.4436802617220e-006,
+                          21.6655203925830e-006, 14.4436802617220e-006,
+                          3.61092006543050e-006]
+        target_A_coefs = [1.00000000000000e+000, -3.86484928162257e+000,
+                          5.61832412411045e+000, -3.64058272249581e+000,
+                          887.172704311142e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+             self.assertAlmostEqual(cheby1.B[idx],
+                                    coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+             self.assertAlmostEqual(cheby1.A[idx],
+                                    coef, places=4)
+
 
 if __name__ == '__main__':
     unittest.main()

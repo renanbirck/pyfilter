@@ -7,11 +7,13 @@ from filter import Filter
 import custom
 
 hz_to_rad = lambda x: 2 * pi * float(x)
+rad_to_hz = lambda x: float(x)/(2 * pi)
 
 class IIRFilter(Filter):
 
     sample_rate = None
     filter_type = None
+    already_normalized_Wn = False
 
     def compute_parameters(self):
         self._compute_parameters()
@@ -49,15 +51,29 @@ class ButterworthFilter(IIRFilter):
 class ChebyshevIFilter(IIRFilter):
     ripple = None
 
+    def _compute_parameters(self):
+        normalized_pb = rad_to_hz(self.filter_parameters['passband_frequency']/(self.sample_rate/2))
+        normalized_sb = rad_to_hz(self.filter_parameters['stopband_frequency']/(self.sample_rate/2))
+        self.N, self.Wn = signal.cheb1ord(normalized_pb, normalized_sb,
+                                          self.filter_parameters['passband_attenuation'],
+                                          self.filter_parameters['stopband_attenuation'],
+                                          analog=False)
+        self.already_normalized_Wn = True
+
     def _design(self):
         if not self.ripple and 'ripple' in self.filter_parameters:
             self.ripple = self.filter_parameters['ripple']
         elif not self.ripple and 'ripple' not in self.filter_parameters:
             raise ValueError("Needs a ripple value.")
 
-        self.Z, self.P, self.K = signal.cheby1(self.N, self.ripple, self.normalize_Wn(),
-                                               self.filter_kind, analog=False,
-                                               output='zpk')
+        if self.already_normalized_Wn:
+            self.Z, self.P, self.K = signal.cheby1(self.N, self.ripple, self.Wn,
+                                                   self.filter_kind, analog=False,
+                                                   output='zpk')
+        else:
+            self.Z, self.P, self.K = signal.cheby1(self.N, self.ripple, self.normalize_Wn(),
+                                                   self.filter_kind, analog=False,
+                                                   output='zpk')
 
 
 class ChebyshevIIFilter(IIRFilter):
