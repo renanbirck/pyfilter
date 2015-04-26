@@ -360,6 +360,112 @@ class TestDigital(unittest.TestCase):
              self.assertAlmostEqual(cheby1.A[idx],
                                     coef, places=4)
 
+    def test_compute_cheb1_hp(self):
+        parameters = {'passband_frequency': 100,
+                      'stopband_frequency': 10,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        cheby1 = digital.ChebyshevIFilter(parameters)
+        cheby1.sample_rate = 500
+        cheby1.compute_parameters()
+
+        self.assertEqual(cheby1.N, 4)
+        self.assertAlmostEqual(cheby1.Wn, 0.4)
+        cheby1.ripple = 1
+        cheby1.design()
+
+        target_B_coefs = [0.110321442810114, -0.441285771240457,
+                          0.661928656860685, -0.441285771240457,
+                          0.110321442810114]
+        target_A_coefs = [1.00000000000000e+000, -150.986050190449e-003,
+                          804.174213117362e-003, 161.810537814229e-003,
+                          187.173390317085e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(cheby1.B[idx],
+                                   coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(cheby1.A[idx],
+                                   coef, places=4)
+
+    def test_compute_cheb1_bp(self):
+        parameters = {'passband_frequency': [1, 2],
+                      'stopband_frequency': [0.1, 5],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        cheby1 = digital.ChebyshevIFilter(parameters)
+        cheby1.ripple = 1
+        cheby1.sample_rate = 50
+        cheby1.compute_parameters()
+
+        self.assertEqual(cheby1.N, 5)
+        self.assertAlmostEqual(cheby1.Wn[0], 0.04)
+        self.assertAlmostEqual(cheby1.Wn[1], 0.08)
+        cheby1.design()
+
+        target_B_coefs = [113.590739945972e-009, 0.00000000000000e+000,
+                          -567.953699729860e-009, 0.00000000000000e+000,
+                          1.13590739945972e-006, 0.00000000000000e+000,
+                          -1.13590739945972e-006, 0.00000000000000e+000,
+                          567.953699729860e-009]
+        target_A_coefs = [1.00000000000000e+000, -9.70734068372584e+000,
+                          42.5757352105897e+000, -111.100142776047e+000,
+                          191.012009578846e+000, -226.083311697567e+000,
+                          186.565335560800e+000, -105.987935461550e+000,
+                          39.6714495427978e+000]
+
+        for idx, coef in enumerate(target_B_coefs):
+             self.assertAlmostEqual(cheby1.B[idx],
+                                    coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+             self.assertAlmostEqual(cheby1.A[idx],
+                                    coef, places=4)
+
+    def test_compute_cheb1_bs(self):
+        parameters = {'passband_frequency': [10, 70],
+                      'stopband_frequency': [20, 60],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+
+        cheby1 = digital.ChebyshevIFilter(parameters)
+        cheby1.ripple = 1
+        cheby1.sample_rate = 500
+        cheby1.compute_parameters()
+        self.assertEqual(cheby1.N, 13)
+        self.assertAlmostEqual(cheby1.Wn[0], 0.04)
+        self.assertAlmostEqual(cheby1.Wn[1], 0.28)
+        cheby1.design()
+
+        target_B_coefs = [8.74608886e-03, -2.14321035e-01, 2.53764887e+00,
+                          -1.93252385e+01, 1.06295284e+02, -4.49552843e+02,
+                          1.51961565e+03, -4.21310899e+03, 9.75526990e+03,
+                          -1.91101874e+04, 3.19684412e+04, -4.59684673e+04,
+                          5.70662222e+04, -6.13150691e+04, 5.70662222e+04,
+                          -4.59684673e+04, 3.19684412e+04, -1.91101874e+04,
+                          9.75526990e+03, -4.21310899e+03, 1.51961565e+03,
+                          -4.49552843e+02, 1.06295284e+02, -1.93252385e+01,
+                          2.53764887e+00, -2.14321035e-01, 8.74608886e-03]
+
+        target_A_coefs = [1.00000000e+00, -1.60685557e+01, 1.24950495e+02,
+                          -6.26706028e+02, 2.27918097e+03, -6.40332860e+03,
+                          1.44540254e+04, -2.69088299e+04, 4.20737837e+04,
+                          -5.59585058e+04, 6.38544401e+04, -6.28218874e+04,
+                          5.33222598e+04, -3.88186873e+04, 2.37827848e+04,
+                          -1.16198786e+04, 3.71545958e+03, 2.82229442e+02,
+                          -1.59246199e+03, 1.51008040e+03, -9.76631282e+02,
+                          4.86536598e+02, -1.89706382e+02, 5.65717590e+01,
+                          -1.21903894e+01, 1.69279910e+00, -1.13719952e-01]
+
+        for idx, coef in enumerate(target_B_coefs):
+             self.assertAlmostEqual(cheby1.B[idx],
+                                    coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+             self.assertAlmostEqual(cheby1.A[idx],
+                                    coef, places=4)
+
 
 if __name__ == '__main__':
     unittest.main()

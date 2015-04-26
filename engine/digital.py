@@ -32,12 +32,22 @@ class IIRFilter(Filter):
         raise ValueError("Please override me with your own _design function!")
 
     def normalize_Wn(self):
-        if isinstance(self.Wn, list):
-            return list(map(lambda x: x/(self.sample_rate/2), self.Wn))
+        if isinstance(self.Wn, float) or isinstance(self.Wn, int):
+            return self.Wn / (self.sample_rate/2)
+        return list(map(lambda x: x/(self.sample_rate/2), self.Wn))
+
+    def denormalized_pb_sb(self):
+        def sample_to_hz(x):
+            return rad_to_hz(x/(self.sample_rate/2))
+
+        if isinstance(self.filter_parameters['passband_frequency'], list):
+            normalized_pb = list(map(sample_to_hz, self.filter_parameters['passband_frequency']))
+            normalized_sb = list(map(sample_to_hz, self.filter_parameters['stopband_frequency']))
         else:
-            if self.Wn > self.sample_rate:
-                raise ValueError("Frequency must be smaller than sample rate.")
-        return self.Wn / (self.sample_rate/2)
+            normalized_pb = sample_to_hz(self.filter_parameters['passband_frequency'])
+            normalized_sb = sample_to_hz(self.filter_parameters['stopband_frequency'])
+
+        return normalized_pb, normalized_sb
 
 # MATLAB-ish filter design classes.
 class ButterworthFilter(IIRFilter):
@@ -52,12 +62,14 @@ class ChebyshevIFilter(IIRFilter):
     ripple = None
 
     def _compute_parameters(self):
-        normalized_pb = rad_to_hz(self.filter_parameters['passband_frequency']/(self.sample_rate/2))
-        normalized_sb = rad_to_hz(self.filter_parameters['stopband_frequency']/(self.sample_rate/2))
+        normalized_pb, normalized_sb = self.denormalized_pb_sb()
         self.N, self.Wn = signal.cheb1ord(normalized_pb, normalized_sb,
                                           self.filter_parameters['passband_attenuation'],
                                           self.filter_parameters['stopband_attenuation'],
                                           analog=False)
+        if self.filter_kind == "bandstop": # For some reason it fails.
+            self.Wn = normalized_pb
+
         self.already_normalized_Wn = True
 
     def _design(self):
@@ -67,6 +79,7 @@ class ChebyshevIFilter(IIRFilter):
             raise ValueError("Needs a ripple value.")
 
         if self.already_normalized_Wn:
+            print("aqui Wn > ", self.Wn)
             self.Z, self.P, self.K = signal.cheby1(self.N, self.ripple, self.Wn,
                                                    self.filter_kind, analog=False,
                                                    output='zpk')
