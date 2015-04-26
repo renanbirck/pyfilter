@@ -496,7 +496,6 @@ class TestDigital(unittest.TestCase):
             self.assertAlmostEqual(butter.A[idx],
                                    coef, places=4)
 
-
         butter.target = 'passband'
         butter.compute_parameters()
         self.assertEqual(butter.N, 5)
@@ -509,6 +508,58 @@ class TestDigital(unittest.TestCase):
         target_A_coefs = [1.00000000000000e+000, -4.53481633767399e+000,
                           8.24563188183775e+000, -7.51327290057926e+000,
                           3.43014167292325e+000, -627.635205843430e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(butter.B[idx],
+                                   coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(butter.A[idx],
+                                   coef, places=4)
+
+
+    def test_compute_butter_hp(self):
+        parameters = {'passband_frequency': 100,
+                      'stopband_frequency': 10,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        butter = digital.ButterworthFilter(parameters)
+        butter.sample_rate = 500
+
+        butter.target = 'stopband'
+        butter.compute_parameters()
+        self.assertEqual(butter.N, 5)
+        self.assertAlmostEqual(butter.Wn, 240.570345569637e-003)
+        butter.design()
+
+        target_B_coefs = [283.489972641606e-003, -1.41744986320803e+000,
+                          2.83489972641606e+000, -2.83489972641606e+000,
+                          1.41744986320803e+000, -283.489972641606e-003]
+
+        target_A_coefs = [1.00000000000000e+000, -2.56870920176411e+000,
+                          2.98322539177564e+000, -1.84206031464644e+000,
+                          597.325460739181e-003, -80.3587556060112e-003]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(butter.B[idx],
+                                   coef, places=4)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(butter.A[idx],
+                                   coef, places=4)
+
+        butter.target = 'passband'
+        butter.compute_parameters()
+        butter.design()
+        self.assertEqual(butter.N, 5)
+        self.assertAlmostEqual(butter.Wn, 0.36004326343144744)
+
+        target_B_coefs = [140.242720840311e-003, -701.213604201556e-003,
+                          1.40242720840311e+000, -1.40242720840311e+000,
+                          701.213604201556e-003, -140.242720840311e-003]
+        target_A_coefs = [1.00000000000000e+000, -1.38023900721199e+000,
+                          1.30312415600401e+000, -613.035772803709e-003,
+                          171.908821314534e-003, -19.4593095557128e-003]
 
         for idx, coef in enumerate(target_B_coefs):
             self.assertAlmostEqual(butter.B[idx],
