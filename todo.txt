@@ -1,4 +1,4 @@
-Comuns a A e D:
+Analógico:
 
 Para N, Wn:
 - Butterworth OK
@@ -8,15 +8,30 @@ Para N, Wn:
 - Elíptico OK
 
 Para parâmetros:
-- Butterworth
+- Butterworth OK
 - Cheby1 OK
 - Cheby2 OK
-- Elíptico
+- Elíptico OK
 
 Interface:
-- Plotagem
-- HTML dos resultados
+- Plotagem OK
+- HTML dos resultados OK
 - Gerar circuito
+
+Digital:
+
+Para N, Wn:
+- Butterworth OK
+- Cheby1 OK
+- Cheby2 OK
+- Bessel XXX
+- Elíptico OK
+
+Para parâmetros:
+- Butterworth OK
+- Cheby1 OK
+- Cheby2
+- Elíptico
 
 ---- 
                 rp      rs

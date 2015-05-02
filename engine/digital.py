@@ -35,7 +35,7 @@ class IIRFilter(Filter):
             return self.Wn / (self.sample_rate/2)
         return list(map(lambda x: x/(self.sample_rate/2), self.Wn))
 
-    def denormalized_pb_sb(self):
+    def normalized_pb_sb(self):
         def sample_to_hz(x):
             return rad_to_hz(x/(self.sample_rate/2))
 
@@ -53,7 +53,7 @@ class ButterworthFilter(IIRFilter):
     target = None
 
     def _compute_parameters(self):
-        normalized_pb, normalized_sb = self.denormalized_pb_sb()
+        normalized_pb, normalized_sb = self.normalized_pb_sb()
         self.already_normalized_Wn = True
         if self.target == 'passband':
             self.N, self.Wn = signal.buttord(normalized_pb, normalized_sb,
@@ -86,7 +86,7 @@ class ChebyshevIFilter(IIRFilter):
     ripple = None
 
     def _compute_parameters(self):
-        normalized_pb, normalized_sb = self.denormalized_pb_sb()
+        normalized_pb, normalized_sb = self.normalized_pb_sb()
         self.N, self.Wn = signal.cheb1ord(normalized_pb, normalized_sb,
                                           self.filter_parameters['passband_attenuation'],
                                           self.filter_parameters['stopband_attenuation'],
@@ -114,16 +114,28 @@ class ChebyshevIFilter(IIRFilter):
 
 class ChebyshevIIFilter(IIRFilter):
     stopband_attenuation = None
+
+    def _compute_parameters(self):
+        normalized_pb, normalized_sb = self.normalized_pb_sb()
+        self.N, self.Wn = signal.cheb2ord(normalized_pb, normalized_sb,
+                                          self.filter_parameters['passband_attenuation'],
+                                          self.filter_parameters['stopband_attenuation'])
+        self.already_normalized_Wn = True
+
     def _design(self):
         if not self.stopband_attenuation and 'stopband_attenuation' in self.filter_parameters:
             self.stopband_attenuation = self.filter_parameters['stopband_attenuation']
         elif not self.stopband_attenuation and 'stopband_attenuation' not in self.filter_parameters:
-            raise ValueError("Needs a stopband attenuation.")
+            raise ValueError("Needs a stopband_attenuation value.")
 
-        self.Z, self.P, self.K = signal.cheby2(self.N, self.stopband_attenuation,
-                                               self.normalize_Wn(),
-                                               self.filter_kind, analog=False,
-                                               output='zpk')
+        if self.already_normalized_Wn:
+            self.Z, self.P, self.K = signal.cheby2(self.N, self.stopband_attenuation, self.Wn,
+                                                   self.filter_kind, analog=False,
+                                                   output='zpk')
+        else:
+            self.Z, self.P, self.K = signal.cheby2(self.N, self.stopband_attenuation, self.normalize_Wn(),
+                                                   self.filter_kind, analog=False,
+                                                   output='zpk')
 
 
 class EllipticalFilter(IIRFilter):

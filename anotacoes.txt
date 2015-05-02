@@ -1,0 +1,4 @@
+- Parte teórica mais resumida
+- Colocar a comparação das ferramentas no resultado
+- Descrever implementações no desenvolvimento
+- Custo computacional (verificar se tem como fazer)

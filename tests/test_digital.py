@@ -680,6 +680,115 @@ class TestDigital(unittest.TestCase):
             self.assertAlmostEqual(butter.A[idx],
                                    coef, places=1)
 
+    def test_compute_cheb2_lp(self):
+        parameters = {'passband_frequency': 10,
+                      'stopband_frequency': 100,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+
+        cheby2 = digital.ChebyshevIIFilter(parameters)
+        cheby2.sample_rate = 500
+        cheby2.stopband_attenuation = 80
+        cheby2.compute_parameters()
+
+        self.assertEqual(cheby2.N, 4)
+        self.assertAlmostEqual(cheby2.Wn, 0.26663100739645568)
+        cheby2.design()
+
+        target_B_coefs = [ 0.0002386 , -0.00022575,  0.00038794, -0.00022575,  0.0002386 ]
+        target_A_coefs = [ 1.        , -3.61074947,  4.90624573, -2.97224795,  0.67716533]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(cheby2.B[idx],
+                                   coef, places=2)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(cheby2.A[idx],
+                                   coef, places=1)
+
+    def test_compute_cheb2_hp(self):
+        parameters = {'passband_frequency': 100,
+                      'stopband_frequency': 10,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        cheby2 = digital.ChebyshevIIFilter(parameters)
+        cheby2.sample_rate = 500
+        cheby2.stopband_attenuation = 80
+        cheby2.compute_parameters()
+
+        self.assertEqual(cheby2.N, 4)
+        self.assertEqual(cheby2.Wn, 0.065141234256020891)
+        cheby2.design()
+
+        target_B_coefs = [ 0.22057452, -0.87306839,  1.30503626, -0.87306839,  0.22057452]
+        target_A_coefs = [ 1.        , -1.18443635,  0.93923523, -0.31907741,  0.04957309]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(cheby2.B[idx],
+                                   coef, places=2)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(cheby2.A[idx],
+                                   coef, places=1)
+
+    def test_compute_cheb2_bp(self):
+        parameters = {'passband_frequency': [1, 2],
+                      'stopband_frequency': [0.1, 5],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        cheby2 = digital.ChebyshevIIFilter(parameters)
+        cheby2.sample_rate = 50
+        cheby2.compute_parameters()
+        cheby2.design()
+
+        self.assertEqual(cheby2.N, 5)
+        self.assertListEqual(list(cheby2.Wn), [ 0.017210851459767147, 0.181989819725220547])
+
+        target_B_coefs = [ 0.000135712, -0.000940014,  0.002824547, -0.004612154,
+                           0.003832163,  0.         , -0.003832163,  0.004612154,
+                           -0.002824547,  0.000940014, -0.000135712]
+
+        target_A_coefs = [   1.         ,   -9.38111324 ,   39.753041358, -100.203106884,
+                          166.376914952, -190.14129197 ,  151.469644676,  -83.051931955,
+                            29.997294982,   -6.444965683,    0.62551379]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(cheby2.B[idx],
+                                   coef, places=2)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(cheby2.A[idx],
+                                   coef, places=1)
+
+
+    def test_compute_cheb2_bs(self):
+        parameters = {'passband_frequency': [1, 7],
+                      'stopband_frequency': [2, 6],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 5}
+
+        cheby2 = digital.ChebyshevIIFilter(parameters)
+        cheby2.sample_rate = 50
+        cheby2.compute_parameters()
+        cheby2.design()
+
+        self.assertEqual(cheby2.N, 3)
+        self.assertAlmostEqual(cheby2.Wn[0], 0.074014128)
+        self.assertAlmostEqual(cheby2.Wn[1], 0.257595349)
+
+        target_B_coefs = [  0.793616223,  -4.130260046,   9.497020267, -12.315603367,
+                            9.497020267,  -4.130260046,   0.793616223]
+        target_A_coefs = [  1.         ,  -4.812806141,  10.21498456 , -12.238622803,
+                            8.736512745,  -3.524694514,   0.629775676]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(cheby2.B[idx],
+                                   coef, places=2)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(cheby2.A[idx],
+                                   coef, places=1)
+
 
 if __name__ == '__main__':
     unittest.main()
