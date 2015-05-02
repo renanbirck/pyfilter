@@ -142,6 +142,14 @@ class EllipticalFilter(IIRFilter):
     stopband_attenuation = None
     ripple = None
 
+    def _compute_parameters(self):
+        normalized_pb, normalized_sb = self.normalized_pb_sb()
+        self.N, self.Wn = signal.ellipord(normalized_pb, normalized_sb,
+                                          self.filter_parameters['passband_attenuation'],
+                                          self.filter_parameters['stopband_attenuation'])
+        self.already_normalized_Wn = True
+
+
     def _design(self):
         if not self.stopband_attenuation:
             self.stopband_attenuation = self.filter_parameters['stopband_attenuation']
@@ -149,11 +157,18 @@ class EllipticalFilter(IIRFilter):
         if not self.ripple:
             self.ripple = self.filter_parameters['ripple']
 
-        self.Z, self.P, self.K = signal.ellip(self.N, self.ripple,
-                                              self.stopband_attenuation,
-                                              self.normalize_Wn(),
-                                              self.filter_kind, analog=False,
-                                              output='zpk')
+        if self.already_normalized_Wn:
+            self.Z, self.P, self.K = signal.ellip(self.N, self.ripple,
+                                                  self.stopband_attenuation,
+                                                  self.Wn,
+                                                  self.filter_kind,
+                                                  analog=False, output='zpk')
+        else:
+            self.Z, self.P, self.K = signal.ellip(self.N, self.ripple,
+                                                  self.stopband_attenuation,
+                                                  self.normalize_Wn(),
+                                                  self.filter_kind, analog=False,
+                                                  output='zpk')
     pass
 
 class BesselFilter(IIRFilter):

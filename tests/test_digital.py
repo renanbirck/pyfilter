@@ -789,6 +789,120 @@ class TestDigital(unittest.TestCase):
             self.assertAlmostEqual(cheby2.A[idx],
                                    coef, places=1)
 
+    def test_compute_elliptical_lp(self):
+        parameters = {'passband_frequency': 10,
+                      'stopband_frequency': 100,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+
+        ellip = digital.EllipticalFilter(parameters)
+        ellip.sample_rate = 500
+        ellip.ripple = 1
+        ellip.stopband_attenuation = 80
+        ellip.compute_parameters()
+
+        self.assertEqual(ellip.N, 3)
+        self.assertAlmostEqual(ellip.Wn, 0.04)
+
+        ellip.design()
+
+        target_B_coefs = [ 0.00030465 ,  0.000155439,  0.000155439,  0.00030465 ]
+        target_A_coefs = [ 1.         , -2.864462665,  2.74868316 , -0.883300318]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(ellip.B[idx],
+                                   coef, places=2)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(ellip.A[idx],
+                                   coef, places=1)
+
+    def test_compute_elliptical_hp(self):
+        parameters = {'passband_frequency': 100,
+                      'stopband_frequency': 10,
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+
+        ellip = digital.EllipticalFilter(parameters)
+        ellip.sample_rate = 500
+        ellip.ripple = 1
+        ellip.stopband_attenuation = 80
+        ellip.compute_parameters()
+
+        self.assertEqual(ellip.N, 3)
+        self.assertAlmostEqual(ellip.Wn, 0.4)
+        ellip.design()
+        target_B_coefs = [ 0.215250183, -0.642794874,  0.642794874, -0.215250183]
+        target_A_coefs = [ 1.         , -0.307552733,  0.525670317,  0.117132936]
+
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(ellip.B[idx],
+                                   coef, places=2)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(ellip.A[idx],
+                                   coef, places=1)
+
+    def test_compute_elliptical_bp(self):
+
+        parameters = {'passband_frequency': [1, 2],
+                      'stopband_frequency': [0.1, 5],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 80}
+        ellip = digital.EllipticalFilter(parameters)
+        ellip.sample_rate = 50
+        ellip.ripple = 1
+        ellip.stopband_attenuation = 80
+        ellip.compute_parameters()
+        self.assertEqual(ellip.N, 4)
+        self.assertAlmostEqual(ellip.Wn[0], 0.04)
+        self.assertAlmostEqual(ellip.Wn[1], 0.08)
+        ellip.design()
+        target_B_coefs = [ 0.000149968, -0.000945145,  0.002744802,
+                           -0.004872166, 0.005845081, -0.004872166,
+                           0.002744802, -0.000945145,  0.000149968]
+
+        target_A_coefs = [ 1.         ,  -7.740894095, 26.351978106,
+                          -51.526073594, 63.290406212, -50.008340755,
+                          24.822582584,  -7.077002512, 0.887344983]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(ellip.B[idx],
+                                   coef, places=2)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(ellip.A[idx],
+                                   coef, places=1)
+
+    def test_compute_elliptical_bs(self):
+        parameters = {'passband_frequency': [1, 7],
+                      'stopband_frequency': [2, 6],
+                      'passband_attenuation': 1,
+                      'stopband_attenuation': 5}
+        ellip = digital.EllipticalFilter(parameters)
+        ellip.sample_rate = 50
+        ellip.ripple = 1
+        ellip.stopband_attenuation = 80
+        ellip.compute_parameters()
+        ellip.design()
+
+        self.assertEqual(ellip.N, 2)
+        self.assertAlmostEqual(ellip.Wn[0], 0.0674131)
+        self.assertAlmostEqual(ellip.Wn[1], 0.27999758)
+        target_B_coefs = [ 0.612746909, -2.217463339,  3.231677071,
+                           -2.217463339,  0.612746909]
+        target_A_coefs = [ 1.         , -2.917691877,  3.475927094,
+                           -2.058377701,  0.525100898]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(ellip.B[idx],
+                                   coef, places=2)
+
+        for idx, coef in enumerate(target_A_coefs):
+            self.assertAlmostEqual(ellip.A[idx],
+                                   coef, places=1)
+
 
 if __name__ == '__main__':
     unittest.main()

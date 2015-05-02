@@ -30,8 +30,8 @@ Para N, Wn:
 Para parâmetros:
 - Butterworth OK
 - Cheby1 OK
-- Cheby2
-- Elíptico
+- Cheby2 OK
+- Elíptico OK
 
 ---- 
                 rp      rs
