@@ -9,6 +9,9 @@ import custom
 hz_to_rad = lambda x: 2 * pi * float(x)
 rad_to_hz = lambda x: float(x)/(2 * pi)
 
+class FIRFilter(Filter):
+    pass
+
 class IIRFilter(Filter):
 
     sample_rate = None
