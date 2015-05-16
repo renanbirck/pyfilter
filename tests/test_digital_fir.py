@@ -19,8 +19,9 @@ class TestFIR(unittest.TestCase):
     def test_FIR1(self):
         fir = digital.FIRFilter()
         fir.sample_rate = self.sample_rate
-        fir.N = 10
+        fir.N = 3
         fir.Wn = 500
+        fir.mode = 1  # numtaps, cutoff -> filter
         fir.design()
         target_B_coefs = [0.0467086576553336, 0.453291342344666,
                           0.453291342344666, 0.0467086576553336]

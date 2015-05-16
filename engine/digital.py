@@ -10,6 +10,16 @@ hz_to_rad = lambda x: 2 * pi * float(x)
 rad_to_hz = lambda x: float(x)/(2 * pi)
 
 class FIRFilter(Filter):
+    sample_rate = None
+    mode = 1
+    B = None
+
+    def design(self):
+        if self.mode == 1:
+            self.B = signal.firwin(self.N, self.Wn, nyq=self.sample_rate)
+        else:
+            raise ValueError("Mode 2 (N, freq, gain) not made yet.")
+
     pass
 
 class IIRFilter(Filter):
