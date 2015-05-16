@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'pyfilter_main_window.ui'
+# Form implementation generated from reading ui file 'pyfilter_main_digital.ui'
 #
-# Created: Sat May 16 18:06:58 2015
+# Created: Sat May 16 18:06:57 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -57,7 +57,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.splitter)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1121, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1121, 25))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -75,7 +75,7 @@ class Ui_MainWindow(object):
         self.dockWidgetContents = QtGui.QWidget()
         self.dockWidgetContents.setObjectName(_fromUtf8("dockWidgetContents"))
         self.pushButton_Design = QtGui.QPushButton(self.dockWidgetContents)
-        self.pushButton_Design.setGeometry(QtCore.QRect(20, 360, 85, 26))
+        self.pushButton_Design.setGeometry(QtCore.QRect(20, 400, 85, 26))
         self.pushButton_Design.setObjectName(_fromUtf8("pushButton_Design"))
         self.groupBox_FilterSpecs = QtGui.QGroupBox(self.dockWidgetContents)
         self.groupBox_FilterSpecs.setGeometry(QtCore.QRect(160, 70, 221, 171))
@@ -147,7 +147,7 @@ class Ui_MainWindow(object):
         self.radioButton_Bessel.setChecked(True)
         self.radioButton_Bessel.setObjectName(_fromUtf8("radioButton_Bessel"))
         self.groupBox_Options = QtGui.QGroupBox(self.dockWidgetContents)
-        self.groupBox_Options.setGeometry(QtCore.QRect(155, 250, 211, 141))
+        self.groupBox_Options.setGeometry(QtCore.QRect(155, 290, 211, 131))
         self.groupBox_Options.setObjectName(_fromUtf8("groupBox_Options"))
         self.radioButton_matchPB = QtGui.QRadioButton(self.groupBox_Options)
         self.radioButton_matchPB.setEnabled(False)
@@ -177,6 +177,24 @@ class Ui_MainWindow(object):
         self.radioButton_AttSpecs = QtGui.QRadioButton(self.groupBox_paramCalc)
         self.radioButton_AttSpecs.setGeometry(QtCore.QRect(0, 40, 171, 21))
         self.radioButton_AttSpecs.setObjectName(_fromUtf8("radioButton_AttSpecs"))
+        self.label_SR = QtGui.QLabel(self.dockWidgetContents)
+        self.label_SR.setGeometry(QtCore.QRect(160, 250, 71, 31))
+        self.label_SR.setObjectName(_fromUtf8("label_SR"))
+        self.textEdit_SampleRate = QtGui.QTextEdit(self.dockWidgetContents)
+        self.textEdit_SampleRate.setGeometry(QtCore.QRect(250, 250, 121, 31))
+        self.textEdit_SampleRate.setObjectName(_fromUtf8("textEdit_SampleRate"))
+        self.groupBox = QtGui.QGroupBox(self.dockWidgetContents)
+        self.groupBox.setGeometry(QtCore.QRect(10, 330, 120, 80))
+        self.groupBox.setTitle(_fromUtf8(""))
+        self.groupBox.setObjectName(_fromUtf8("groupBox"))
+        self.radioButton_FIR = QtGui.QRadioButton(self.groupBox)
+        self.radioButton_FIR.setGeometry(QtCore.QRect(0, 20, 104, 22))
+        self.radioButton_FIR.setChecked(False)
+        self.radioButton_FIR.setObjectName(_fromUtf8("radioButton_FIR"))
+        self.radioButton_IIR = QtGui.QRadioButton(self.groupBox)
+        self.radioButton_IIR.setGeometry(QtCore.QRect(0, 40, 104, 22))
+        self.radioButton_IIR.setChecked(True)
+        self.radioButton_IIR.setObjectName(_fromUtf8("radioButton_IIR"))
         self.configurationsDock.setWidget(self.dockWidgetContents)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.configurationsDock)
         self.dockWidget_PlotOptions = QtGui.QDockWidget(MainWindow)
@@ -291,7 +309,7 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.tfOutputHTML, self.tabWidget)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "PyFilter (Analog)", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "PyFilter (Digital)", None))
         self.pushButton_saveToFile.setText(_translate("MainWindow", "Save to file...", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_TF), _translate("MainWindow", "Results", None))
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
@@ -328,6 +346,10 @@ class Ui_MainWindow(object):
         self.groupBox_paramCalc.setTitle(_translate("MainWindow", "Parameter calculation...", None))
         self.radioButton_NWn.setText(_translate("MainWindow", "From N, Wn", None))
         self.radioButton_AttSpecs.setText(_translate("MainWindow", "From attenuation specs", None))
+        self.label_SR.setText(_translate("MainWindow", "Sample \n"
+"rate (Hz):", None))
+        self.radioButton_FIR.setText(_translate("MainWindow", "FIR", None))
+        self.radioButton_IIR.setText(_translate("MainWindow", "IIR", None))
         self.dockWidget_PlotOptions.setWindowTitle(_translate("MainWindow", "Plot options", None))
         self.label_2.setText(_translate("MainWindow", "Back color:", None))
         self.label.setText(_translate("MainWindow", "Frontal color:", None))
