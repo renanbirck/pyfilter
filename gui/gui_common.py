@@ -26,7 +26,7 @@ class common_tools():
         self.parent.statusBar.showMessage(text)
 
     def menuAbout(self):
-        information(parent, 'About PyFilter...',
+        information(self.parent, 'About PyFilter...',
                     'PyFilter 0.1 (c) 2015 Renan Birck.')
 
 

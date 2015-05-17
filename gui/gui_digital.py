@@ -46,9 +46,41 @@ class StartQT4(QtGui.QMainWindow):
         common.set_status_bar("Olá mundo!")
 
         # Callbacks
+        about = lambda: information(self, 'About PyFilter...',
+                                    'PyFilter 0.1 (c) 2015 Renan Birck.')
+
         QtCore.QObject.connect(self.ui.actionAbout,
                                QtCore.SIGNAL("triggered()"),
-                               common.menuAbout)
+                               about)
+
+        for filter_type_widget in [self.ui.radioButton_IIR,
+                                   self.ui.radioButton_FIR]:
+            QtCore.QObject.connect(filter_type_widget,
+                                   QtCore.SIGNAL("clicked()"),
+                                   self.pick_widgets_for_filter_type)
+        self.populate_window_list()
+
+    def populate_window_list(self):
+        # Format of tuples is:
+        # 1. visible name
+        # 2. internal name
+        # 3. number of parameters
+        # 4-end. parameter names
+
+        window_types = [('Rectangular', 'boxcar', 0),
+                        ('Triangular', 'triang', 0),
+                        ('Blackman', 'blackman', 0)]
+
+        for window_name, window_internal, num_parameters in window_types:
+            self.ui.comboBox_Window.addItem(window_name)
+
+    def pick_widgets_for_filter_type(self):
+        if self.ui.radioButton_IIR.isChecked():
+            self.ui.stackedWidget.setCurrentIndex(0)
+        elif self.ui.radioButton_FIR.isChecked():
+            self.ui.stackedWidget.setCurrentIndex(1)
+        else:  # Should not happen...
+            pass
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)

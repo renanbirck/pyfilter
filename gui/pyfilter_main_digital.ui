@@ -167,7 +167,7 @@
      <widget class="QPlainTextEdit" name="plainTextEdit_opt1">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>80</x>
         <y>20</y>
         <width>121</width>
         <height>31</height>
@@ -180,7 +180,7 @@
      <widget class="QPlainTextEdit" name="plainTextEdit_opt2">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>80</x>
         <y>60</y>
         <width>121</width>
         <height>31</height>
@@ -206,7 +206,7 @@
      <widget class="QPlainTextEdit" name="plainTextEdit_opt3">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>80</x>
         <y>100</y>
         <width>121</width>
         <height>31</height>
@@ -235,7 +235,7 @@
      <widget class="QPlainTextEdit" name="plainTextEdit_opt4">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>80</x>
         <y>140</y>
         <width>121</width>
         <height>31</height>
@@ -265,7 +265,7 @@ rate (Hz):</string>
      <widget class="QTextEdit" name="textEdit_SampleRate">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>80</x>
         <y>180</y>
         <width>121</width>
         <height>31</height>
@@ -532,7 +532,7 @@ rate (Hz):</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="IIR_Settings">
       <widget class="QGroupBox" name="groupBox_Filter_Top">
@@ -644,6 +644,9 @@ Type2</string>
         <property name="text">
          <string>Windowing</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QRadioButton" name="radioButton_Parks">
         <property name="geometry">
@@ -658,7 +661,7 @@ Type2</string>
          <string>Parks-McClellan</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="comboBox">
+       <widget class="QComboBox" name="comboBox_Window">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -668,7 +671,7 @@ Type2</string>
          </rect>
         </property>
        </widget>
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="label_Window">
         <property name="geometry">
          <rect>
           <x>10</x>
