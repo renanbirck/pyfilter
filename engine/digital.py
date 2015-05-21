@@ -11,16 +11,54 @@ rad_to_hz = lambda x: float(x)/(2 * pi)
 
 class FIRFilter(Filter):
     sample_rate = None
-    mode = 1
+    taps = None
+    freqs = None
+    weights = None
+    algorithm = None
+    window = None
+    _nyquist = None
     B = None
 
-    def design(self):
-        if self.mode == 1:
-            self.B = signal.firwin(self.N, self.Wn, nyq=self.sample_rate)
-        else:
-            raise ValueError("Mode 2 (N, freq, gain) not made yet.")
+    def __init__(self, sample_rate=None, taps=None, freqs=None, gains=None, window=None):
+        super(Filter).__init__()
+        if sample_rate:
+            self.sample_rate = sample_rate
+        if taps:
+            self.taps = taps
+        if freqs:
+            self.freqs = freqs
+        if gains:
+            self.gains = gains
+        if window:
+            self.window = window
 
-    pass
+    def design(self):
+        self._nyquist = self.sample_rate / 2
+
+        # firwin2 requires that the freqs vector begin at 0 and end at nyquist.
+        # therefore we will add those manually if they're not there.
+
+        self.freqs = [float(freq) for freq in self.freqs]
+        self.gains = [float(gain) for gain in self.gains]
+
+        if len(self.freqs) != len(self.gains):
+            raise ValueError("Lengths of freqs and gains should be the same.")
+
+        if self.freqs[0] != 0:
+            self.freqs.insert(0, 0)
+            self.gains.insert(0, self.gains[0])
+
+        if self.freqs[-1] != self._nyquist:
+            self.freqs.append(self._nyquist)
+            self.gains.append(0)
+
+        print("freqs vector became ", self.freqs)
+        print("gains vector became ", self.gains)
+
+        self.B = signal.firwin2(self.taps, self.freqs, self.gains,
+                                window=self.window, nyq=self._nyquist)
+
+
 
 class IIRFilter(Filter):
 

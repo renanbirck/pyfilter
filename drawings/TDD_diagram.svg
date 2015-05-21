@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="22cm" height="35cm" viewBox="-359 12 435 697" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="-288.273" y="13.4525" width="131.35" height="86"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-288.273" y="13.4525" width="131.35" height="86"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="-222.598" y="36.3525">
+      <tspan x="-222.598" y="36.3525">Escrever teste</tspan>
+      <tspan x="-222.598" y="52.3525">(novo recurso, </tspan>
+      <tspan x="-222.598" y="68.3525">arrumar bug...)</tspan>
+      <tspan x="-222.598" y="84.3525">e executar</tspan>
+    </text>
+  </g>
+  <g>
+    <polygon style="fill: #ffffff" points="-222.598,139.046 -137.784,181.452 -222.598,223.859 -307.411,181.452 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-222.598,139.046 -137.784,181.452 -222.598,223.859 -307.411,181.452 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="-222.598" y="177.352">
+      <tspan x="-222.598" y="177.352">Teste </tspan>
+      <tspan x="-222.598" y="193.352">passou?</tspan>
+    </text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-222.598,99.4525 -222.598,112.749 -222.598,112.749 -222.598,134.574 "/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-227.598,126.81 -222.598,136.81 -217.598,126.81 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-222.598" y="56.4525">
+    <tspan x="-222.598" y="56.4525"></tspan>
+  </text>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="374" y="170.5">
+    <tspan x="374" y="170.5"></tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="-310.098" y="272.452" width="175" height="71"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-310.098" y="272.452" width="175" height="71"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="-222.598" y="295.852">
+      <tspan x="-222.598" y="295.852">Desenvolver código</tspan>
+      <tspan x="-222.598" y="311.852">(não otimizar ele ainda)</tspan>
+      <tspan x="-222.598" y="327.852">tal que o teste passe</tspan>
+    </text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-222.598,223.859 -222.598,243.452 -222.598,243.452 -222.598,267.98 "/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-227.598,260.216 -222.598,270.216 -217.598,260.216 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-218.249" y="248.302">
+    <tspan x="-218.249" y="248.302">NÃO</tspan>
+  </text>
+  <g>
+    <polygon style="fill: #ffffff" points="-222.598,480.152 -137.784,522.559 -222.598,564.966 -307.411,522.559 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-222.598,480.152 -137.784,522.559 -222.598,564.966 -307.411,522.559 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="-222.598" y="518.459">
+      <tspan x="-222.598" y="518.459">Teste </tspan>
+      <tspan x="-222.598" y="534.459">passou?</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="-292.673" y="390.452" width="140.15" height="38"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-292.673" y="390.452" width="140.15" height="38"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="-222.598" y="413.352">
+      <tspan x="-222.598" y="413.352">Executar os testes</tspan>
+    </text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-222.598,428.452 -222.598,451.802 -222.598,451.802 -222.598,475.68 "/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-227.598,467.916 -222.598,477.916 -217.598,467.916 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="-336.798" y="606.304" width="228.4" height="102"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-336.798" y="606.304" width="228.4" height="102"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="-222.598" y="637.204">
+      <tspan x="-222.598" y="637.204">Melhorar o código</tspan>
+      <tspan x="-222.598" y="653.204">(tirar redundâncias, </tspan>
+      <tspan x="-222.598" y="669.204">otimizar, </tspan>
+      <tspan x="-222.598" y="685.204">mudar estrutura etc...)</tspan>
+    </text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-222.598,564.966 -222.598,584.425 -222.598,584.425 -222.598,601.832 "/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-227.598,594.068 -222.598,604.068 -217.598,594.068 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-336.798,657.304 -357.798,657.304 -357.798,409.452 -297.145,409.452 "/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-304.909,414.452 -294.909,409.452 -304.909,404.452 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-223.976" y="580.783">
+    <tspan x="-223.976" y="580.783"></tspan>
+  </text>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-217.433" y="581.873">
+    <tspan x="-217.433" y="581.873">SIM</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="-222.598" y1="343.452" x2="-222.598" y2="385.98"/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-227.598,378.216 -222.598,388.216 -217.598,378.216 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-137.784,522.559 -114.098,522.559 -114.098,307.952 -130.625,307.952 "/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-122.861,302.952 -132.861,307.952 -122.861,312.952 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-143.942" y="520.138">
+    <tspan x="-143.942" y="520.138">NÃO</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="-63.4812" y="154.452" width="137.84" height="54"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-63.4812" y="154.452" width="137.84" height="54"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="5.43888" y="177.352">
+      <tspan x="5.43888" y="177.352">Escrever </tspan>
+      <tspan x="5.43888" y="193.352">novos testes</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="-137.784" y1="181.452" x2="-67.9533" y2="181.452"/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-75.7173,186.452 -65.7173,181.452 -75.7173,176.452 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-119.329" y="177.342">
+    <tspan x="-119.329" y="177.342">SIM</tspan>
+  </text>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="5.43888,154.452 5.43888,56.4525 -152.45,56.4525 "/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-144.686,51.4525 -154.686,56.4525 -144.686,61.4525 "/>
+  </g>
+</svg>

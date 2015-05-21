@@ -14,22 +14,25 @@ from engine import digital
 
 class TestFIR(unittest.TestCase):
 
-    sample_rate = 20000
+    sample_rate = 2000
+    taps = 10
+    freqs = [0, 300, 600]
+    gains = [0, 1, 1]
+    window = 'boxcar'
 
-    def test_FIR1(self):
-        fir = digital.FIRFilter()
-        fir.sample_rate = self.sample_rate
-        fir.N = 3
-        fir.Wn = 500
-        fir.mode = 1  # numtaps, cutoff -> filter
+    def test_firwin2(self):
+        fir = digital.FIRFilter(self.sample_rate, self.taps,
+                                self.freqs, self.gains,
+                                self.window)
         fir.design()
-        target_B_coefs = [0.0467086576553336, 0.453291342344666,
-                          0.453291342344666, 0.0467086576553336]
+        target_B_coefs = [-0.03241918, -0.0366439, -0.093414,
+                          -0.23450071,  0.44703339, 0.44703339,
+                          -0.23450071, -0.093414, -0.0366439,
+                          -0.03241918]
 
         for idx, coef in enumerate(target_B_coefs):
-            self.assertAlmostEqual(fir.B[idx], coef, places=4)
+            self.assertAlmostEqual(fir.B[idx], coef, places=3)
 
-    pass
 
 if __name__ == '__main__':
     unittest.main()
