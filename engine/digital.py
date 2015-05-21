@@ -17,9 +17,11 @@ class FIRFilter(Filter):
     algorithm = None
     window = None
     _nyquist = None
+    antisymmetric = None
     B = None
 
-    def __init__(self, sample_rate=None, taps=None, freqs=None, gains=None, window=None):
+    def __init__(self, sample_rate=None, taps=None, freqs=None, gains=None, window=None,
+                 antisymmetric=False):
         super(Filter).__init__()
         if sample_rate:
             self.sample_rate = sample_rate
@@ -31,6 +33,23 @@ class FIRFilter(Filter):
             self.gains = gains
         if window:
             self.window = window
+        self.antisymmetric = antisymmetric
+
+    def get_filter_type(self):
+        """ Gets the type of filter from the number
+            of taps and the symmetry specification. """
+
+        odd = self.taps % 2
+
+        if odd and not self.antisymmetric:
+            return 1
+        elif not odd and not self.antisymmetric:
+            return 2
+        elif odd and self.antisymmetric:
+            return 3
+        elif not odd and self.antisymmetric:
+            return 4
+        return 0
 
     def design(self):
         self._nyquist = self.sample_rate / 2
@@ -38,25 +57,43 @@ class FIRFilter(Filter):
         # firwin2 requires that the freqs vector begin at 0 and end at nyquist.
         # therefore we will add those manually if they're not there.
 
-        self.freqs = [float(freq) for freq in self.freqs]
-        self.gains = [float(gain) for gain in self.gains]
-
         if len(self.freqs) != len(self.gains):
             raise ValueError("Lengths of freqs and gains should be the same.")
 
+        self.freqs = [float(freq) for freq in self.freqs]
+        self.gains = [float(gain) for gain in self.gains]
+
         if self.freqs[0] != 0:
-            self.freqs.insert(0, 0)
-            self.gains.insert(0, self.gains[0])
+            self.freqs.insert(0,0)
 
         if self.freqs[-1] != self._nyquist:
             self.freqs.append(self._nyquist)
-            self.gains.append(0)
+
+        # Pad the filter appropriately.
+        my_type = self.get_filter_type()
+        print("Type of filter is ", my_type)
+
+        if my_type == 1:  # Type I: doesn't need change
+            pass
+        elif my_type == 2: # Type II: zero at Nyquist
+            if self.gains[-1] != 0:
+                self.gains.append(0)
+        elif my_type == 3: # Type III: zero at 0 and Nyquist
+            if self.gains[0] != 0:
+                self.gains.insert(0,0)
+            if self.gains[-1] != 0:
+                self.gains.append(0)
+
+        elif my_type == 4: # Type IV: zero at zero frequency
+            if self.gains[0] != 0:
+                self.gains.insert(0, 0)
 
         print("freqs vector became ", self.freqs)
         print("gains vector became ", self.gains)
 
         self.B = signal.firwin2(self.taps, self.freqs, self.gains,
-                                window=self.window, nyq=self._nyquist)
+                                window=self.window, nyq=self._nyquist,
+                                antisymmetric=self.antisymmetric)
 
 
 

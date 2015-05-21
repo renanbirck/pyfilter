@@ -20,6 +20,25 @@ class TestFIR(unittest.TestCase):
     gains = [0, 1, 1]
     window = 'boxcar'
 
+    def test_get_filter_type(self):
+
+        taps = 3
+        fir = digital.FIRFilter(self.sample_rate, taps,
+                                self.freqs, self.gains,
+                                self.window, antisymmetric=False)
+        self.assertEqual(fir.get_filter_type(), 1)
+
+        fir.taps = 4
+        self.assertEqual(fir.get_filter_type(), 2)
+
+        fir.taps = 5
+        fir.antisymmetric = True
+
+        self.assertEqual(fir.get_filter_type(), 3)
+
+        fir.taps = 6
+        self.assertEqual(fir.get_filter_type(), 4)
+
     def test_firwin2(self):
         fir = digital.FIRFilter(self.sample_rate, self.taps,
                                 self.freqs, self.gains,
@@ -32,6 +51,7 @@ class TestFIR(unittest.TestCase):
 
         for idx, coef in enumerate(target_B_coefs):
             self.assertAlmostEqual(fir.B[idx], coef, places=3)
+
 
 
 if __name__ == '__main__':
