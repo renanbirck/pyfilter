@@ -12,6 +12,7 @@ sys.path.append('..')
 
 from engine import digital
 
+
 class TestFIR(unittest.TestCase):
 
     sample_rate = 2000
@@ -85,7 +86,7 @@ class TestFIR(unittest.TestCase):
                                 self.window, antisymmetric=True)
         fir.design()
         target_B_coefs = [0.02828663, -0.04758985,  0.29664563,
-                          0.4157863 , -0.4157863 , -0.29664563,
+                          0.4157863, -0.4157863, -0.29664563,
                           0.04758985, -0.02828663]
 
         for idx, coef in enumerate(target_B_coefs):

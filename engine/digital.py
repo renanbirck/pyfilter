@@ -7,7 +7,7 @@ from filter import Filter
 import custom
 
 hz_to_rad = lambda x: 2 * pi * float(x)
-rad_to_hz = lambda x: float(x)/(2 * pi)
+rad_to_hz = lambda x: float(x) / (2 * pi)
 
 class FIRFilter(Filter):
     sample_rate = None
@@ -52,6 +52,12 @@ class FIRFilter(Filter):
         return 0
 
     def design(self):
+        if self.window:
+            self._design_window()
+        else:
+            self._design_remez()
+
+    def _design_window(self):
         self._nyquist = self.sample_rate / 2
 
         # firwin2 requires that the freqs vector begin at 0 and end at nyquist.
@@ -73,28 +79,19 @@ class FIRFilter(Filter):
         my_type = self.get_filter_type()
         print("Type of filter is ", my_type)
 
-        if my_type == 1:  # Type I: doesn't need change
-            pass
-        elif my_type == 2: # Type II: zero at Nyquist
+        if my_type == 2 or my_type == 3:
             if self.gains[-1] != 0:
                 self.gains.append(0)
-        elif my_type == 3: # Type III: zero at 0 and Nyquist
+        if my_type == 3 or my_type == 4:
             if self.gains[0] != 0:
                 self.gains.insert(0,0)
-            if self.gains[-1] != 0:
-                self.gains.append(0)
-
-        elif my_type == 4: # Type IV: zero at zero frequency
-            if self.gains[0] != 0:
-                self.gains.insert(0, 0)
 
         while len(self.freqs) > len(self.gains):
-            print("Had to pad so that freqs = gains...")
+            print("Had to pad so that len freqs = len gains...")
             self.gains.append(0)
 
         print("freqs vector became ", self.freqs)
         print("gains vector became ", self.gains)
-
 
         self.B = signal.firwin2(self.taps, self.freqs, self.gains,
                                 window=self.window, nyq=self._nyquist,
