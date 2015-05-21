@@ -39,7 +39,20 @@ class TestFIR(unittest.TestCase):
         fir.taps = 6
         self.assertEqual(fir.get_filter_type(), 4)
 
-    def test_firwin2(self):
+    def test_firwin2_type1(self):
+        fir = digital.FIRFilter(self.sample_rate, 9,
+                                self.freqs, self.gains,
+                                self.window)
+        fir.design()
+        target_B_coefs = [-0.05120328, -0.02293234, -0.22677772,
+                          0.03562499,  0.64778646, 0.03562499,
+                          -0.22677772, -0.02293234, -0.05120328]
+
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(fir.B[idx], coef, places=3)
+
+
+    def test_firwin2_type2(self):
         fir = digital.FIRFilter(self.sample_rate, self.taps,
                                 self.freqs, self.gains,
                                 self.window)

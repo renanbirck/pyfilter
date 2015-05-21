@@ -88,8 +88,13 @@ class FIRFilter(Filter):
             if self.gains[0] != 0:
                 self.gains.insert(0, 0)
 
+        while len(self.freqs) > len(self.gains):
+            print("Had to pad so that freqs = gains...")
+            self.gains.append(0)
+
         print("freqs vector became ", self.freqs)
         print("gains vector became ", self.gains)
+
 
         self.B = signal.firwin2(self.taps, self.freqs, self.gains,
                                 window=self.window, nyq=self._nyquist,
