@@ -92,6 +92,19 @@ class TestFIR(unittest.TestCase):
         for idx, coef in enumerate(target_B_coefs):
             self.assertAlmostEqual(fir.B[idx], coef, places=3)
 
+    def test_remez(self):
+        self.taps = 8
+        fir_remez = digital.FIRFilter(self.sample_rate, self.taps)
+        fir_remez.freqs = [0, 100, 200, 300]
+        fir_remez.gains = [1, 0]  # gain 1 at 0-100 Hz, 0 at 200-300 Hz
+        fir_remez.design()
+
+        target_B_coefs = [-2.24385181,  10.10210036, -15.64237859,
+                          8.34990819, 8.34990819, -15.64237859,
+                          10.10210036,  -2.24385181]
+        for idx, coef in enumerate(target_B_coefs):
+            self.assertAlmostEqual(fir_remez.B[idx], coef, places=3)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -13,6 +13,7 @@ class FIRFilter(Filter):
     sample_rate = None
     taps = None
     freqs = None
+    desired = None
     weights = None
     algorithm = None
     window = None
@@ -51,11 +52,24 @@ class FIRFilter(Filter):
             return 4
         return 0
 
-    def design(self):
+    def design(self, maxiter=25):
+        """ Designs the FIR filter specified.
+            for Remez (i.e. window = None), you can
+            give the maximum of iterations allowed. """
         if self.window:
+            print("Window = ", self.window, ", designing using window")
             self._design_window()
         else:
-            self._design_remez()
+            print("No window, designing with Remez/Parks-McClellan algorithm...")
+            self._design_remez(maxiter)
+
+    def _design_remez(self, maxiter=25):
+            print("Taps = ", self.taps)
+            print("Freqs = ", self.freqs)
+            print("Gains = ", self.gains)
+            self.B = signal.remez(self.taps, self.freqs,
+                                  self.gains, maxiter=maxiter,
+                                  Hz=self.sample_rate)
 
     def _design_window(self):
         self._nyquist = self.sample_rate / 2
@@ -96,8 +110,6 @@ class FIRFilter(Filter):
         self.B = signal.firwin2(self.taps, self.freqs, self.gains,
                                 window=self.window, nyq=self._nyquist,
                                 antisymmetric=self.antisymmetric)
-
-
 
 class IIRFilter(Filter):
 
