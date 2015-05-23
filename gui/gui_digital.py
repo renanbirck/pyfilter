@@ -41,6 +41,7 @@ class StartQT4(QtGui.QMainWindow):
     common = None
     config_dict = {}
     filter_data = {}
+    file_names = []
 
     def __init__(self, parent=None):
 
@@ -522,6 +523,49 @@ class StartQT4(QtGui.QMainWindow):
         print("B: ", self.filter_design.B)
         print("A: ", self.filter_design.A)
         print("-------------------------")
+
+    def report(self):
+        self.ui.pushButton_saveToFile.setEnabled(True)
+        html = utils.HTMLReport()
+        html.put_text("<body bgcolor=\"white\">")
+        html.put_text("Transfer function: ")
+        html.put_newline()
+        html.put_polynomial(self.filter_design.B,
+                            self.filter_design.A,
+                            variable='s')
+
+        html.put_text("Coefficients:")
+
+        len_B = len(self.filter_design.B)
+        len_A = len(self.filter_design.A)
+        pad_len = abs(len_B - len_A)
+
+        padded_B = [0] * pad_len
+        print("need to pad with ", pad_len)
+
+        for element in self.filter_design.B:
+            padded_B.append(element)
+
+        print("after padding, B became ", padded_B)
+
+        len_order = max(len_B, len_A)
+        coeffs = list(reversed(range(0, len_order+1)))
+        coeffs = list(map(lambda x: x-1, coeffs))
+
+        # Keep track of the file names we've used for the reports,
+        # then at the end of the program we can delete 'em.
+        self.file_names.append(html.output.name)
+        url = QtCore.QUrl(html.output.name)
+
+        columns = ['', 'B (num)', 'A (den)']
+        data = [coeffs,
+                padded_B,
+                self.filter_design.A]
+        html.put_newline()
+        html.put_table(columns, data)
+        html.put_text("</body>")
+        html.write(close=True)
+        self.ui.tfOutputHTML.load(url)
 
 
     def build_FIR_struct(self):
