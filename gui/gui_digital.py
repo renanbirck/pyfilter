@@ -27,7 +27,7 @@ sys.path.append('..')
 from engine import digital
 from engine import utils
 from math import pi
-from numpy import log10, abs, angle
+from numpy import log10, abs, angle, unwrap
 
 import gui_common
 import canvas
@@ -106,6 +106,12 @@ class StartQT4(QtGui.QMainWindow):
         QtCore.QObject.connect(self.ui.pushButton_Design,
                                QtCore.SIGNAL("clicked()"),
                                self.design_filter)
+        QtCore.QObject.connect(self.ui.pushButton_WriteToFile,
+                               QtCore.SIGNAL("clicked()"),
+                               self.write_plots_to_file)
+        QtCore.QObject.connect(self.ui.tabWidget,
+                               QtCore.SIGNAL("tabCloseRequested(int)"),
+                               self.destroy_tab)
 
         self.pick_widgets_for_filter_type()
         self.populate_window_list()
@@ -567,9 +573,70 @@ class StartQT4(QtGui.QMainWindow):
         html.write(close=True)
         self.ui.tfOutputHTML.load(url)
 
+    def plot(self):
+        self.filter_design.compute_frequencies(N=1000)
+        #self.ui.graphicsView.hide()
+        #self.ui.graphicsView_2.hide()
+        #self.ui.tab_plot.hide()
+
+        # Build the tab used for plotting.
+        sample_rate = 2*pi*self.config_dict['sample_rate']
+
+        plot_tab = QtGui.QWidget()
+        plot_tab_layout = QtGui.QVBoxLayout()
+        plot_tab_splitter = QtGui.QSplitter()
+        plot_tab_splitter.setOrientation(QtCore.Qt.Vertical)
+        plot_tab.setLayout(plot_tab_layout)
+
+        self.ui.tabWidget.addTab(plot_tab, "Frequency Response")
+
+        plot_tab_layout.addWidget(plot_tab_splitter)
+
+        self.ui.magnitudePlotWidget = canvas.StaticPlot(plot_tab_splitter, width=9,
+                                                        height=6, dpi=80)
+
+        nyquist = self.config_dict['sample_rate']
+        W_Hz = nyquist*(self.filter_design.W / pi)
+        self.ui.magnitudePlotWidget.compute_initial_figure(W_Hz,
+                                                           20 * log10(abs(self.filter_design.H)),
+                                                           mode="logx")
+        self.ui.magnitudePlotWidget.set_label("Frequency (Hz)", "Gain (dB)")
+
+        if isinstance(self.filter_design.Wn, float):
+            self.ui.magnitudePlotWidget.add_line('x', self.filter_design.Wn / (2*pi))
+        else:
+            for value in self.filter_design.Wn:
+                self.ui.magnitudePlotWidget.add_line('x', value / (2*pi))
+
+        self.ui.magnitudeGraphToolbar = NavigationToolbar(self.ui.magnitudePlotWidget,
+                                                          self)
+        plot_tab_splitter.addWidget(self.ui.magnitudeGraphToolbar)
+
+        self.ui.phasePlotWidget = canvas.StaticPlot(plot_tab_splitter, width=9,
+                                                    height=6, dpi=80)
+        self.ui.phasePlotWidget.compute_initial_figure(W_Hz,
+                                                       unwrap(angle(self.filter_design.H)) * 180/pi,
+                                                       mode="logx")
+        self.ui.phasePlotWidget.set_label("Frequency (Hz)", "Phase (°)")
+        self.ui.phaseGraphToolbar = NavigationToolbar(self.ui.phasePlotWidget,
+                                                      self)
+        plot_tab_splitter.addWidget(self.ui.phaseGraphToolbar)
+
+    def write_plots_to_file(self):
+        save_dialog = QtGui.QFileDialog()
+        file_name_to_save = save_dialog.getSaveFileName(self, "Save plots...", "",
+                                                        "Images (*.png *.jpg *.svg)")
+        if file_name_to_save:
+            self.ui.magnitudePlotWidget.dump(file_name_to_save)
 
     def build_FIR_struct(self):
         raise NotImplementedError("build_FIR_struct not made yet.")
+
+    def destroy_tab(self, tab_id):
+        if tab_id == 0:
+            return # The results tab shall not close.
+        self.ui.tabWidget.removeTab(tab_id)
+
 
 
 if __name__ == "__main__":
