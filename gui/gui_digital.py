@@ -24,7 +24,7 @@ question = QMessageBox.question
 sys.path.append('../engine')
 sys.path.append('..')
 
-from engine import analog_new as analog
+from engine import digital
 from engine import utils
 from math import pi
 from numpy import log10, abs, angle
@@ -40,6 +40,7 @@ BAND_MESSAGE = """ For the bandpass and bandstop cases,
 class StartQT4(QtGui.QMainWindow):
     common = None
     config_dict = {}
+    filter_data = {}
 
     def __init__(self, parent=None):
 
@@ -109,6 +110,9 @@ class StartQT4(QtGui.QMainWindow):
         self.populate_window_list()
         self.FIR_setup()
         self.configure_boxes_for_design_parameters()
+        self.get_filter_TF()
+        self.get_filter_type()
+
 
     def FIR_setup(self):
         self.ui.tableWidget_FIR.setColumnCount(2)
@@ -290,13 +294,16 @@ class StartQT4(QtGui.QMainWindow):
 
     def design_filter(self):
         try:
+            self.validate_common()
             if self.config_dict['filter_IR'] == 'IIR':
                 self.validate_IIR()
                 self.build_IIR_struct()
+                self.actually_design_IIR_filter()
             elif self.config_dict['filter_IR'] == 'FIR':
                 self.validate_FIR()
                 self.build_FIR_struct()
-            self.actually_design_filter()
+                self.actually_design_FIR_filter()
+
             self.report()
             self.plot()
         except Exception as went_wrong:
@@ -307,6 +314,218 @@ class StartQT4(QtGui.QMainWindow):
             print(traceback.format_exc())
             print("---------------------------")
             return
+
+    def validate_common(self):
+        """ Validate the inputs that are used
+            for both FIR and IIR filter designs. """
+        try:
+            sample_rate = float(self.ui.textEdit_SampleRate.toPlainText())
+            if sample_rate <= 0:
+                raise ValueError("must be positive")
+        except:
+            raise ValueError("Sample rate must be positive.")
+
+        self.config_dict['sample_rate'] = sample_rate
+
+    def validate_IIR(self):
+        def validate_common():
+            if self.config_dict['filter_TF'] in ['bessel', 'butterworth']:
+                return # not needed to enter here
+
+            if self.config_dict['filter_TF'] in ['elliptical', 'chebyshev_2']:
+                # Needs stopband attenuation
+                stopband_attenuation = self.ui.plainTextEdit_opt4.toPlainText()
+                try:
+                    stopband_attenuation = float(stopband_attenuation)
+                    if stopband_attenuation <= 0:
+                        raise ValueError("must be positive")
+                except:
+                    raise ValueError("Stopband attenuation must be positive.")
+                self.filter_data['stopband_attenuation'] = stopband_attenuation
+                print(">> Stopband attenuation (dB): ", stopband_attenuation)
+
+            if self.config_dict['filter_TF'] in ['elliptical', 'chebyshev_1']:
+                ripple = self.ui.plainTextEdit_pbRipple.toPlainText()
+                try:
+                    ripple = float(ripple)
+                    if ripple <= 0:
+                        raise ValueError("must be positive")
+                except:
+                    raise ValueError("Ripple must be positive.")
+                self.filter_data['ripple'] = ripple
+                print(">> Ripple (dB): ", ripple)
+
+        def validate_n_wn():
+            N = self.ui.plainTextEdit_opt1.toPlainText()
+            try:
+                N = int(N)
+                if N <= 0 or N > 500:
+                    raise ValueError("out of range")
+            except:
+                raise ValueError("Filter order must be between 0 and 500.")
+            pass
+            self.filter_data['N'] = N
+            print(">> N: ", self.filter_data['N'])
+
+            # Validate Wn
+            Wn = self.ui.plainTextEdit_opt2.toPlainText()
+            if 'band' in self.config_dict['filter_type']:
+                try:
+                    Wn = Wn.split(' ')[0:2]
+                    Wn = [2 * pi * float(Wn[0]), 2 * pi * float(Wn[1])]
+                except:
+                    raise ValueError("Needs two parameters for Wn.")
+            else:
+                try:
+                    Wn = Wn.split(' ')[0]
+                    Wn = 2 * pi * float(Wn)
+                    if Wn <= 0:
+                        raise ValueError("Wn must be positive.")
+                except:
+                    raise ValueError("Wn must be a positive number.")
+            self.filter_data['Wn'] = Wn
+
+            print(">> Wn: ", self.filter_data['Wn'])
+
+        def validate_specs():
+            Wp = self.ui.plainTextEdit_opt1.toPlainText()
+            Ws = self.ui.plainTextEdit_opt2.toPlainText()
+            Rp = self.ui.plainTextEdit_opt3.toPlainText()
+            Rs = self.ui.plainTextEdit_opt4.toPlainText()
+
+            if 'band' in self.config_dict['filter_type']:
+                try:
+                    print(Wp, Ws)
+                    Wp = Wp.split(' ')
+                    Ws = Ws.split(' ')
+                    Wp = [float(Wp[0]), float(Wp[1])]
+                    Ws = [float(Ws[0]), float(Ws[1])]
+                    if Wp[0] <= 0 or Ws[0] <= 0 or Wp[1] <= 0 or Ws[1] <= 0:
+                        raise ValueError("must be positive.")
+                except:
+                    raise ValueError("Both Wp and Ws need 2 positive parameters.")
+            else:
+                try:
+                    Wp = float(Wp)
+                    Ws = float(Ws)
+                    if Wp <= 0 or Ws <= 0:
+                        raise ValueError("must be positive.")
+                except:
+                    raise ValueError("Both Wp and Ws must be positive.")
+
+            # Validate according to filter type chosen.
+
+            if 'band' in self.config_dict['filter_type']:
+                pb0, pb1, sb0, sb1 = Wp[0], Wp[1], Ws[0], Ws[1]
+                if self.config_dict['filter_type'] == 'bandpass':
+                    if not (pb0 > sb0 and pb1 < sb1):
+                        raise ValueError("The bandpass filter needs that the passband "
+                                         "be inside the stopband.")
+                elif self.config_dict['filter_type'] == 'bandstop':
+                    if not (pb0 < sb0 and pb1 > sb1):
+                        raise ValueError("The bandstop filter needs that the stopband "
+                                         "be inside the passband.")
+            self.filter_data['passband_frequency'] = Wp
+            self.filter_data['stopband_frequency'] = Ws
+            self.filter_data['passband_attenuation'] = Rp
+            self.filter_data['stopband_attenuation'] = Rs
+
+        validate_common()
+        if self.config_dict['mode'] == "N_WN":
+            validate_n_wn()
+        elif self.config_dict['mode'] == "specs":
+            validate_specs()
+
+    def validate_FIR(self):
+        raise NotImplementedError("validate_FIR not made yet.")
+
+    def build_IIR_struct(self):
+        config = {}
+        def build_struct_common():
+            if self.config_dict['filter_TF'] == "butterworth":
+                self.filter_design = digital.ButterworthFilter()
+            elif self.config_dict['filter_TF'] == "chebyshev_1":
+                self.filter_design = digital.ChebyshevIFilter()
+            elif self.config_dict['filter_TF'] == "chebyshev_2":
+                self.filter_design = digital.ChebyshevIIFilter()
+            elif self.config_dict['filter_TF'] == "bessel":
+                self.filter_design = digital.BesselFilter()
+            elif self.config_dict['filter_TF'] == "elliptical":
+                self.filter_design = digital.EllipticFilter()
+            else:  # Should never happen, but... you never know.
+                raise ValueError("Unknown filter type requested!!")
+            self.filter_design.sample_rate = 2*pi*self.config_dict['sample_rate']
+
+        def build_struct_n_wn():
+            """ Builds the data structure for filter given the N, Wn. """
+            self.filter_design.N = self.filter_data['N']
+            self.filter_design.Wn = self.filter_data['Wn']
+            self.filter_design.filter_kind = self.config_dict['filter_type']
+            if hasattr(self.filter_design, "ripple"):
+                self.filter_design.ripple = self.filter_data['ripple']
+            if hasattr(self.filter_design, "stopband_attenuation"):
+                self.filter_design.stopband_attenuation = self.filter_data['stopband_attenuation']
+
+        def build_struct_specs():
+            """ Builds the data structure for filter given the specifications. """
+
+            if 'band' in self.config_dict['filter_type']:
+                config['passband_frequency'] = list(map(float, self.filter_data['passband_frequency']))
+                config['stopband_frequency'] = list(map(float, self.filter_data['stopband_frequency']))
+            else:
+                config['passband_frequency'] = float(self.filter_data['passband_frequency'])
+                config['stopband_frequency'] = float(self.filter_data['stopband_frequency'])
+
+            if self.config_dict['filter_type'] == "highpass": # The object model requires this.
+                config['passband_frequency'] = float(self.filter_data['stopband_frequency'])
+                config['stopband_frequency'] = float(self.filter_data['passband_frequency'])
+
+            config['passband_attenuation'] = float(self.filter_data['passband_attenuation'])
+            config['stopband_attenuation'] = float(self.filter_data['stopband_attenuation'])
+
+            if hasattr(self.filter_design, "ripple"):
+                self.filter_design.ripple = self.filter_data['ripple']
+            if hasattr(self.filter_design, "stopband_attenuation"):
+                self.filter_design.stopband_attenuation = float(self.filter_data['stopband_attenuation'])
+            if hasattr(self.filter_design, "target"):
+                if self.ui.radioButton_matchPB.isChecked():
+                    self.filter_design.target = 'passband'
+                elif self.ui.radioButton_matchSB.isChecked():
+                    self.filter_design.target = 'stopband'
+                else:
+                    raise NotImplementedError("WHAT? Target is not passband or stopband?")
+
+            self.filter_design.set_parameters(config)
+            self.filter_design.compute_parameters()
+
+            print("You asked for", self.config_dict['filter_type'],
+                  " you got ", self.filter_design.filter_kind)
+            if self.config_dict['filter_type'] != self.filter_design.filter_kind:
+                print("You didn't get what you asked for. This means a bug. Report.")
+                raise SystemError("Filter asked is not filter got!")
+
+        build_struct_common()
+        if self.config_dict['mode'] == "N_WN":
+            build_struct_n_wn()
+        elif self.config_dict['mode'] == "specs":
+            build_struct_specs()
+
+    def actually_design_IIR_filter(self):
+        """ Where the actual design happens. """
+        print("-------------------------")
+        print("Begin design.")
+        self.filter_design.design()
+        print("Design finished.")
+        print("Z: ", self.filter_design.Z)
+        print("P: ", self.filter_design.P)
+        print("K: ", self.filter_design.K)
+        print("B: ", self.filter_design.B)
+        print("A: ", self.filter_design.A)
+        print("-------------------------")
+
+
+    def build_FIR_struct(self):
+        raise NotImplementedError("build_FIR_struct not made yet.")
 
 
 if __name__ == "__main__":

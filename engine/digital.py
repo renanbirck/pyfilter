@@ -240,7 +240,7 @@ class ChebyshevIIFilter(IIRFilter):
                                                    output='zpk')
 
 
-class EllipticalFilter(IIRFilter):
+class EllipticFilter(IIRFilter):
     stopband_attenuation = None
     ripple = None
 

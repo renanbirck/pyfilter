@@ -247,7 +247,7 @@ class TestDigital(unittest.TestCase):
 
 
     def test_ellip_N_Wn(self):
-        ellip = digital.EllipticalFilter()
+        ellip = digital.EllipticFilter()
         ellip.sample_rate = 20000
         ellip.N = 2
         ellip.Wn = 200
@@ -795,7 +795,7 @@ class TestDigital(unittest.TestCase):
                       'passband_attenuation': 1,
                       'stopband_attenuation': 80}
 
-        ellip = digital.EllipticalFilter(parameters)
+        ellip = digital.EllipticFilter(parameters)
         ellip.sample_rate = 500
         ellip.ripple = 1
         ellip.stopband_attenuation = 80
@@ -823,7 +823,7 @@ class TestDigital(unittest.TestCase):
                       'passband_attenuation': 1,
                       'stopband_attenuation': 80}
 
-        ellip = digital.EllipticalFilter(parameters)
+        ellip = digital.EllipticFilter(parameters)
         ellip.sample_rate = 500
         ellip.ripple = 1
         ellip.stopband_attenuation = 80
@@ -850,7 +850,7 @@ class TestDigital(unittest.TestCase):
                       'stopband_frequency': [0.1, 5],
                       'passband_attenuation': 1,
                       'stopband_attenuation': 80}
-        ellip = digital.EllipticalFilter(parameters)
+        ellip = digital.EllipticFilter(parameters)
         ellip.sample_rate = 50
         ellip.ripple = 1
         ellip.stopband_attenuation = 80
@@ -880,7 +880,7 @@ class TestDigital(unittest.TestCase):
                       'stopband_frequency': [2, 6],
                       'passband_attenuation': 1,
                       'stopband_attenuation': 5}
-        ellip = digital.EllipticalFilter(parameters)
+        ellip = digital.EllipticFilter(parameters)
         ellip.sample_rate = 50
         ellip.ripple = 1
         ellip.stopband_attenuation = 80

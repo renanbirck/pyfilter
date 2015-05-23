@@ -39,3 +39,22 @@ Butterworth     n       n
 Elíptico        s       s
 Cheby1          s       n
 Cheby2          n       s
+
+GUI:
+
+Analógico OK
+
+Digital: 
+
+Para N, Wn
+- Butterworth OK
+- Cheby1 OK
+- Cheby2 OK
+- Bessel 
+- Elíptico OK
+
+Para parâmetros:
+- Butterworth
+- Cheby1
+- Cheby2
+- Elíptico
