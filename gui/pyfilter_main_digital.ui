@@ -169,7 +169,7 @@
        <rect>
         <x>80</x>
         <y>20</y>
-        <width>121</width>
+        <width>101</width>
         <height>31</height>
        </rect>
       </property>
@@ -182,7 +182,7 @@
        <rect>
         <x>80</x>
         <y>60</y>
-        <width>121</width>
+        <width>101</width>
         <height>31</height>
        </rect>
       </property>
@@ -208,7 +208,7 @@
        <rect>
         <x>80</x>
         <y>100</y>
-        <width>121</width>
+        <width>101</width>
         <height>31</height>
        </rect>
       </property>
@@ -237,7 +237,7 @@
        <rect>
         <x>80</x>
         <y>140</y>
-        <width>121</width>
+        <width>101</width>
         <height>31</height>
        </rect>
       </property>
@@ -267,7 +267,7 @@ rate (Hz):</string>
        <rect>
         <x>80</x>
         <y>180</y>
-        <width>121</width>
+        <width>101</width>
         <height>31</height>
        </rect>
       </property>
@@ -532,7 +532,7 @@ rate (Hz):</string>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="IIR_Settings">
       <widget class="QGroupBox" name="groupBox_Filter_Top">

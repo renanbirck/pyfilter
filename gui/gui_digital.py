@@ -67,11 +67,13 @@ class StartQT4(QtGui.QMainWindow):
         # 3. number of parameters
         # 4-end. parameter names
 
-        window_types = [('Rectangular', 'boxcar', 0),
-                        ('Triangular', 'triang', 0),
-                        ('Blackman', 'blackman', 0)]
+        window_types = [('Rectangular', 'boxcar', 0, ''),
+                        ('Triangular', 'triang', 0, ''),
+                        ('Hamming', 'hamming', 0, ''),
+                        ('Hann', 'hann', 0, ''),
+                        ('Kaiser', 'kaiser', 1, 'beta')]
 
-        for window_name, window_internal, num_parameters in window_types:
+        for window_name, window_internal, num_parameters, parameter_name in window_types:
             self.ui.comboBox_Window.addItem(window_name)
 
     def pick_widgets_for_filter_type(self):

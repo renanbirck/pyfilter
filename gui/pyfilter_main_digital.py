@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_digital.ui'
 #
-# Created: Sat May 16 21:08:04 2015
+# Created: Sat May 23 10:45:04 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -87,32 +87,32 @@ class Ui_MainWindow(object):
         self.label_opt2.setGeometry(QtCore.QRect(0, 60, 71, 20))
         self.label_opt2.setObjectName(_fromUtf8("label_opt2"))
         self.plainTextEdit_opt1 = QtGui.QPlainTextEdit(self.groupBox_FilterSpecs)
-        self.plainTextEdit_opt1.setGeometry(QtCore.QRect(80, 20, 121, 31))
+        self.plainTextEdit_opt1.setGeometry(QtCore.QRect(80, 20, 101, 31))
         self.plainTextEdit_opt1.setTabChangesFocus(True)
         self.plainTextEdit_opt1.setObjectName(_fromUtf8("plainTextEdit_opt1"))
         self.plainTextEdit_opt2 = QtGui.QPlainTextEdit(self.groupBox_FilterSpecs)
-        self.plainTextEdit_opt2.setGeometry(QtCore.QRect(80, 60, 121, 31))
+        self.plainTextEdit_opt2.setGeometry(QtCore.QRect(80, 60, 101, 31))
         self.plainTextEdit_opt2.setTabChangesFocus(True)
         self.plainTextEdit_opt2.setObjectName(_fromUtf8("plainTextEdit_opt2"))
         self.label_opt3 = QtGui.QLabel(self.groupBox_FilterSpecs)
         self.label_opt3.setGeometry(QtCore.QRect(0, 90, 81, 41))
         self.label_opt3.setObjectName(_fromUtf8("label_opt3"))
         self.plainTextEdit_opt3 = QtGui.QPlainTextEdit(self.groupBox_FilterSpecs)
-        self.plainTextEdit_opt3.setGeometry(QtCore.QRect(80, 100, 121, 31))
+        self.plainTextEdit_opt3.setGeometry(QtCore.QRect(80, 100, 101, 31))
         self.plainTextEdit_opt3.setTabChangesFocus(True)
         self.plainTextEdit_opt3.setObjectName(_fromUtf8("plainTextEdit_opt3"))
         self.label_opt4 = QtGui.QLabel(self.groupBox_FilterSpecs)
         self.label_opt4.setGeometry(QtCore.QRect(0, 140, 71, 20))
         self.label_opt4.setObjectName(_fromUtf8("label_opt4"))
         self.plainTextEdit_opt4 = QtGui.QPlainTextEdit(self.groupBox_FilterSpecs)
-        self.plainTextEdit_opt4.setGeometry(QtCore.QRect(80, 140, 121, 31))
+        self.plainTextEdit_opt4.setGeometry(QtCore.QRect(80, 140, 101, 31))
         self.plainTextEdit_opt4.setTabChangesFocus(True)
         self.plainTextEdit_opt4.setObjectName(_fromUtf8("plainTextEdit_opt4"))
         self.label_SR = QtGui.QLabel(self.groupBox_FilterSpecs)
         self.label_SR.setGeometry(QtCore.QRect(0, 180, 71, 31))
         self.label_SR.setObjectName(_fromUtf8("label_SR"))
         self.textEdit_SampleRate = QtGui.QTextEdit(self.groupBox_FilterSpecs)
-        self.textEdit_SampleRate.setGeometry(QtCore.QRect(80, 180, 121, 31))
+        self.textEdit_SampleRate.setGeometry(QtCore.QRect(80, 180, 101, 31))
         self.textEdit_SampleRate.setObjectName(_fromUtf8("textEdit_SampleRate"))
         self.groupBox_Filter_Type = QtGui.QGroupBox(self.dockWidgetContents)
         self.groupBox_Filter_Type.setGeometry(QtCore.QRect(10, 210, 171, 131))
@@ -297,7 +297,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QObject.connect(self.actionExit, QtCore.SIGNAL(_fromUtf8("triggered()")), MainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.radioButton_NWn, self.radioButton_AttSpecs)
