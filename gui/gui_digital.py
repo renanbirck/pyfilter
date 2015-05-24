@@ -686,11 +686,11 @@ class StartQT4(QtGui.QMainWindow):
             columns = ['', 'B']
             data = [coeffs, self.filter_design.B]
 
-            html.put_newline()
-            html.put_table(columns, data)
-            html.put_text("</body>")
-            html.write(close=True)
-            self.ui.tfOutputHTML.load(url)
+        html.put_newline()
+        html.put_table(columns, data)
+        html.put_text("</body>")
+        html.write(close=True)
+        self.ui.tfOutputHTML.load(url)
 
     def plot(self):
         self.filter_design.compute_frequencies(N=1000)
@@ -699,7 +699,6 @@ class StartQT4(QtGui.QMainWindow):
         #self.ui.tab_plot.hide()
 
         # Build the tab used for plotting.
-        sample_rate = 2*pi*self.config_dict['sample_rate']
 
         plot_tab = QtGui.QWidget()
         plot_tab_layout = QtGui.QVBoxLayout()
@@ -715,7 +714,7 @@ class StartQT4(QtGui.QMainWindow):
                                                         height=6, dpi=80)
 
         nyquist = self.config_dict['sample_rate']
-        W_Hz = nyquist*(self.filter_design.W / pi)
+        W_Hz = nyquist*(self.filter_design.W / (2*pi))
         self.ui.magnitudePlotWidget.compute_initial_figure(W_Hz,
                                                            20 * log10(abs(self.filter_design.H)),
                                                            mode="logx")
