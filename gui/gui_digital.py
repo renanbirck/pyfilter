@@ -491,7 +491,17 @@ class StartQT4(QtGui.QMainWindow):
                 print("Parameter is ", parameter_name)
 
         def validate_FIR_Parks():
-            raise NotImplementedError("validate_FIR_Parks not made yet.")
+            for row_number in range(self.ui.tableWidget_FIR.rowCount()):
+                band = self.ui.tableWidget_FIR.item(row_number, 0).text()
+                gain = float(self.ui.tableWidget_FIR.item(row_number, 1).text())
+                band_low, band_high = band.split(' ')[0:2]
+                print("Band ", row_number, " is ", band_low, " to ", band_high, " gain = ", gain)
+                frequencies.append(float(band_low))
+                frequencies.append(float(band_high))
+                gains.append(gain)
+            print("Frequency vector is ", frequencies)
+            print("Gain vector is ", gains)
+
 
         if self.config_dict['FIR_Mode'] == 'Window':
             validate_FIR_Window()
@@ -510,12 +520,14 @@ class StartQT4(QtGui.QMainWindow):
             window_param = float(self.ui.plainTextEdit_option1.text())
             window_tuple = (window_types[self.window_index][1], window_param)
             self.filter_data['window'] = window_tuple
+        if self.config_dict['FIR_Mode'] == 'Parks':
+            self.filter_data['window'] = None
 
 
     def build_FIR_struct(self):
 
+        self.filter_design = digital.FIRFilter()
         if self.config_dict['FIR_Mode'] == 'Window':
-            self.filter_design = digital.FIRFilter()
             self.filter_design.sample_rate = self.filter_data['sample_rate']
             self.filter_design.taps = self.filter_data['taps']
             self.filter_design.freqs = self.filter_data['frequencies']
@@ -523,7 +535,11 @@ class StartQT4(QtGui.QMainWindow):
             self.filter_design.window = self.filter_data['window']
             self.filter_design.antisymmetric = self.filter_data['antisymmetric']
         elif self.config_dict['FIR_Mode'] == 'Parks':
-            raise NotImplementedError("Parks FIR not implemented yet.")
+            self.filter_design.sample_rate = self.filter_data['sample_rate']
+            self.filter_design.taps = self.filter_data['taps']
+            self.filter_design.freqs = self.filter_data['frequencies']
+            self.filter_design.gains = self.filter_data['gains']
+            self.filter_design.window = None
 
 
     def build_IIR_struct(self):
@@ -627,10 +643,10 @@ class StartQT4(QtGui.QMainWindow):
         try:
             html.put_polynomial(self.filter_design.B,
                                 self.filter_design.A,
-                                variable='s')
+                                variable='z')
         except:
             html.put_polynomial(self.filter_design.B, [1],
-                                variable='s')
+                                variable='z')
 
 
         html.put_text("Coefficients:")
@@ -708,8 +724,11 @@ class StartQT4(QtGui.QMainWindow):
         if isinstance(self.filter_design.Wn, float):
             self.ui.magnitudePlotWidget.add_line('x', self.filter_design.Wn / (2*pi))
         else:
-            for value in self.filter_design.Wn:
-                self.ui.magnitudePlotWidget.add_line('x', value / (2*pi))
+            try:
+                for value in self.filter_design.Wn:
+                    self.ui.magnitudePlotWidget.add_line('x', value / (2*pi))
+            except:
+                pass # FIR filter
 
         self.ui.magnitudeGraphToolbar = NavigationToolbar(self.ui.magnitudePlotWidget,
                                                           self)

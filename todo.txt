@@ -42,8 +42,6 @@ Cheby2          n       s
 
 GUI:
 
-Analógico OK
-
 Digital: 
 
 Para N, Wn
@@ -58,3 +56,7 @@ Para parâmetros:
 - Cheby1
 - Cheby2
 - Elíptico
+
+FIR
+- Janela    OK
+- Parks-McClellan
