@@ -27,7 +27,7 @@ sys.path.append('..')
 from engine import digital
 from engine import utils
 from math import pi
-from numpy import log10, abs, angle, unwrap
+from numpy import log10, abs, angle, unwrap, array
 
 import gui_common
 import canvas
@@ -35,6 +35,12 @@ from matplotlib.backends.backend_qt4 import NavigationToolbar2QT as NavigationTo
 BAND_MESSAGE = """ For the bandpass and bandstop cases,
                 give 2 frequencies separated by space,
                 like: 1 10, otherwise give one frequency."""
+
+window_types = [('Rectangular', 'boxcar', 0, ''),
+                ('Triangular', 'triang', 0, ''),
+                ('Hamming', 'hamming', 0, ''),
+                ('Hann', 'hann', 0, ''),
+                ('Kaiser', 'kaiser', 1, 'beta')]
 
 
 class StartQT4(QtGui.QMainWindow):
@@ -112,6 +118,9 @@ class StartQT4(QtGui.QMainWindow):
         QtCore.QObject.connect(self.ui.tabWidget,
                                QtCore.SIGNAL("tabCloseRequested(int)"),
                                self.destroy_tab)
+        QtCore.QObject.connect(self.ui.comboBox_Window,
+                               QtCore.SIGNAL("currentIndexChanged(int)"),
+                               self.create_window_fields)
 
         self.pick_widgets_for_filter_type()
         self.populate_window_list()
@@ -126,11 +135,26 @@ class StartQT4(QtGui.QMainWindow):
         if self.ui.radioButton_Parks.isChecked():
             self.ui.tableWidget_FIR.setHorizontalHeaderLabels(["Band", "Gain"])
             self.ui.comboBox_Window.setEnabled(False)
+            self.config_dict['FIR_Mode'] = "Parks"
         elif self.ui.radioButton_Window.isChecked():
             self.ui.tableWidget_FIR.setHorizontalHeaderLabels(["Freq", "Gain"])
             self.ui.comboBox_Window.setEnabled(True)
+            self.config_dict['FIR_Mode'] = "Window"
         else:
             pass
+
+    def create_window_fields(self, index):
+        """ Create the fields for the picked window type. """
+        print("picked window ", window_types[index][0])
+        self.window_index = index
+
+        if window_types[index][2] == 1:  # The window has parameters.
+            self.ui.label_param1.show()
+            self.ui.label_param1.setText(window_types[index][3])
+            self.ui.plainTextEdit_option1.show()
+        else:
+            self.ui.label_param1.hide()
+            self.ui.plainTextEdit_option1.hide()
 
 
     def populate_window_list(self):
@@ -140,25 +164,23 @@ class StartQT4(QtGui.QMainWindow):
         # 3. number of parameters
         # 4-end. parameter names
 
-        window_types = [('Rectangular', 'boxcar', 0, ''),
-                        ('Triangular', 'triang', 0, ''),
-                        ('Hamming', 'hamming', 0, ''),
-                        ('Hann', 'hann', 0, ''),
-                        ('Kaiser', 'kaiser', 1, 'beta')]
-
         for window_name, window_internal, num_parameters, parameter_name in window_types:
             self.ui.comboBox_Window.addItem(window_name)
 
     def pick_widgets_for_filter_type(self):
+
+        self.filter_data = {}  # Avoid errors if old data remains.
         if self.ui.radioButton_IIR.isChecked():
             self.ui.stackedWidget.setCurrentIndex(0)
             self.ui.stackedWidget_filterSpecs.setCurrentIndex(0)
+            self.ui.stackedWidget_Parameter.setCurrentIndex(0)
             self.ui.groupBox_Filter_Type.show()
             self.ui.groupBox_paramCalc.show()
             self.config_dict['filter_IR'] = "IIR"
         elif self.ui.radioButton_FIR.isChecked():
             self.ui.stackedWidget.setCurrentIndex(1)
             self.ui.stackedWidget_filterSpecs.setCurrentIndex(1)
+            self.ui.stackedWidget_Parameter.setCurrentIndex(1)
             self.ui.groupBox_Filter_Type.hide()
             self.ui.groupBox_paramCalc.hide()
             self.config_dict['filter_IR'] = "FIR"
@@ -444,7 +466,65 @@ class StartQT4(QtGui.QMainWindow):
             validate_specs()
 
     def validate_FIR(self):
-        raise NotImplementedError("validate_FIR not made yet.")
+
+        frequencies = []
+        gains = []
+        num_params = 0
+
+        def validate_FIR_Window():
+            for row_number in range(self.ui.tableWidget_FIR.rowCount()):
+                frequency = float(self.ui.tableWidget_FIR.item(row_number, 0).text())
+                gain = float(self.ui.tableWidget_FIR.item(row_number, 1).text())
+                print("Item ", row_number, " is ", frequency, "/", gain)
+                if not (0 <= frequency <= self.config_dict['sample_rate']/2):
+                    raise ValueError("Frequencies must be between 0 and sample_rate / 2.")
+                frequencies.append(frequency)
+                gains.append(gain)
+            print("Frequency vector is ", frequencies)
+            print("Gain vector is ", gains)
+            num_params = window_types[self.window_index][2]
+            parameter_name = window_types[self.window_index][2 + num_params]
+            print("Window type is ", window_types[self.window_index][1] )
+
+            if num_params > 0:
+                print("Window has ", num_params, "parameters")
+                print("Parameter is ", parameter_name)
+
+        def validate_FIR_Parks():
+            raise NotImplementedError("validate_FIR_Parks not made yet.")
+
+        if self.config_dict['FIR_Mode'] == 'Window':
+            validate_FIR_Window()
+        elif self.config_dict['FIR_Mode'] == 'Parks':
+            validate_FIR_Parks()
+
+        self.filter_data['frequencies'] = frequencies
+        self.filter_data['gains'] = gains
+        self.filter_data['sample_rate'] = self.config_dict['sample_rate']
+        self.filter_data['antisymmetric'] = self.ui.checkBox_antiSymmetric.isChecked()
+        self.filter_data['taps'] = self.ui.spinBox_Taps.value()
+
+        if num_params == 0:
+            self.filter_data['window'] = window_types[self.window_index][1]
+        elif num_params == 1:
+            window_param = float(self.ui.plainTextEdit_option1.text())
+            window_tuple = (window_types[self.window_index][1], window_param)
+            self.filter_data['window'] = window_tuple
+
+
+    def build_FIR_struct(self):
+
+        if self.config_dict['FIR_Mode'] == 'Window':
+            self.filter_design = digital.FIRFilter()
+            self.filter_design.sample_rate = self.filter_data['sample_rate']
+            self.filter_design.taps = self.filter_data['taps']
+            self.filter_design.freqs = self.filter_data['frequencies']
+            self.filter_design.gains = self.filter_data['gains']
+            self.filter_design.window = self.filter_data['window']
+            self.filter_design.antisymmetric = self.filter_data['antisymmetric']
+        elif self.config_dict['FIR_Mode'] == 'Parks':
+            raise NotImplementedError("Parks FIR not implemented yet.")
+
 
     def build_IIR_struct(self):
         config = {}
@@ -520,7 +600,7 @@ class StartQT4(QtGui.QMainWindow):
     def actually_design_IIR_filter(self):
         """ Where the actual design happens. """
         print("-------------------------")
-        print("Begin design.")
+        print("Begin IIR filter design.")
         self.filter_design.design()
         print("Design finished.")
         print("Z: ", self.filter_design.Z)
@@ -530,48 +610,71 @@ class StartQT4(QtGui.QMainWindow):
         print("A: ", self.filter_design.A)
         print("-------------------------")
 
+    def actually_design_FIR_filter(self):
+        print("-------------------------")
+        print("Begin FIR filter design.")
+        self.filter_design.design()
+        print("Design finished.")
+        print("B: ", self.filter_design.B)
+        print("-------------------------")
+
     def report(self):
         self.ui.pushButton_saveToFile.setEnabled(True)
         html = utils.HTMLReport()
         html.put_text("<body bgcolor=\"white\">")
         html.put_text("Transfer function: ")
         html.put_newline()
-        html.put_polynomial(self.filter_design.B,
-                            self.filter_design.A,
-                            variable='s')
+        try:
+            html.put_polynomial(self.filter_design.B,
+                                self.filter_design.A,
+                                variable='s')
+        except:
+            html.put_polynomial(self.filter_design.B, [1],
+                                variable='s')
+
 
         html.put_text("Coefficients:")
 
-        len_B = len(self.filter_design.B)
-        len_A = len(self.filter_design.A)
-        pad_len = abs(len_B - len_A)
+        if not isinstance(self.filter_design, digital.FIRFilter):
+            len_B = len(self.filter_design.B)
+            len_A = len(self.filter_design.A)
+            pad_len = abs(len_B - len_A)
 
-        padded_B = [0] * pad_len
-        print("need to pad with ", pad_len)
+            padded_B = [0] * pad_len
+            print("need to pad with ", pad_len)
 
-        for element in self.filter_design.B:
-            padded_B.append(element)
+            for element in self.filter_design.B:
+                padded_B.append(element)
 
-        print("after padding, B became ", padded_B)
+            print("after padding, B became ", padded_B)
 
-        len_order = max(len_B, len_A)
-        coeffs = list(reversed(range(0, len_order+1)))
-        coeffs = list(map(lambda x: x-1, coeffs))
+            len_order = max(len_B, len_A)
+            coeffs = list(reversed(range(0, len_order+1)))
+            coeffs = list(map(lambda x: x-1, coeffs))
+        else:
+            len_B = len(self.filter_design.B)
+            coeffs = list(reversed(range(0, len_B+1)))
+            coeffs = list(map(lambda x: x-1, coeffs))
 
         # Keep track of the file names we've used for the reports,
         # then at the end of the program we can delete 'em.
         self.file_names.append(html.output.name)
         url = QtCore.QUrl(html.output.name)
 
-        columns = ['', 'B (num)', 'A (den)']
-        data = [coeffs,
-                padded_B,
-                self.filter_design.A]
-        html.put_newline()
-        html.put_table(columns, data)
-        html.put_text("</body>")
-        html.write(close=True)
-        self.ui.tfOutputHTML.load(url)
+        if not isinstance(self.filter_design, digital.FIRFilter):
+            columns = ['', 'B (num)', 'A (den)']
+            data = [coeffs,
+                    padded_B,
+                    self.filter_design.A]
+        else:
+            columns = ['', 'B']
+            data = [coeffs, self.filter_design.B]
+
+            html.put_newline()
+            html.put_table(columns, data)
+            html.put_text("</body>")
+            html.write(close=True)
+            self.ui.tfOutputHTML.load(url)
 
     def plot(self):
         self.filter_design.compute_frequencies(N=1000)
@@ -628,9 +731,6 @@ class StartQT4(QtGui.QMainWindow):
                                                         "Images (*.png *.jpg *.svg)")
         if file_name_to_save:
             self.ui.magnitudePlotWidget.dump(file_name_to_save)
-
-    def build_FIR_struct(self):
-        raise NotImplementedError("build_FIR_struct not made yet.")
 
     def destroy_tab(self, tab_id):
         if tab_id == 0:

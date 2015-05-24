@@ -26,7 +26,7 @@ sys.path.append('..')
 from engine import analog_new as analog
 from engine import utils
 from math import pi
-from numpy import log10, abs, angle
+from numpy import log10, abs, angle, unwrap
 
 import canvas
 from matplotlib.backends.backend_qt4 import NavigationToolbar2QT as NavigationToolbar
@@ -554,7 +554,7 @@ class StartQT4(QtGui.QMainWindow):
         else:
             for value in self.filter_design.Wn:
                 self.ui.magnitudePlotWidget.add_line('x', value / (2*pi))
-            
+
 
         self.ui.magnitudeGraphToolbar = NavigationToolbar(self.ui.magnitudePlotWidget,
                                                           self)
@@ -563,7 +563,7 @@ class StartQT4(QtGui.QMainWindow):
         self.ui.phasePlotWidget = canvas.StaticPlot(plot_tab_splitter, width=9,
                                                     height=6, dpi=80)
         self.ui.phasePlotWidget.compute_initial_figure(self.filter_design.W/(2*pi),
-                                                       angle(self.filter_design.H) * 180/pi,
+                                                       unwrap(angle(self.filter_design.H)) * 180/pi,
                                                        mode="logx")
         self.ui.phasePlotWidget.set_label("Frequency (Hz)", "Phase (°)")
         self.ui.phaseGraphToolbar = NavigationToolbar(self.ui.phasePlotWidget,

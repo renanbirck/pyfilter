@@ -74,6 +74,9 @@ class Filter:
 
     def compute_frequencies(self, N=None):
         if hasattr(self, 'sample_rate'):
-            self.W, self.H = signal.freqz(self.B, self.A, N)
+            try:
+                self.W, self.H = signal.freqz(self.B, self.A)
+            except:
+                self.W, self.H = signal.freqz(self.B)
         else:
             self.W, self.H = signal.freqs(self.B, self.A, N)
