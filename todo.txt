@@ -59,4 +59,4 @@ Para parâmetros:
 
 FIR
 - Janela    OK
-- Parks-McClellan
+- Parks-McClellan OK
