@@ -117,7 +117,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>430</y>
+       <y>450</y>
        <width>85</width>
        <height>26</height>
       </rect>
@@ -130,7 +130,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>250</y>
+       <y>220</y>
        <width>171</width>
        <height>131</height>
       </rect>
@@ -316,7 +316,7 @@ rate (Hz):</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>330</y>
+       <y>350</y>
        <width>120</width>
        <height>91</height>
       </rect>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_digital.ui'
 #
-# Created: Sun May 24 12:25:55 2015
+# Created: Wed May 27 15:39:52 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -75,10 +75,10 @@ class Ui_MainWindow(object):
         self.dockWidgetContents = QtGui.QWidget()
         self.dockWidgetContents.setObjectName(_fromUtf8("dockWidgetContents"))
         self.pushButton_Design = QtGui.QPushButton(self.dockWidgetContents)
-        self.pushButton_Design.setGeometry(QtCore.QRect(10, 430, 85, 26))
+        self.pushButton_Design.setGeometry(QtCore.QRect(10, 450, 85, 26))
         self.pushButton_Design.setObjectName(_fromUtf8("pushButton_Design"))
         self.groupBox_Filter_Type = QtGui.QGroupBox(self.dockWidgetContents)
-        self.groupBox_Filter_Type.setGeometry(QtCore.QRect(10, 250, 171, 131))
+        self.groupBox_Filter_Type.setGeometry(QtCore.QRect(10, 220, 171, 131))
         self.groupBox_Filter_Type.setObjectName(_fromUtf8("groupBox_Filter_Type"))
         self.radioButton_LP = QtGui.QRadioButton(self.groupBox_Filter_Type)
         self.radioButton_LP.setGeometry(QtCore.QRect(0, 20, 104, 21))
@@ -124,7 +124,7 @@ class Ui_MainWindow(object):
         self.textEdit_SampleRate.setGeometry(QtCore.QRect(80, 100, 101, 31))
         self.textEdit_SampleRate.setObjectName(_fromUtf8("textEdit_SampleRate"))
         self.groupBox = QtGui.QGroupBox(self.dockWidgetContents)
-        self.groupBox.setGeometry(QtCore.QRect(10, 330, 120, 91))
+        self.groupBox.setGeometry(QtCore.QRect(10, 350, 120, 91))
         self.groupBox.setTitle(_fromUtf8(""))
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
         self.radioButton_FIR = QtGui.QRadioButton(self.groupBox)

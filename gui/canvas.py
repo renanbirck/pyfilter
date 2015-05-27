@@ -5,6 +5,7 @@
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
 from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
 from PyQt4 import QtCore, QtGui
 
 class Canvas(FigureCanvas):
@@ -63,3 +64,18 @@ class StaticPlot(Canvas):
         self.axes.autoscale_view()
         self.axes.set_xlim(left=min(x) * 1.1, right=(1+max(x)) * 1.2)
         self.axes.set_ylim(bottom=min(y) * 1.1, top=(1+max(y)) * 1.3)
+        # http://stackoverflow.com/questions/8384120/equivalent-function-for-xticks-for-an-axessubplot-object
+
+        # build the tick vector
+        ticks = []
+        for power in range(1, 5):
+            ticks.append(1 * 10**power)
+            ticks.append(2 * 10**power)
+            ticks.append(5 * 10**power)
+
+        self.axes.set_xticks(ticks, minor=False)
+        self.axes.set_xticklabels(ticks)
+
+        axes = plt.gca()
+
+
