@@ -23,7 +23,7 @@ def rc_lowpass(s, R, C):
     return 1/(1/(R*C)+s)
 
 def rc_highpass(s, R, C):
-    return (s*R*C)/(1/(R*C) + s)
+    return (s)/(1/(R*C) + s)
 
 def sk_lowpass(s, R1, R2, C1, C2):
     return 1/(R1*R2*C1*C2 * s**2 + C2 * (R1 + R2) * s + 1)
@@ -49,12 +49,33 @@ def khn_hp(s, R1, R2, R3, R4, R5, R6, C1, C2):
 def khn_bp(s, R1, R2, R3, R4, R5, R6, C1, C2):
     raise NotImplementedError
 
-def synthesize(polynomial, filter_implementation, filter_type):
+def synthesize(polynomial, filter_implementation, filter_type, parameters):
     """ Implements the filter given by polynomial,
         with the filter_implementation and filter_type given.
         Assumptions:
 
+        - Low-pass and high-pass filters set the resistor and find the capacitor.
         - Sallen-key LP filter sets R1 = R2 = Rr and C1 and C2 can vary.
     """
+    s = sym.var('s')
+    if filter_implementation == '1' and filter_type == 'lp':
+        C = sym.var('C')
+        targets = [C]
+        R = parameters['R']
+        tf = rc_lowpass(s, R, C)
+
+    elif filter_implementation == '1' and filter_type == 'hp':
+        C = sym.var('C')
+        targets = [C]
+        R = parameters['R']
+        tf = rc_highpass(s, R, C)
+
+    elif filter_implementation == 'sk' and filter_type == 'lp':
+        C1, C2, s = sym.var('C1 C2 s')
+        targets = [C1, C2] # The values we want to find
+        Rr = parameters['Rr']
+        tf = sk_lowpass(s, Rr, Rr, C1, C2)
+
+    return solvers.solve_undetermined_coeffs(tf - polynomial, targets, 's')
 
     raise NotImplementedError
