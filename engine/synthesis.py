@@ -26,10 +26,21 @@ def rc_highpass(s, R, C):
     return (s)/(1/(R*C) + s)
 
 def sk_lowpass(s, R1, R2, C1, C2):
-    return 1/(R1*R2*C1*C2 * s**2 + C2 * (R1 + R2) * s + 1)
+    num = 1
+    den_2nd = 1
+    den_1st = (C2 * (R1 + R2))/(R1*R2*C1*C2)
+    den_0th = 1/(R1*R2*C1*C2)
+
+    return num / (den_2nd * s**2 + den_1st * s + den_0th)
 
 def sk_highpass(s, R1, R2, C1, C2):
-    raise NotImplementedError
+    num = s**2
+    den_2nd = (s**2)/(R1*R2*C1*C2)
+    den_1st = (s**(1/(R2*C1) + 1/(R2*C2)))/(R1*R2*C1*C2)
+    den_0th = 1
+    return num/(den_2nd + den_1st + den_0th)
+
+
 
 def mfb_lowpass(s, R1, R3, R4, C2, C5):
     raise NotImplementedError
@@ -38,6 +49,9 @@ def mfb_highpass(s, C1, C3, C4, R2, R5):
     raise NotImplementedError
 
 def mfb_bandpass(s, R1, R2, C3, C4, R5):
+    raise NotImplementedError
+
+def _khn(s, R1, R2, R3, R4, R5, R6, C1, C2):
     raise NotImplementedError
 
 def khn_lp(s, R1, R2, R3, R4, R5, R6, C1, C2):
@@ -56,6 +70,7 @@ def synthesize(polynomial, filter_implementation, filter_type, parameters):
 
         - Low-pass and high-pass filters set the resistor and find the capacitor.
         - Sallen-key LP filter sets R1 = R2 = Rr and C1 and C2 can vary.
+        - Sallen-key HP filter sets C1 = C2 = Cc and R1 and R2 can vary.
     """
     s = sym.var('s')
     if filter_implementation == '1' and filter_type == 'lp':
@@ -72,9 +87,15 @@ def synthesize(polynomial, filter_implementation, filter_type, parameters):
 
     elif filter_implementation == 'sk' and filter_type == 'lp':
         C1, C2, s = sym.var('C1 C2 s')
-        targets = [C1, C2] # The values we want to find
+        targets = [C1, C2]  # The values we want to find
         Rr = parameters['Rr']
         tf = sk_lowpass(s, Rr, Rr, C1, C2)
+
+    elif filter_implementation == 'sk' and filter_type == 'hp':
+        R1, R2, s = sym.var('R1 R2 s')
+        targets = [R1, R2]
+        Cc = parameters['Cc']
+        tf = sk_highpass(s, R1, R2, Cc, Cc)
 
     return solvers.solve_undetermined_coeffs(tf - polynomial, targets, 's')
 
