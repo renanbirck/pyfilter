@@ -71,7 +71,7 @@
      <x>0</x>
      <y>0</y>
      <width>1121</width>
-     <height>25</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -817,7 +817,7 @@ Type2</string>
         <number>1</number>
        </property>
        <property name="maximum">
-        <number>10000</number>
+        <number>16777216</number>
        </property>
       </widget>
       <widget class="QCheckBox" name="checkBox_antiSymmetric">

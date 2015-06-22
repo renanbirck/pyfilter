@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pyfilter_main_digital.ui'
 #
-# Created: Wed May 27 21:24:10 2015
+# Created: Mon Jun  1 19:29:30 2015
 #      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -57,7 +57,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.splitter)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1121, 25))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1121, 23))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -269,7 +269,7 @@ class Ui_MainWindow(object):
         self.spinBox_Taps = QtGui.QSpinBox(self.page_4)
         self.spinBox_Taps.setGeometry(QtCore.QRect(60, 20, 101, 27))
         self.spinBox_Taps.setMinimum(1)
-        self.spinBox_Taps.setMaximum(10000)
+        self.spinBox_Taps.setMaximum(16777216)
         self.spinBox_Taps.setObjectName(_fromUtf8("spinBox_Taps"))
         self.checkBox_antiSymmetric = QtGui.QCheckBox(self.page_4)
         self.checkBox_antiSymmetric.setGeometry(QtCore.QRect(10, 60, 131, 22))

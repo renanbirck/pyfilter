@@ -67,7 +67,7 @@ class StaticPlot(Canvas):
         # build the tick vector
         ticks = []
 
-        ticks_min = int(log10(abs(min(x)+1)))
+        ticks_min = max(-5, int(log10(abs(min(x)+1))))
         ticks_max = int(log10(abs(max(x)))+1)
 
         for power in range(ticks_min, ticks_max):
