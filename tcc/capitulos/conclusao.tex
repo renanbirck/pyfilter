@@ -1,0 +1,48 @@
+\chapter{Conclusão}
+
+Neste trabalho, demonstrou-se com sucesso o desenvolvimento de uma ferramenta computacional para a síntese de filtros analógicos e digitais; sua vantagem imediata perante as ferramentas já existentes é ser gratuita e de código aberto, em contraste com as existentes, \textit{caixas pretas} que permitem pouca ou nenhuma modificação ou estudo e, em alguns casos, possuem licenças bastante caras.
+
+O usuário pode estudar o código-fonte da ferramenta e das bibliotecas empregadas e entender o seu funcionamento, os algoritmos empregados e as decisões tomadas durante o desenvolvimento. Isto é facilitado pela linguagem \textit{Python}, cuja sintaxe é bastante clara e acessível mesmo para usuários com pouco conhecimento de programação.
+
+Soma-se a essas vantagens a possibilidade de desenvolvimento de novas funcionalidades, que podem ser contribuídas por qualquer desenvolvedor interessado em dar continuidade ao trabalho: basta que ele desenvolva e teste a função desejada e submeta seu código para o autor do \textit{software}, que se encarregará de incorporá-la ao programa. Da mesma forma, eventuais melhorias ou correções de \textit{bugs} que sejam feitas nas bibliotecas empregadas neste projeto podem ser contribuídas aos seus projetos de origem.
+
+Por fim, os algoritmos e códigos desenvolvidos neste trabalho podem ser aproveitados em outros projetos, assim possibilitando o desenvolvimento de novas ferramentas baseadas no que foi apresentado aqui. 
+
+O código-fonte do \textit{software} desenvolvido aqui, juntamente com outras rotinas (por exemplo, \textit{scripts} usados para teste e para geração dos gráficos) está disponível na plataforma GitHub, no endereço \url{https://github.com/renanbirck/pyfilter}, sob licença de \textit{software} livre, para permitir que seu desenvolvimento seja continuado.
+
+\newpage
+\section{Futuras melhorias}
+\label{sec:improvements}
+Para a continuidade deste trabalho com o objetivo de torná-lo uma ferramenta completa para o projeto de filtros, possíveis melhorias incluem, mas não estão limitadas, a:
+
+\subsection{Análise de Estabilidade}
+Como afirmado na fundamentação teórica, filtros analógicos e filtros digitais IIR, por possuírem \textit{feedback}, estão sujeitos à instabilidade, principalmente quando são empregados em sistemas de controle (aplicação comum para a filtragem de sinais).
+
+Dessa forma, torna-se desejável que a ferramenta seja capaz de realizar o estudo da estabilidade do filtro projetado. 
+
+\subsection{Análise de Sensitividade}
+Circuitos analógicos reais são implementados com componentes não-ideais, ao passo que os projetos de filtros são realizados presumindo-se que os dispositivos empregados são ideais. Como consequência, existe o risco do circuito implementado não corresponder àquilo que foi projetado. 
+
+Analisar a saída do circuito perante não-linearidades e variações dos componentes empregados nele torna-se uma funcionalidade necessária, a qual pode ser implementada interfaceando-se a ferramenta com um simulador de circuitos que será encarregado dos cálculos. 
+
+\subsection{Emprego de Algoritmos de Otimização}
+Como foi visto, é possível descrever o projeto de filtros como um problema de otimização matemática: deseja-se encontrar parâmetros para um sistema LTI que melhor aproximem uma resposta não-causal. 
+
+Esta estratégia, cuja viabilidade já foi demonstrada com sucesso na literatura (é a forma com que opera o algoritmo de Parks-McClellan; outros autores empregam diferentes técnicas de otimização, por exemplo, em \cite{barros} são empregados algoritmos genéticos), torna-se particularmente desejável quando são conhecidas as características do filtro desejado, porém não se conhece qual a ordem e quais as frequências que atendem essa especificação.
+
+\subsection{Geração de Código}
+Filtros digitais geralmente são implementados em CPUs programadas na linguagem C ou Assembly, ou em FPGAs programados em VHDL. Torna-se, então, desejável que a ferramenta seja capaz de produzir código nessas linguagens.
+
+Isso levanta as considerações de implementação descritas na revisão teórica deste trabalho, como os tipos de dados das variáveis e questões relacionadas à precisão numérica, além das estruturas de implementação (por exemplo, formas diretas I e II) que deverão ser empregadas para evitar polinômios de alta ordem e suas instabilidades numéricas.
+
+\subsection{Interface em Linha de Comando e Biblioteca de Funções}
+Embora a interface gráfica seja uma ferramenta prática para o usuário da ferramenta, ela limita o usuário às funcionalidades que o seu desenvolvedor julga úteis. 
+
+Dessa forma, é desejável que as funções para projeto possam ser empregadas diretamente em outros códigos, inclusive como parte de um sistema maior.
+
+Uma separação rígida entre interface e algoritmo também melhora a qualidade do código de ambos, pois cada parte pode ser testada, melhorada e modificada isoladamente, reduzindo-se o risco de afetar funcionalidades já existentes.
+
+\subsection{Síntese de Circuitos}
+Filtros analógicos podem ser implementados com as topologias vistas na introdução; para colocar a ferramenta apresentada neste trabalho no mesmo patamar daquelas descritas no item \ref{sec:tool_comparison}, torna-se necessária a implementação dessa funcionalidade.
+
+Juntamente com um simulador de circuitos, torna-se possível analisar o comportamento dos filtros sob condições não-ideais tais como o uso de \textit{op-amps} reais ou a variabilidade dos componentes.

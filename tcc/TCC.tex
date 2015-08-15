@@ -1,0 +1,282 @@
+%\listfiles
+\documentclass[tcc]{mdtufsm}
+% um tipo específico de monografia pode ser informado como parâmetro opcional:
+%\documentclass[tese]{mdtufsm}
+% a opção `openright' pode ser usada para forçar inícios de capítulos
+% em páginas ímpares
+% \documentclass[openright]{mdtufsm}
+% para gerar uma versão frente-e-verso, use a opção 'twoside':
+% \documentclass[twoside]{mdtufsm}
+
+\usepackage[T1]{fontenc}        % pacote para conj. de caracteres correto
+\usepackage{fix-cm} %para funcionar corretamente o tamanho das fontes da capa
+\usepackage{times, color, xcolor}       % pacote para usar fonte Adobe Times e cores
+\newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
+\usepackage[utf8]{inputenc}   % pacote para acentuação
+\usepackage{graphicx}  % pacote para importar figuras
+\usepackage{amsmath,latexsym,amssymb} %Pacotes matemáticos
+
+\usepackage[hidelinks,breaklinks=true,
+            bookmarksopen=true,linktoc=none,colorlinks=false,
+            linkcolor=black,citecolor=black,filecolor=magenta,urlcolor=blue,
+            pdftitle={Ferramenta Computacional para Síntese de Filtros Analógicos e Digitais},
+            pdfauthor={Renan Birck Pinheiro},
+            pdfsubject={Trabalho de Conclusão de Curso},
+            pdfkeywords={Síntese de Filtros, Processamento de Sinais}
+            ]{hyperref} %hidelinks disponível no pacote hyperref a partir da versão 2011-02-05  6.82a
+%Nesse caso, hidelinks retira os retângulos em volta dos links das referências
+\usepackage{breakurl}
+\usepackage{url}
+
+%Margens conforme MDT 7ª edição, arrumar diretamente no mdtufsm.cls para funcionar a opção twoside *PENDENTE*
+\usepackage[inner=30mm,outer=20mm,top=30mm,bottom=20mm]{geometry} 
+\usepackage{array}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{svg}
+\usepackage{dirtree} % Usado no desenvolvimento para desenhar a arvore de diretorios.
+\setcitestyle{square} % Citacoes entre [] e nao ()
+\usepackage{amsmath} % Funcoes quebradas (piecewise)
+
+
+%==============================================================================
+% Se o pacote hyperref foi carregado a linha abaixo corrige um bug na hora
+% de montar o sumário da lista de figuras e tabelas
+% Se o pacote não foi carregado, comentar a linha %
+%==============================================================================
+\input{macros/bugcaption}
+
+%==============================================================================
+% Identificação do trabalho
+%==============================================================================
+\title{Ferramenta Computacional para Síntese de Filtros Analógicos e Digitais}
+
+\author{Pinheiro}{Renan Birck}
+%Descomentar se for uma "autora"
+%\autoratrue
+
+\course{Graduação em Engenharia Elétrica}
+\altcourse{curso de Engenharia Elétrica}
+
+\institute{Centro de Tecnologia}
+\degree{Engenheiro Eletricista}
+
+%Orientador
+\advisor[Prof.]{Dr.}{Ramos Rodrigues}{Cesar}
+%Se for uma ``orientadora'' descomentar a linha baixo
+%\orientadoratrue
+
+%Co orientador, comentar se não existir
+%\coadvisor[Prof.]{Drª.}{Pereira}{Maria Regina}
+%\coorientadoratrue %Se for uma ``Co-Orientadora''
+
+%Avaliadores (Banca) % TODO: ainda não decidi
+\committee[Dr.]{Campos}{Alexandre}{UFSM}
+\committee[Dr.]{Prior}{Cesar}{UFSM}
+
+% a data deve ser a da defesa; se nao especificada, são gerados
+% mes e ano correntes
+\date{08}{julho}{2015}
+
+%Palavras chave
+\keyword{Filtros Eletrônicos}
+\keyword{Ferramenta Computacional}
+\keyword{Processamento de Sinais}
+
+
+%%=============================================================================
+%% Início do documento
+%%=============================================================================
+\begin{document}
+
+%%=============================================================================
+%% Capa e folha de rosto
+%%=============================================================================
+\maketitle
+
+%%=============================================================================
+%% Catalogação (obrigatório para mestrado) e Folha de aprovação
+%%=============================================================================
+%Somente obrigatório para dissertação, para TG, remover as linhas	77	%
+%Como a CIP vai ser impressa atrás da página de rosto, as margens inner e outer	
+%devem ser invertidas.
+%\newgeometry{inner=20mm,outer=30mm,top=30mm,bottom=20mm}	
+%\makeCIP{renan.ee.ufsm@gmail.com} %email do autor		
+%\restoregeometry
+
+%Se for usar a catalogação gerada pelo gerador do site da biblioteca comentar as linhas
+%acima e utilizar o comando abaixo
+%\includeCIP{CIP.pdf}
+
+%folha de aprovação
+\makeapprove
+
+%%=============================================================================
+%% Dedicatória (opcional)
+%%=============================================================================
+%\clearpage
+%\begin{flushright}
+%\mbox{}\vfill
+%{\sffamily\itshape À UFSM ......}
+%\end{flushright}
+
+%%=============================================================================
+%% Agradecimentos (opcional)
+%%=============================================================================
+\chapter*{Agradecimentos}
+À minha família e amigos pelo apoio e incentivo durante minha trajetória no curso.
+
+Ao professor Cesar Ramos Rodrigues, por ter me orientado na execução deste trabalho. 
+
+Aos meus colegas de trabalho na Chip Inside Tecnologia, que colaboraram na revisão deste trabalho e sugeriram correções e modificações. 
+
+%%=============================================================================
+%% Epígrafe (opcional)
+%%=============================================================================
+\clearpage
+\begin{flushright}
+\mbox{}\vfill
+{\sffamily\itshape
+``Em algum lugar, alguma coisa incrível está esperando para ser conhecida.'' \\ }
+--- \textsc{Carl Sagan}
+\end{flushright}
+
+
+%%=============================================================================
+%% Resumo
+%%=============================================================================
+\begin{abstract}
+Uma tarefa comum na eletrônica e nas diversas áreas na qual o processamento de sinais é empregado é o projeto de filtros analógicos e digitais, com os mais diversos objetivos. Porém, para filtros de maior ordem essa tarefa torna-se trabalhosa devido ao grande volume de cálculos envolvidos.
+
+Embora existam \textit{softwares} para a realização de tais projetos, frequentemente ele é proprietário ou apresenta complexidade de uso, o que acaba por restringir sua aplicação. Visando fornecer uma alternativa, propõe-se neste trabalho um \textit{software} livre e de código aberto, desenvolvido na linguagem \textit{Python}, para o projeto de filtros analógicos e digitais; dessa forma, não apenas ele pode ser usado gratuitamente, como pode ser usado como base para outros trabalhos e aplicações. 
+
+Suas funcionalidades principais serão a síntese de filtros analógicos e digitais utilizando-se os métodos já descritos na literatura. Inicialmente será feita uma revisão teórica sobre os diversos tipos de filtros, seguindo-se uma discussão sobre ferramentas de desenvolvimento e metodologias de desenvolvimento; por fim, o \textit{software} será demonstrado e serão feitas considerações sobre futuras melhorias.
+
+% ele também irá realizar a síntese de circuitos para implementação de funções de transferência. <<-- comentei pois não sei se vou conseguir implementar; se sobrar tempo eu implemento ao menos parcialmente.
+
+
+\end{abstract}
+
+%%=============================================================================
+%% Abstract
+%%=============================================================================
+% resumo na outra língua
+% como parametros devem ser passados o titulo, o nome do curso,
+% as palavras-chave na outra língua, separadas por vírgulas, o mês em inglês
+%o a sigla do dia em inglês: st, nd, th ...
+\begin{englishabstract}
+{Software Tool for Analog and Digital Filter Design}
+{Electrical Engineer}
+{Electronic Filters, Software Tools, Signal Processing}
+{July}
+{th}
+
+A common task in electronics and in the many areas where signal processing is used is the design of analog and  digital filters, which find many different uses. However, for higher-order filter this task becomes cumbersome due to the large number of calculations required.
+
+While there is software to design filters, in many cases it is proprietary or presents a high complexity, which then restricts its application. To provide an alternative, this work proposes an open-source software, developed in the Python programming language, for the design of analog and digital filters; thus, it can be used freely either on its own or as a base for other works and applications.
+
+Its main functions will be the synthesis of analog and digital filters using the methods described on the literature. Initially a brief review on the diverse types of filters and their characteristics will be done, followed by a discussion on development tools and methodologies; after, the software will be demonstrated and considerations about future enhancements will be done.
+\end{englishabstract}
+
+%% Lista de Ilustrações (opc)
+%% Lista de Símbolos (opc)
+%% Lista de Anexos e Apêndices (opc)
+
+%%=============================================================================
+%% Lista de figuras (comentar se não houver)
+%%=============================================================================
+\listoffigures
+
+%%=============================================================================
+%% Lista de tabelas (comentar se não houver)
+%%=============================================================================
+\listoftables
+
+%%=============================================================================
+%% Lista de Apêndices (comentar se não houver)
+%%=============================================================================
+%\listofappendix
+
+%%=============================================================================
+%% Lista de Anexos (comentar se não houver)
+%%=============================================================================
+%\listofannex
+
+%%=============================================================================
+%% Lista de abreviaturas e siglas
+%%=============================================================================
+ %o parametro deve ser a abreviatura mais longa
+\begin{listofabbrv}{BIBO}
+\item[ADC] \textit{Analog to Digital Converter}
+\item[BIBO] \textit{Bounded-Input, Bounded-Output}
+\item[DAC] \textit{Digital to Analog Converter}
+\item[DSP] \textit{Digital Signal Processing}
+\item[FFT] \textit{Fast Fourier Transform}
+\item[FIR] \textit{Finite Impulse Response}
+\item[FPGA] \textit{Field-Programmable Gate Array}
+\item[IIR] \textit{Infinite Impulse Response}
+\item[LTI] \textit{Linear Time-Invariant}
+\item[TDD] \textit{Test-Driven Development}
+\end{listofabbrv}
+
+
+%%=============================================================================
+%% Lista de simbolos (opcional)
+%%=============================================================================
+%Simbolos devem aparecer conforme a ordem em que aparecem no texto
+% o parametro deve ser o símbolo mais longo
+\begin{listofsymbols}{$v_{out}$}
+\item [$\omega$] frequência angular (rad/s)
+\item [$\omega_c$] frequência de $-3$ dB (rad/s)
+\item [$\mathcal{F}$] transformada de Fourier
+\item [$G_p$] ganho na banda de passagem (dB)
+\item [$G_s$] ganho na banda de parada (dB)
+\item [$H$] função de transferência
+\item [$v_i$] tensão de entrada
+\item [$v_{out}$] tensão de saída
+\item [$f_{bw}$] largura de banda do sinal
+\item [$f_s$] frequência de amostragem
+\end{listofsymbols}
+
+%%=============================================================================
+%% Sumário
+%%=============================================================================
+\tableofcontents
+
+
+%%=============================================================================
+%% Início da dissertação
+%%=============================================================================
+\setlength{\baselineskip}{1.5\baselineskip}
+
+%Adiciona cada capitulo
+\include{capitulos/introducao}
+\include{capitulos/Fundamentacao}
+\include{capitulos/desenvolvimento}
+\include{capitulos/resultados}
+\include{capitulos/conclusao}
+\include{capitulos/referencias}
+
+\setlength{\baselineskip}{\baselineskip}
+
+%%=============================================================================
+%% Referências
+%%=============================================================================
+%\bibliographystyle{abnt}
+%\bibliography{referencias/referencias}
+
+
+
+%IMPORTANTE: Se precisar usar alguma seção ou subseção dentro dos apêndices ou
+%anexos, utilizar o comando \tocless para não adicionar no Sumário
+%Exemplos: 
+% \tocless\section{Histórico}
+%%=============================================================================
+%% Apêndices
+%%=============================================================================
+%\appendix
+%\include{capitulos/apendicea}
+%\include{capitulos/apendiceb}
+
+
+\end{document}
